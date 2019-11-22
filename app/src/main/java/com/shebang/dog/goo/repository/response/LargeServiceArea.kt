@@ -1,16 +1,13 @@
-package com.shebang.dog.goo.response
+package com.shebang.dog.goo.repository.response
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Genre {
+class LargeServiceArea {
 
     @SerializedName("name")
     @Expose
     var name: String? = null
-    @SerializedName("catch")
-    @Expose
-    var catch: String? = null
     @SerializedName("code")
     @Expose
     var code: String? = null
