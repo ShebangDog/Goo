@@ -1,11 +1,11 @@
-package com.shebang.dog.goo.ui.list
+package com.shebang.dog.goo.ui.street
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shebang.dog.goo.databinding.ActivityRestaurantListBinding
 
-class ListActivity : AppCompatActivity() {
+class RestaurantStreetActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRestaurantListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,10 +14,8 @@ class ListActivity : AppCompatActivity() {
         setContentView(this.binding.root)
 
         this.binding.apply {
-            this.restaurantListRecyclerView.layoutManager = LinearLayoutManager(this@ListActivity)
+            this.restaurantListRecyclerView.layoutManager = LinearLayoutManager(this@RestaurantStreetActivity)
         }
-
-
 
     }
 }

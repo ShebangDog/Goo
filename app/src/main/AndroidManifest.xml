@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:fullBackupContent="">
-        <activity android:name=".ui.list.ListActivity">
+        <activity android:name=".ui.street.RestaurantStreetActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
