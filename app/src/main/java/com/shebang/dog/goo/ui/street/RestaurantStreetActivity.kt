@@ -14,8 +14,8 @@ class RestaurantStreetActivity : AppCompatActivity() {
         setContentView(this.binding.root)
 
         this.binding.apply {
-            this.restaurantListRecyclerView.layoutManager = LinearLayoutManager(this@RestaurantStreetActivity)
+            this.restaurantListRecyclerView.layoutManager =
+                LinearLayoutManager(this@RestaurantStreetActivity)
         }
-
     }
 }

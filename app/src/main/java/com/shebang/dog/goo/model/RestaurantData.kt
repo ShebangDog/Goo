@@ -1,10 +1,10 @@
 package com.shebang.dog.goo.model
 
-import java.net.URL
+import android.net.Uri
 
 data class RestaurantData (
     val id: Id,
     val name: String,
-    val imageUrl: URL,
+    val imageUri: Uri,
     val location: Location
 )
