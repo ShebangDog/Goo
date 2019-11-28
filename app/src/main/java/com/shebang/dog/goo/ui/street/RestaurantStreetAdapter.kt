@@ -1,5 +1,6 @@
 package com.shebang.dog.goo.ui.street
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,36 +13,41 @@ class RestaurantStreetAdapter(private val restaurantStreet: RestaurantStreet) :
     RecyclerView.Adapter<RestaurantStreetAdapter.RestaurantStreetViewHolder>() {
 
     private lateinit var binding: RestaurantListItemBinding
+    private lateinit var context: Context
 
     class RestaurantStreetViewHolder(
         private val binding: RestaurantListItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun setRestaurantData(restaurantData: RestaurantData) {
             this.binding.apply {
-                this.nameTextView.text = restaurantData.name
-                this.thumbnailImageView = TODO() // restaurantData.imageUrl
-                this.favoriteImageView = TODO() // resource
-                this.distanceTextView.text =
+                nameTextView.text = restaurantData.name
+                thumbnailImageView = TODO("restaurantData.imageUrl")
+                favoriteImageView = TODO("resource")
+                distanceTextView.text =
                     Location.distance(restaurantData.location, TODO()).toString()
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantStreetViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+
+        binding = RestaurantListItemBinding.inflate(inflater)
+
         with(LayoutInflater.from(parent.context)) {
-            this@RestaurantStreetAdapter.binding = RestaurantListItemBinding.inflate(this)
+            binding = RestaurantListItemBinding.inflate(this)
         }
 
-        return RestaurantStreetViewHolder(this.binding)
+        return RestaurantStreetViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        return this.restaurantStreet.restaurantDataList.size
+        return restaurantStreet.restaurantDataList.size
     }
 
     override fun onBindViewHolder(holder: RestaurantStreetViewHolder, position: Int) {
-        with(this.restaurantStreet) {
-            holder.setRestaurantData(this.restaurantDataList[position])
+        with(restaurantStreet) {
+            holder.setRestaurantData(restaurantDataList[position])
         }
     }
 }

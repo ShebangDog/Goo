@@ -10,11 +10,11 @@ class RestaurantStreetActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.binding = ActivityRestaurantListBinding.inflate(this.layoutInflater)
-        setContentView(this.binding.root)
+        binding = ActivityRestaurantListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        this.binding.apply {
-            this.restaurantListRecyclerView.layoutManager = LinearLayoutManager(this@RestaurantStreetActivity)
+        binding.apply {
+            restaurantListRecyclerView.layoutManager = LinearLayoutManager(this@RestaurantStreetActivity)
         }
 
     }
