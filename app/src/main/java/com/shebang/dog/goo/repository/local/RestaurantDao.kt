@@ -14,11 +14,11 @@ interface RestaurantDao {
     suspend fun insertRestaurantData(restaurantData: RestaurantData)
 
     @Query("SELECT * FROM restaurant_data_table")
-    fun getRestaurantStreet(): RestaurantStreet
+    fun getRestaurantStreet(): RestaurantStreet?
 
     @Query("DELETE FROM restaurant_data_table")
     fun deleteRestaurantStreet()
 
     @Query("SELECT * FROM restaurant_data_table WHERE id = :id")
-    fun getRestaurantData(id: Id): RestaurantData
+    fun getRestaurantData(id: Id): RestaurantData?
 }
