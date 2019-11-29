@@ -9,7 +9,7 @@ import com.shebang.dog.goo.model.RestaurantData
 import com.shebang.dog.goo.model.RestaurantStreet
 
 @Dao
-interface RestaurantDataDao {
+interface RestaurantDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRestaurantData(restaurantData: RestaurantData)
 

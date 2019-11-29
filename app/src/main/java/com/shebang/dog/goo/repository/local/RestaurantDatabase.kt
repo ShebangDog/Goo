@@ -9,5 +9,5 @@ import com.shebang.dog.goo.model.converter.RestaurantStreetConverter
 @Database(entities = [RestaurantData::class], version = 1)
 @TypeConverters(RestaurantStreetConverter::class)
 abstract class RestaurantDatabase : RoomDatabase() {
-    abstract fun restaurantStreetDao(): RestaurantDataDao
+    abstract fun restaurantDao(): RestaurantDao
 }
