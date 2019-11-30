@@ -10,7 +10,7 @@ class RestaurantLocalDataSource(private val restaurantDatabase: RestaurantDataba
     private val restaurantDao = restaurantDatabase.restaurantDao()
 
     override suspend fun loadRestaurants(callback: RestaurantDataSource.LoadRestaurantCallback) {
-        restaurantDao.getRestaurantStreet()?.restaurantDataList.also {
+        restaurantDao.getRestaurantStreet()?.also {
             if (!it.isNullOrEmpty()) callback.onLoad(RestaurantStreet(it))
             else callback.onFail()
         }

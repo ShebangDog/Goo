@@ -1,6 +1,14 @@
 package com.shebang.dog.goo.model
 
-data class Location(val latitude: Latitude, val longitude: Longitude) {
+import androidx.room.ColumnInfo
+
+data class Location(
+    @ColumnInfo(name = "latitude")
+    val latitude: Latitude,
+
+    @ColumnInfo(name = "longitude")
+    val longitude: Longitude
+) {
     companion object {
         fun distance(first: Location, second: Location): Distance {
             val locationList = mapOf("first" to first, "second" to second).map {

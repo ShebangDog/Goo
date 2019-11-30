@@ -1,6 +1,7 @@
 package com.shebang.dog.goo.model
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.net.URL
@@ -17,6 +18,6 @@ data class RestaurantData(
     @ColumnInfo(name = "image_url")
     val imageUrl: URL,
 
-    @ColumnInfo(name = "location")
+    @Embedded
     val location: Location
 )

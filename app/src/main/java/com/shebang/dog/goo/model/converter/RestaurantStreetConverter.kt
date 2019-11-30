@@ -6,12 +6,12 @@ import com.shebang.dog.goo.model.RestaurantStreet
 
 class RestaurantStreetConverter {
     @TypeConverter
-    fun fromRestaurantStreet(restaurantStreet: RestaurantStreet): List<RestaurantData> {
-        return restaurantStreet.restaurantDataList
+    fun fromRestaurantList(restaurantDataList: List<RestaurantData>): RestaurantStreet {
+        return RestaurantStreet(restaurantDataList)
     }
 
     @TypeConverter
-    fun restaurantDataListToRestaurantStreet(restaurantDataList: List<RestaurantData>): RestaurantStreet {
-        return RestaurantStreet(restaurantDataList)
+    fun restaurantStreetToRestaurantList(restaurantStreet: RestaurantStreet): List<RestaurantData> {
+        return restaurantStreet.restaurantDataList
     }
 }

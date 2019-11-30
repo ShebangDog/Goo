@@ -6,15 +6,14 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.shebang.dog.goo.model.Id
 import com.shebang.dog.goo.model.RestaurantData
-import com.shebang.dog.goo.model.RestaurantStreet
 
 @Dao
 interface RestaurantDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRestaurantData(restaurantData: RestaurantData)
+    fun insertRestaurantData(restaurantData: RestaurantData)
 
     @Query("SELECT * FROM restaurant_data_table")
-    fun getRestaurantStreet(): RestaurantStreet?
+    fun getRestaurantStreet(): List<RestaurantData>?
 
     @Query("DELETE FROM restaurant_data_table")
     fun deleteRestaurantStreet()
