@@ -5,21 +5,9 @@ import com.shebang.dog.goo.model.RestaurantData
 import com.shebang.dog.goo.model.RestaurantStreet
 
 interface RestaurantDataSource {
-    interface LoadRestaurantCallback {
-        fun onLoad(restaurantStreet: RestaurantStreet)
+    suspend fun getRestaurants(): RestaurantStreet
 
-        fun onFail()
-    }
-
-    interface GetRestaurantCallback {
-        fun onGet(restaurantData: RestaurantData)
-
-        fun onFail()
-    }
-
-    suspend fun loadRestaurants(callback: LoadRestaurantCallback)
-
-    suspend fun loadRestaurant(id: Id, callback: GetRestaurantCallback)
+    suspend fun getRestaurant(id: Id): RestaurantData?
 
     suspend fun saveRestaurant(restaurantData: RestaurantData)
 
