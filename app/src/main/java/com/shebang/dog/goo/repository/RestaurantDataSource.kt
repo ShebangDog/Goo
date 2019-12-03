@@ -1,13 +1,14 @@
 package com.shebang.dog.goo.repository
 
+import com.shebang.dog.goo.model.FindData
 import com.shebang.dog.goo.model.Id
 import com.shebang.dog.goo.model.RestaurantData
 import com.shebang.dog.goo.model.RestaurantStreet
 
 interface RestaurantDataSource {
-    suspend fun getRestaurants(): RestaurantStreet
+    suspend fun fetchRestaurants(): FindData<RestaurantStreet>
 
-    suspend fun getRestaurant(id: Id): RestaurantData?
+    suspend fun fetchRestaurant(id: Id): FindData<RestaurantData>
 
     suspend fun saveRestaurant(restaurantData: RestaurantData)
 
