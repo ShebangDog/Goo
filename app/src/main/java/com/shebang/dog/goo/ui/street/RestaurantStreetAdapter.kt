@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.RestaurantListItemBinding
+import com.shebang.dog.goo.model.Location
 import com.shebang.dog.goo.model.RestaurantData
 import com.shebang.dog.goo.model.RestaurantStreet
 
@@ -29,6 +30,14 @@ class RestaurantStreetAdapter :
                 nameTextView.text = restaurantData.name
                 distanceTextView.text =
                     Location.distance(restaurantData.location, TODO()).toString()
+
+                Glide.with(thumbnailImageView.context)
+                    .load(restaurantData.imageUrl.toString())
+                    .into(thumbnailImageView)
+
+                favoriteImageView.setImageDrawable(
+                    favoriteImageView.context.getDrawable(R.drawable.ic_goo_border)
+                )
             }
         }
     }
@@ -45,8 +54,6 @@ class RestaurantStreetAdapter :
     }
 
     override fun onBindViewHolder(holder: RestaurantStreetViewHolder, position: Int) {
-        with(restaurantStreet) {
-            holder.setRestaurantData(restaurantDataList[position])
-        }
+        holder.setRestaurantData(restaurantStreet.restaurantDataList[position])
     }
 }
