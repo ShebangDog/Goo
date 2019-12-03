@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.net.URL
 
 @Entity(tableName = "restaurant_data_table")
 data class RestaurantData(
@@ -16,7 +15,7 @@ data class RestaurantData(
     val name: String,
 
     @ColumnInfo(name = "image_url")
-    val imageUrl: URL,
+    val imageUrl: String,
 
     @Embedded
     val location: Location
