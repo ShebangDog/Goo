@@ -1,28 +1,32 @@
 package com.shebang.dog.goo.ui.street
 
-import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.RestaurantListItemBinding
-import com.shebang.dog.goo.model.Location
 import com.shebang.dog.goo.model.RestaurantData
 import com.shebang.dog.goo.model.RestaurantStreet
 
-class RestaurantStreetAdapter(private val restaurantStreet: RestaurantStreet) :
+class RestaurantStreetAdapter :
     RecyclerView.Adapter<RestaurantStreetAdapter.RestaurantStreetViewHolder>() {
 
-    private lateinit var binding: RestaurantListItemBinding
-    private lateinit var context: Context
+    var restaurantStreet: RestaurantStreet = RestaurantStreet(emptyList())
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     class RestaurantStreetViewHolder(
-        private val binding: RestaurantListItemBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+        view: View
+    ) : RecyclerView.ViewHolder(view) {
+        private val binding = RestaurantListItemBinding.bind(view)
+
         fun setRestaurantData(restaurantData: RestaurantData) {
-            this.binding.apply {
+            binding.apply {
                 nameTextView.text = restaurantData.name
-                thumbnailImageView = TODO("restaurantData.imageUrl")
-                favoriteImageView = TODO("resource")
                 distanceTextView.text =
                     Location.distance(restaurantData.location, TODO()).toString()
             }
@@ -30,15 +34,10 @@ class RestaurantStreetAdapter(private val restaurantStreet: RestaurantStreet) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantStreetViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
+        val inflate = LayoutInflater.from(parent.context)
+            .inflate(R.layout.restaurant_list_item, parent, false)
 
-        binding = RestaurantListItemBinding.inflate(inflater)
-
-        with(LayoutInflater.from(parent.context)) {
-            binding = RestaurantListItemBinding.inflate(this)
-        }
-
-        return RestaurantStreetViewHolder(binding)
+        return RestaurantStreetViewHolder(inflate)
     }
 
     override fun getItemCount(): Int {
