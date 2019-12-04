@@ -10,8 +10,8 @@ class RestaurantLocalDataSource(restaurantDatabase: RestaurantDatabase) :
     RestaurantDataSource {
     private val restaurantDao = restaurantDatabase.restaurantDao()
 
-    override suspend fun fetchRestaurants(): FindData<RestaurantStreet> {
-        return when (val restaurantList = restaurantDao.getRestaurantStreet()) {
+    override suspend fun fetchRestaurantStreet(): FindData<RestaurantStreet> {
+        return when (val restaurantList = restaurantDao.getRestaurantList()) {
             null -> FindData.NotFound()
             else -> FindData.Found(RestaurantStreet(restaurantList))
         }

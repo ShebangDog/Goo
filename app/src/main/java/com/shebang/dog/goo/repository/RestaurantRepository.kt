@@ -10,9 +10,9 @@ class RestaurantRepository(
 ) : RestaurantDataSource {
     private var cache: RestaurantStreet? = null
 
-    override suspend fun fetchRestaurants(): FindData<RestaurantStreet> {
+    override suspend fun fetchRestaurantStreet(): FindData<RestaurantStreet> {
         if (cache?.restaurantDataList.isNullOrEmpty()) {
-            cache = when (val result = restaurantLocalDataSource.fetchRestaurants()) {
+            cache = when (val result = restaurantLocalDataSource.fetchRestaurantStreet()) {
                 is FindData.NotFound -> cache
                 is FindData.Found -> result.value
             }

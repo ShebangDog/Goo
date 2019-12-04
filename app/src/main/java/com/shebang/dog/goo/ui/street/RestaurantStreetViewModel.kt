@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 
 class RestaurantStreetViewModel(private val repository: RestaurantRepository) : ViewModel() {
     val restaurantStreet: LiveData<RestaurantStreet> = liveData(Dispatchers.IO) {
-        val data = when (val result = repository.fetchRestaurants()) {
+        val data = when (val result = repository.fetchRestaurantStreet()) {
             is FindData.NotFound -> RestaurantStreet(emptyList())
             is FindData.Found -> result.value
         }

@@ -13,7 +13,7 @@ interface RestaurantDao {
     fun insertRestaurantData(restaurantData: RestaurantData)
 
     @Query("SELECT * FROM restaurant_data_table")
-    fun getRestaurantStreet(): List<RestaurantData>?
+    fun getRestaurantList(): List<RestaurantData>?
 
     @Query("DELETE FROM restaurant_data_table")
     fun deleteRestaurantStreet()

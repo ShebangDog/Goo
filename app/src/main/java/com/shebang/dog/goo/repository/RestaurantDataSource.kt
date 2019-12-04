@@ -6,7 +6,7 @@ import com.shebang.dog.goo.model.RestaurantData
 import com.shebang.dog.goo.model.RestaurantStreet
 
 interface RestaurantDataSource {
-    suspend fun fetchRestaurants(): FindData<RestaurantStreet>
+    suspend fun fetchRestaurantStreet(): FindData<RestaurantStreet>
 
     suspend fun fetchRestaurant(id: Id): FindData<RestaurantData>
 
