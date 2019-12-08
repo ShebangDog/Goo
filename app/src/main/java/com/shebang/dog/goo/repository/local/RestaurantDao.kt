@@ -18,6 +18,9 @@ interface RestaurantDao {
     @Query("DELETE FROM restaurant_data_table")
     fun deleteRestaurantStreet()
 
+    @Query("DELETE FROM restaurant_data_table WHERE id = :id")
+    fun deleteRestaurantData(id: Id)
+
     @Query("SELECT * FROM restaurant_data_table WHERE id = :id")
     fun getRestaurantData(id: Id): RestaurantData?
 }

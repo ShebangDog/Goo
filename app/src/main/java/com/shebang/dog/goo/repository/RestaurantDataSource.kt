@@ -15,4 +15,6 @@ interface RestaurantDataSource {
     suspend fun saveRestaurants(restaurantStreet: RestaurantStreet)
 
     fun deleteRestaurants()
+
+    fun deleteRestaurantData(id: Id)
 }

@@ -37,4 +37,8 @@ class RestaurantLocalDataSource(restaurantDatabase: RestaurantDatabase) :
     override fun deleteRestaurants() {
         restaurantDao.deleteRestaurantStreet()
     }
+
+    override fun deleteRestaurantData(id: Id) {
+        restaurantDao.deleteRestaurantData(id)
+    }
 }
