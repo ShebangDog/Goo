@@ -2,15 +2,17 @@ package com.shebang.dog.goo.model
 
 sealed class Format {
 
-    object Json : Format() {
-        const val value = "json"
-    }
+    object Json : Format()
 
-    object JsonP : Format() {
-        const val value = "jsonp"
-    }
+    object JsonP : Format()
 
-    object Xml : Format() {
-        const val value = "xml"
+    object Xml : Format()
+
+    val value by lazy {
+        when (this) {
+            is Json -> "json"
+            is JsonP -> "jsonp"
+            is Xml -> "xml"
+        }
     }
 }
