@@ -1,20 +1,42 @@
 package com.shebang.dog.goo.ui.street
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import com.shebang.dog.goo.model.FindData
-import com.shebang.dog.goo.model.RestaurantStreet
+import androidx.lifecycle.viewModelScope
+import com.shebang.dog.goo.model.*
 import com.shebang.dog.goo.repository.RestaurantRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class RestaurantStreetViewModel(private val repository: RestaurantRepository) : ViewModel() {
-    val restaurantStreet: LiveData<RestaurantStreet> = liveData(Dispatchers.IO) {
-        val data = when (val result = repository.fetchRestaurantStreet()) {
-            is FindData.NotFound -> RestaurantStreet(emptyList())
-            is FindData.Found -> result.value
-        }
+    private val mutableRestaurantStreet = MutableLiveData<RestaurantStreet>()
+    val restaurantStreet: LiveData<RestaurantStreet>
+        get() = mutableRestaurantStreet
 
-        emit(data)
+    init {
+        viewModelScope.launch {
+            update().join()
+        }
+    }
+
+    suspend fun update() = viewModelScope.launch(Dispatchers.IO) {
+        when (val result = repository.fetchRestaurantStreet(
+            Latitude(35.669220),
+            Longitude(139.761457),
+            Range(1)
+        )) {
+            is FindData.Found -> mutableRestaurantStreet.postValue(result.value)
+        }
+    }
+
+    suspend fun save(restaurantData: RestaurantData) = viewModelScope.launch(Dispatchers.IO) {
+        repository.saveRestaurant(restaurantData)
+        update()
+    }
+
+    fun delete(id: Id) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteRestaurantData(id)
+        update()
     }
 }

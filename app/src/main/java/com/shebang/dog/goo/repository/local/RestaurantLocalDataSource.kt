@@ -1,16 +1,18 @@
 package com.shebang.dog.goo.repository.local
 
-import com.shebang.dog.goo.model.FindData
-import com.shebang.dog.goo.model.Id
-import com.shebang.dog.goo.model.RestaurantData
-import com.shebang.dog.goo.model.RestaurantStreet
+import com.shebang.dog.goo.model.*
 import com.shebang.dog.goo.repository.RestaurantDataSource
 
 class RestaurantLocalDataSource(restaurantDatabase: RestaurantDatabase) :
     RestaurantDataSource {
     private val restaurantDao = restaurantDatabase.restaurantDao()
 
-    override suspend fun fetchRestaurantStreet(): FindData<RestaurantStreet> {
+    override suspend fun fetchRestaurantStreet(
+        latitude: Latitude,
+        longitude: Longitude,
+        range: Range
+    ): FindData<RestaurantStreet> {
+
         return when (val restaurantList = restaurantDao.getRestaurantList()) {
             null -> FindData.NotFound()
             else -> FindData.Found(RestaurantStreet(restaurantList))
