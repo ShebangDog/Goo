@@ -6,10 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shebang.dog.goo.R
+import com.shebang.dog.goo.data.model.RestaurantData
+import com.shebang.dog.goo.data.model.RestaurantStreet
 import com.shebang.dog.goo.databinding.RestaurantListItemBinding
-import com.shebang.dog.goo.model.Location
-import com.shebang.dog.goo.model.RestaurantData
-import com.shebang.dog.goo.model.RestaurantStreet
 
 class RestaurantStreetAdapter :
     RecyclerView.Adapter<RestaurantStreetAdapter.RestaurantStreetViewHolder>() {
@@ -32,7 +31,7 @@ class RestaurantStreetAdapter :
                     Location.distance(restaurantData.location, TODO()).toString()
 
                 Glide.with(thumbnailImageView.context)
-                    .load(restaurantData.imageUrl.toString())
+                    .load(restaurantData.imageUrl)
                     .into(thumbnailImageView)
 
                 favoriteImageView.setImageDrawable(
