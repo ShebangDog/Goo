@@ -41,17 +41,15 @@ class RestaurantStreetActivity : AppCompatActivity() {
             adapter = restaurantStreetAdapter
         }
 
-        runBlocking(Dispatchers.IO) {
-            restaurantStreetViewModel.update().join()
-            restaurantStreetViewModel.save(
-                RestaurantData(
-                    Id("da"),
-                    "nammmm",
-                    "",
-                    Location(Latitude(1.0), Longitude(1.0))
-                )
+        restaurantStreetViewModel.update()
+        restaurantStreetViewModel.save(
+            RestaurantData(
+                Id("da"),
+                "nammmm",
+                "",
+                Location(Latitude(1.0), Longitude(1.0))
             )
-        }
+        )
     }
 
 }

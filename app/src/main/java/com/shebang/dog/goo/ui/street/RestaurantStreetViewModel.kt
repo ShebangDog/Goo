@@ -20,7 +20,7 @@ class RestaurantStreetViewModel(private val repository: RestaurantRepository) : 
         }
     }
 
-    suspend fun update() = viewModelScope.launch(Dispatchers.IO) {
+    fun update() = viewModelScope.launch(Dispatchers.IO) {
         when (val result = repository.fetchRestaurantStreet(
             Latitude(35.669220),
             Longitude(139.761457),
@@ -30,7 +30,7 @@ class RestaurantStreetViewModel(private val repository: RestaurantRepository) : 
         }
     }
 
-    suspend fun save(restaurantData: RestaurantData) = viewModelScope.launch(Dispatchers.IO) {
+    fun save(restaurantData: RestaurantData) = viewModelScope.launch(Dispatchers.IO) {
         repository.saveRestaurant(restaurantData)
         update()
     }
