@@ -6,21 +6,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.GsonBuilder
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.data.model.*
-import com.shebang.dog.goo.data.repository.RestaurantRepository
-import com.shebang.dog.goo.data.repository.local.RestaurantDatabase
-import com.shebang.dog.goo.data.repository.local.RestaurantLocalDataSource
-import com.shebang.dog.goo.data.repository.remote.RestaurantRemoteDataSource
-import com.shebang.dog.goo.data.repository.remote.api.HotpepperApi
-import com.shebang.dog.goo.data.repository.remote.api.HotpepperApiClientImpl
 import com.shebang.dog.goo.databinding.ActivityRestaurantListBinding
+import com.shebang.dog.goo.di.RestaurantRepositoryInjection
 import com.shebang.dog.goo.factory.ViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class RestaurantStreetActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRestaurantListBinding
@@ -30,24 +20,11 @@ class RestaurantStreetActivity : AppCompatActivity() {
         binding = ActivityRestaurantListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val database = RestaurantDatabase.getDataBase(application)!!
-        val localDataSource = RestaurantLocalDataSource(database)
-        val remoteDataSource = RestaurantRemoteDataSource(
-            HotpepperApiClientImpl(
-                Retrofit.Builder()
-                    .baseUrl("https://webservice.recruit.co.jp/")
-                    .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-                    .build()
-                    .create(
-                        HotpepperApi::class.java
-                    ),
-                "1071f9f5bdb7f5b0"
-            )
-        )
-
-        val repository = RestaurantRepository(localDataSource, remoteDataSource)
         val restaurantStreetViewModel =
-            ViewModelProviders.of(this, ViewModelFactory(repository))
+            ViewModelProviders.of(
+                this,
+                ViewModelFactory(RestaurantRepositoryInjection.inject(application))
+            )
                 .get(RestaurantStreetViewModel::class.java)
 
         val restaurantStreetAdapter = RestaurantStreetAdapter()
