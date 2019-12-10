@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.shebang.dog.goo.R
 import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.databinding.ActivityRestaurantListBinding
 import com.shebang.dog.goo.di.RestaurantRepositoryInjection
@@ -30,9 +28,7 @@ class RestaurantStreetActivity : AppCompatActivity() {
         restaurantStreetViewModel.restaurantStreet
             .observe(this) { restaurantStreetAdapter.restaurantStreet = it }
 
-        val recyclerView = findViewById<RecyclerView>(R.id.restaurant_list_recycler_view)
-
-        recyclerView.apply {
+        binding.restaurantListRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@RestaurantStreetActivity)
             adapter = restaurantStreetAdapter
         }
