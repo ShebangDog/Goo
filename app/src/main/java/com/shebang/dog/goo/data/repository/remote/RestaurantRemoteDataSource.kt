@@ -11,11 +11,8 @@ class RestaurantRemoteDataSource(private val apiClient: HotpepperApiClient) : Re
         range: Range
     ): FindData<RestaurantStreet> {
 
-        val restaurantDataList = apiClient.fetchHotpepper(
-            Latitude(35.669220),
-            Longitude(139.761457),
-            Range(1)
-        ).restaurantDataList
+        val restaurantDataList =
+            apiClient.fetchHotpepper(latitude, longitude, range).restaurantDataList
 
         return when (restaurantDataList.isEmpty()) {
             true -> FindData.NotFound()
