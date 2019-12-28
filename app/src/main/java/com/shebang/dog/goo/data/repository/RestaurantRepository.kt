@@ -1,16 +1,19 @@
 package com.shebang.dog.goo.data.repository
 
 import com.shebang.dog.goo.data.model.*
+import com.shebang.dog.goo.di.scope.LocalDataSource
+import com.shebang.dog.goo.di.scope.RemoteDataSource
+import javax.inject.Inject
 
-class RestaurantRepository(
-    private val restaurantLocalDataSource: RestaurantDataSource,
-    private val restaurantRemoteDataSource: RestaurantDataSource
+class RestaurantRepository @Inject constructor(
+    @LocalDataSource private val restaurantLocalDataSource: RestaurantDataSource,
+    @RemoteDataSource private val restaurantRemoteDataSource: RestaurantDataSource
 ) : RestaurantDataSource {
     private var cache: RestaurantStreet? = null
+    private val dataSourceList = listOf(restaurantRemoteDataSource, restaurantLocalDataSource)
 
     override suspend fun fetchRestaurantStreet(
-        latitude: Latitude,
-        longitude: Longitude,
+        location: Location,
         range: Range
     ): FindData<RestaurantStreet> {
 
@@ -23,7 +26,7 @@ class RestaurantRepository(
                 else -> {
                     val dataSource = restaurantDataSourceList.first()
                     when (val result =
-                        dataSource.fetchRestaurantStreet(latitude, longitude, range)) {
+                        dataSource.fetchRestaurantStreet(location, range)) {
 
                         is FindData.NotFound -> fetch(restaurantDataSourceList.drop(1))
                         is FindData.Found -> result
@@ -32,9 +35,8 @@ class RestaurantRepository(
             }
         }
 
-
         return when (cache?.restaurantDataList.isNullOrEmpty()) {
-            true -> fetch(listOf(restaurantRemoteDataSource, restaurantLocalDataSource))
+            true -> fetch(dataSourceList)
             else -> FindData.Found(cache!!)
         }
     }
@@ -64,7 +66,7 @@ class RestaurantRepository(
         }
 
         return when (val restaurantData = cache?.restaurantDataList?.quickFilter { it.id == id }) {
-            null -> fetch(listOf(restaurantRemoteDataSource, restaurantLocalDataSource))
+            null -> fetch(dataSourceList)
             else -> FindData.Found(restaurantData)
         }
     }

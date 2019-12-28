@@ -3,16 +3,19 @@ package com.shebang.dog.goo.data.repository.remote
 import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.data.repository.RestaurantDataSource
 import com.shebang.dog.goo.data.repository.remote.api.HotpepperApiClient
+import javax.inject.Inject
 
-class RestaurantRemoteDataSource(private val apiClient: HotpepperApiClient) : RestaurantDataSource {
+class RestaurantRemoteDataSource @Inject constructor(private val apiClient: HotpepperApiClient) :
+    RestaurantDataSource {
+
     override suspend fun fetchRestaurantStreet(
-        latitude: Latitude,
-        longitude: Longitude,
+        location: Location,
         range: Range
     ): FindData<RestaurantStreet> {
 
         val restaurantDataList =
-            apiClient.fetchHotpepper(latitude, longitude, range).restaurantDataList
+            apiClient.fetchHotpepper(location.latitude, location.longitude, range)
+                .restaurantDataList
 
         return when (restaurantDataList.isEmpty()) {
             true -> FindData.NotFound()

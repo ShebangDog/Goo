@@ -4,8 +4,7 @@ import com.shebang.dog.goo.data.model.*
 
 interface RestaurantDataSource {
     suspend fun fetchRestaurantStreet(
-        latitude: Latitude,
-        longitude: Longitude,
+        location: Location,
         range: Range
     ): FindData<RestaurantStreet>
 

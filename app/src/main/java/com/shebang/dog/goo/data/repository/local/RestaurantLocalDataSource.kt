@@ -2,19 +2,18 @@ package com.shebang.dog.goo.data.repository.local
 
 import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.data.repository.RestaurantDataSource
+import javax.inject.Inject
 
-class RestaurantLocalDataSource(restaurantDatabase: RestaurantDatabase) :
+class RestaurantLocalDataSource @Inject constructor(private val restaurantDao: RestaurantDao) :
     RestaurantDataSource {
-    private val restaurantDao = restaurantDatabase.restaurantDao()
 
     override suspend fun fetchRestaurantStreet(
-        latitude: Latitude,
-        longitude: Longitude,
+        location: Location,
         range: Range
     ): FindData<RestaurantStreet> {
 
-        return when (val restaurantList = restaurantDao.getRestaurantList()) {
-            null -> FindData.NotFound()
+        return when (val restaurantList = restaurantDao.getRestaurantList().orEmpty()) {
+            emptyList<RestaurantData>() -> FindData.NotFound()
             else -> FindData.Found(RestaurantStreet(restaurantList))
         }
     }
