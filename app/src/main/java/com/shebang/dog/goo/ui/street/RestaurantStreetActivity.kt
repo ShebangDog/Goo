@@ -19,8 +19,8 @@ import com.shebang.dog.goo.data.model.Latitude
 import com.shebang.dog.goo.data.model.Location
 import com.shebang.dog.goo.data.model.Longitude
 import com.shebang.dog.goo.databinding.ActivityRestaurantListBinding
-import com.shebang.dog.goo.di.DaggerApplicationComponent
 import com.shebang.dog.goo.service.LocationBroadCastReceiver
+import com.shebang.dog.goo.ui.CustomApplication
 import com.shebang.dog.goo.util.DebugHelper
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor.KEY_LOCATION_RESULT
@@ -35,7 +35,7 @@ class RestaurantStreetActivity : AppCompatActivity() {
     lateinit var restaurantStreetViewModel: RestaurantStreetViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        DaggerApplicationComponent.factory().create(applicationContext).inject(this)
+        (application as CustomApplication).applicationComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityRestaurantListBinding.inflate(layoutInflater)
         setContentView(binding.root)
