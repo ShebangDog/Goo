@@ -13,13 +13,12 @@ class RestaurantRemoteDataSource @Inject constructor(private val apiClient: Hotp
         range: Range
     ): FindData<RestaurantStreet> {
 
-        val restaurantDataList =
+        val restaurantStreet =
             apiClient.fetchHotpepper(location.latitude, location.longitude, range)
-                .restaurantDataList
 
-        return when (restaurantDataList.isEmpty()) {
+        return when (restaurantStreet.restaurantDataList.isEmpty()) {
             true -> FindData.NotFound()
-            else -> FindData.Found(RestaurantStreet(restaurantDataList))
+            else -> FindData.Found(restaurantStreet)
         }
     }
 

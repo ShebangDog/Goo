@@ -18,25 +18,25 @@ class RestaurantRepository @Inject constructor(
     ): FindData<RestaurantStreet> {
 
         suspend fun fetch(
-            restaurantDataSourceList: List<RestaurantDataSource>?
+            restaurantDataSourceList: List<RestaurantDataSource>
         ): FindData<RestaurantStreet> {
 
-            return when (restaurantDataSourceList.isNullOrEmpty()) {
+            return when (restaurantDataSourceList.isEmpty()) {
                 true -> FindData.NotFound()
                 else -> {
                     val dataSource = restaurantDataSourceList.first()
                     when (val result =
                         dataSource.fetchRestaurantStreet(location, range)) {
 
-                        is FindData.NotFound -> fetch(restaurantDataSourceList.drop(1))
                         is FindData.Found -> result
+                        is FindData.NotFound -> fetch(restaurantDataSourceList.drop(1))
                     }
                 }
             }
         }
 
         return when (cache?.restaurantDataList.isNullOrEmpty()) {
-            true -> fetch(dataSourceList)
+            true -> fetch(dataSourceList).also { updateCache(it) }
             else -> FindData.Found(cache!!)
         }
     }
@@ -52,7 +52,7 @@ class RestaurantRepository @Inject constructor(
         suspend fun fetch(
             restaurantDataSourceList: List<RestaurantDataSource>
         ): FindData<RestaurantData> {
-            return when (restaurantDataSourceList.isNullOrEmpty()) {
+            return when (restaurantDataSourceList.isEmpty()) {
                 true -> FindData.NotFound()
                 else -> {
                     val dataSource = restaurantDataSourceList.first()
@@ -89,5 +89,17 @@ class RestaurantRepository @Inject constructor(
     override fun deleteRestaurantData(id: Id) {
         restaurantLocalDataSource.deleteRestaurantData(id)
         restaurantRemoteDataSource.deleteRestaurantData(id)
+    }
+
+    private fun updateCache(findData: FindData<RestaurantStreet>) {
+        cache = when (findData) {
+            is FindData.NotFound -> cache
+            is FindData.Found -> {
+                val restaurantList =
+                    findData.value.restaurantDataList + (cache?.restaurantDataList ?: emptyList())
+
+                RestaurantStreet(restaurantList.distinctBy { it.id.value })
+            }
+        }
     }
 }
