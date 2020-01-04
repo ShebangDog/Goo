@@ -107,7 +107,7 @@ dependencies {
     testImplementation "org.spekframework.spek2:spek-runner-junit5:$spek_version"
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    testImplementation "org.mockito:mockito-core:3.2.4"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
 
     def dagger_version = "2.25.2"
     implementation "com.google.dagger:dagger:$dagger_version"
