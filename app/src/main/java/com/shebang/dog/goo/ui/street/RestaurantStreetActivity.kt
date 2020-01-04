@@ -21,7 +21,6 @@ import com.shebang.dog.goo.data.model.Longitude
 import com.shebang.dog.goo.databinding.ActivityRestaurantListBinding
 import com.shebang.dog.goo.service.LocationBroadCastReceiver
 import com.shebang.dog.goo.ui.CustomApplication
-import com.shebang.dog.goo.util.DebugHelper
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor.KEY_LOCATION_RESULT
 import javax.inject.Inject
@@ -34,11 +33,16 @@ class RestaurantStreetActivity : AppCompatActivity() {
     @Inject
     lateinit var restaurantStreetViewModel: RestaurantStreetViewModel
 
+    private val fusedLocationClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
+    private var currentLocation: Location? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as CustomApplication).applicationComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityRestaurantListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (!checkPermissions()) requestPermissions()
 
         restaurantStreetViewModel.restaurantStreet
             .observe(this) { restaurantStreetAdapter.restaurantStreet = it }
@@ -48,15 +52,109 @@ class RestaurantStreetActivity : AppCompatActivity() {
             adapter = restaurantStreetAdapter
         }
 
-        restaurantStreetViewModel.update()
-        restaurantStreetViewModel.save(
-            RestaurantData(
-                Id("da"),
-                "nammmm",
-                "",
-                Location(Latitude(1.0), Longitude(1.0))
-            )
+        fusedLocationClient.apply {
+            val restaurantStreetActivity = this@RestaurantStreetActivity
+            val locationRequest = LocationRequest.create().apply {
+                fastestInterval = 10000
+                interval = 1800000
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            }
+
+            requestLocationUpdates(locationRequest, createPendingIntent())
+
+            lastLocation.addOnSuccessListener {
+                val location = Location(
+                    Latitude(it.latitude),
+                    Longitude(it.longitude)
+                )
+
+                LocationSharedPreferenceAccessor.setLocationResult(
+                    restaurantStreetActivity,
+                    location
+                )
+            }
+        }
+
+        LocationSharedPreferenceAccessor.registerOnSharedPreferenceChangeListener(this) {
+            if (it == KEY_LOCATION_RESULT) {
+                currentLocation = LocationSharedPreferenceAccessor.getLocationResult(this)
+                restaurantStreetViewModel.update(currentLocation!!)
+            }
+        }
+    }
+
+    companion object {
+        const val REQUEST_CODE_RESTAURANT_STREET = 0
+    }
+
+    private fun createPendingIntent(): PendingIntent {
+        val intent = Intent(this, LocationBroadCastReceiver::class.java)
+
+        intent.action = LocationBroadCastReceiver.ACTION_PROCESS_UPDATES
+        return PendingIntent.getBroadcast(
+            this,
+            REQUEST_CODE_RESTAURANT_STREET,
+            intent,
+            FLAG_UPDATE_CURRENT
         )
     }
 
+    private fun checkPermissions(): Boolean {
+        val fineLocationPermissionState = ActivityCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_FINE_LOCATION
+        )
+
+        val coarseLocationPermissionState = ActivityCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+
+        val isGranted = PackageManager.PERMISSION_GRANTED
+
+        return fineLocationPermissionState == isGranted && coarseLocationPermissionState == isGranted
+    }
+
+    private fun requestPermissions() {
+        val isGranted = PackageManager.PERMISSION_GRANTED
+
+        val permissionAccessFineLocationApproved = ActivityCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == isGranted
+
+        val permissionAccessCoarseLocationApproved = ActivityCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == isGranted
+
+        val shouldProvideRationale =
+            permissionAccessFineLocationApproved && permissionAccessCoarseLocationApproved
+
+        if (shouldProvideRationale) {
+            Snackbar.make(
+                findViewById<View>(R.id.restaurant_list_activity),
+                R.string.permission_rationale,
+                Snackbar.LENGTH_INDEFINITE
+            )
+                .setAction(R.string.ok) {
+                    // Request permission
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ),
+                        34
+                    )
+                }
+                .show()
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                34
+            )
+        }
+
+    }
 }
