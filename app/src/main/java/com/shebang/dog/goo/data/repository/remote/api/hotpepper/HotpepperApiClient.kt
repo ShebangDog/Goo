@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.data.repository.remote.api
+package com.shebang.dog.goo.data.repository.remote.api.hotpepper
 
 import com.shebang.dog.goo.data.model.*
 

@@ -66,7 +66,16 @@ class RestaurantRepository @Inject constructor(
         }
 
         return when (val restaurantData = cache?.restaurantDataList?.quickFilter { it.id == id }) {
-            null -> fetch(dataSourceList)
+            null -> fetch(dataSourceList).also { findData ->
+                findData.ifFound {
+                    updateCache(
+                        FindData.Found(
+                            RestaurantStreet(listOf(it))
+                        )
+                    )
+                }
+            }
+
             else -> FindData.Found(restaurantData)
         }
     }
@@ -92,14 +101,11 @@ class RestaurantRepository @Inject constructor(
     }
 
     private fun updateCache(findData: FindData<RestaurantStreet>) {
-        cache = when (findData) {
-            is FindData.NotFound -> cache
-            is FindData.Found -> {
-                val restaurantList =
-                    findData.value.restaurantDataList + (cache?.restaurantDataList ?: emptyList())
-
-                RestaurantStreet(restaurantList.distinctBy { it.id.value })
-            }
-        }
+        val street = RestaurantStreet(cache?.restaurantDataList ?: emptyList())
+        cache = findData.map {
+            RestaurantStreet(
+                (it.restaurantDataList + street.restaurantDataList).distinctBy { elem -> elem.id.value }
+            )
+        }.orElse(street)
     }
 }

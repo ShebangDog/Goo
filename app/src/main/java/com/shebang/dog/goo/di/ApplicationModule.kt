@@ -8,9 +8,9 @@ import com.shebang.dog.goo.data.repository.local.RestaurantDao
 import com.shebang.dog.goo.data.repository.local.RestaurantDatabase
 import com.shebang.dog.goo.data.repository.local.RestaurantLocalDataSource
 import com.shebang.dog.goo.data.repository.remote.RestaurantRemoteDataSource
-import com.shebang.dog.goo.data.repository.remote.api.HotpepperApi
-import com.shebang.dog.goo.data.repository.remote.api.HotpepperApiClient
-import com.shebang.dog.goo.data.repository.remote.api.HotpepperApiClientImpl
+import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApi
+import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApiClient
+import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApiClientImpl
 import com.shebang.dog.goo.di.scope.LocalDataSource
 import com.shebang.dog.goo.di.scope.RemoteDataSource
 import dagger.Module

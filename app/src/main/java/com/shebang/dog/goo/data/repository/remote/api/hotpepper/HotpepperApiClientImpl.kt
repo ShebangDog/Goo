@@ -1,7 +1,7 @@
-package com.shebang.dog.goo.data.repository.remote.api
+package com.shebang.dog.goo.data.repository.remote.api.hotpepper
 
 import com.shebang.dog.goo.data.model.*
-import com.shebang.dog.goo.data.repository.response.Shop
+import com.shebang.dog.goo.data.repository.response.hotpepper.Shop
 import retrofit2.HttpException
 
 class HotpepperApiClientImpl(

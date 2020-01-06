@@ -2,7 +2,7 @@ package com.shebang.dog.goo.data.repository.remote
 
 import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.data.repository.RestaurantDataSource
-import com.shebang.dog.goo.data.repository.remote.api.HotpepperApiClient
+import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApiClient
 import javax.inject.Inject
 
 class RestaurantRemoteDataSource @Inject constructor(private val apiClient: HotpepperApiClient) :

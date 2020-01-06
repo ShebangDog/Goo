@@ -1,6 +1,6 @@
-package com.shebang.dog.goo.data.repository.remote.api
+package com.shebang.dog.goo.data.repository.remote.api.hotpepper
 
-import com.shebang.dog.goo.data.repository.response.Hotpepper
+import com.shebang.dog.goo.data.repository.response.hotpepper.Hotpepper
 import retrofit2.http.GET
 import retrofit2.http.Query
 

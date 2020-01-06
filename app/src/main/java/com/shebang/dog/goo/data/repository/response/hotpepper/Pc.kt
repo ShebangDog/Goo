@@ -1,13 +1,16 @@
-package com.shebang.dog.goo.data.repository.response
+package com.shebang.dog.goo.data.repository.response.hotpepper
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Mobile {
+class Pc {
 
     @SerializedName("l")
     @Expose
     var l: String? = null
+    @SerializedName("m")
+    @Expose
+    var m: String? = null
     @SerializedName("s")
     @Expose
     var s: String? = null
