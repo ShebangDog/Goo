@@ -45,8 +45,14 @@ class GurumenaviApiClientImpl(
                     it.name ?: "",
                     it.getImageUrl() ?: "",
                     Location(
-                        Latitude(it.latitude?.toDouble() ?: 0.0),
-                        Longitude(it.longitude?.toDouble() ?: 0.0)
+                        Latitude(
+                            it.latitude?.let { value -> if (value == "") null else value }?.toDouble()
+                                ?: 0.0
+                        ),
+                        Longitude(
+                            it.longitude?.let { value -> if (value == "") null else value }?.toDouble()
+                                ?: 0.0
+                        )
                     )
                 )
             } ?: emptyList()
