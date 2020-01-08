@@ -23,6 +23,24 @@ sealed class FindData<T> {
         return plan({ defaultValue }, { it })
     }
 
+    fun elvis(defaultValue: FindData<T>): FindData<T> {
+        return plan({ defaultValue }, { Found(it) })
+    }
+
+    fun merge(findData: FindData<T>, function: (T, T) -> T): FindData<T> {
+        return plan(
+            { findData },
+            { left ->
+                Found(
+                    findData.plan(
+                        { left },
+                        { right -> function(left, right) }
+                    )
+                )
+            }
+        )
+    }
+
     private fun <R> plan(ifNotFound: () -> R, ifFound: (T) -> R): R {
         return when (this) {
             is NotFound -> ifNotFound.invoke()

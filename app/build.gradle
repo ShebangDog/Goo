@@ -29,6 +29,7 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "HOTPEPPER_API_KEY", HOTPEPPER_API_KEY
+            buildConfigField "String", "GURUMENAVI_API_KEY", GURUMENAVI_API_KEY
         }
 
         release {

@@ -8,6 +8,9 @@ import com.shebang.dog.goo.data.repository.local.RestaurantDao
 import com.shebang.dog.goo.data.repository.local.RestaurantDatabase
 import com.shebang.dog.goo.data.repository.local.RestaurantLocalDataSource
 import com.shebang.dog.goo.data.repository.remote.RestaurantRemoteDataSource
+import com.shebang.dog.goo.data.repository.remote.api.gurumenavi.GurumenaviApi
+import com.shebang.dog.goo.data.repository.remote.api.gurumenavi.GurumenaviApiClient
+import com.shebang.dog.goo.data.repository.remote.api.gurumenavi.GurumenaviApiClientImpl
 import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApi
 import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApiClient
 import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApiClientImpl
@@ -33,8 +36,12 @@ class ApplicationModule {
     @Singleton
     @RemoteDataSource
     @Provides
-    fun provideRemoteDataSource(apiClient: HotpepperApiClient): RestaurantDataSource {
-        return RestaurantRemoteDataSource(apiClient)
+    fun provideRemoteDataSource(
+        hotpepperApiClient: HotpepperApiClient,
+        gurumenaviApiClient: GurumenaviApiClient
+    ): RestaurantDataSource {
+
+        return RestaurantRemoteDataSource(hotpepperApiClient, gurumenaviApiClient)
     }
 
     @Singleton
@@ -50,16 +57,25 @@ class ApplicationModule {
     @Singleton
     @Provides
     fun provideHotpepperApiClient(): HotpepperApiClient {
-        fun createRetrofitBuilder(): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl("https://webservice.recruit.co.jp/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-
         return HotpepperApiClientImpl(
-            createRetrofitBuilder().create(HotpepperApi::class.java),
+            createRetrofitBuilder("https://webservice.recruit.co.jp/").create(HotpepperApi::class.java),
             BuildConfig.HOTPEPPER_API_KEY
         )
+    }
+
+    @Singleton
+    @Provides
+    fun provideGurumenaviApiClient(): GurumenaviApiClient {
+        return GurumenaviApiClientImpl(
+            createRetrofitBuilder("https://api.gnavi.co.jp/").create(GurumenaviApi::class.java),
+            BuildConfig.GURUMENAVI_API_KEY
+        )
+    }
+
+    private fun createRetrofitBuilder(baseUrl: String): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 }
