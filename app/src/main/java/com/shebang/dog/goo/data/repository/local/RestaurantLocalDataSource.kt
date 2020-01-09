@@ -10,19 +10,13 @@ class RestaurantLocalDataSource @Inject constructor(private val restaurantDao: R
     override suspend fun fetchRestaurantStreet(
         location: Location,
         range: Range
-    ): FindData<RestaurantStreet> {
+    ): RestaurantStreet {
 
-        return when (val restaurantList = restaurantDao.getRestaurantList().orEmpty()) {
-            emptyList<RestaurantData>() -> FindData.NotFound()
-            else -> FindData.Found(RestaurantStreet(restaurantList))
-        }
+        return RestaurantStreet(restaurantDao.getRestaurantList().orEmpty())
     }
 
-    override suspend fun fetchRestaurant(id: Id): FindData<RestaurantData> {
-        return when (val restaurantData = restaurantDao.getRestaurantData(id)) {
-            null -> FindData.NotFound()
-            else -> FindData.Found(restaurantData)
-        }
+    override suspend fun fetchRestaurant(id: Id): RestaurantData? {
+        return restaurantDao.getRestaurantData(id)
     }
 
     override suspend fun saveRestaurant(restaurantData: RestaurantData) {

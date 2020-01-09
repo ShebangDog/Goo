@@ -15,21 +15,20 @@ class RestaurantRepository @Inject constructor(
     override suspend fun fetchRestaurantStreet(
         location: Location,
         range: Range
-    ): FindData<RestaurantStreet> {
+    ): RestaurantStreet {
 
         suspend fun fetch(
             restaurantDataSourceList: List<RestaurantDataSource>
-        ): FindData<RestaurantStreet> {
+        ): RestaurantStreet {
 
             return when (restaurantDataSourceList.isEmpty()) {
-                true -> FindData.NotFound()
+                true -> RestaurantStreet(listOf())
                 else -> {
                     val dataSource = restaurantDataSourceList.first()
-                    when (val result =
-                        dataSource.fetchRestaurantStreet(location, range)) {
-
-                        is FindData.Found -> result
-                        is FindData.NotFound -> fetch(restaurantDataSourceList.drop(1))
+                    val result = dataSource.fetchRestaurantStreet(location, range)
+                    when (result.restaurantDataList.isEmpty()) {
+                        true -> fetch(restaurantDataSourceList.drop(1))
+                        false -> result
                     }
                 }
             }
@@ -37,11 +36,11 @@ class RestaurantRepository @Inject constructor(
 
         return when (cache?.restaurantDataList.isNullOrEmpty()) {
             true -> fetch(dataSourceList).also { updateCache(it) }
-            else -> FindData.Found(cache!!)
+            else -> cache!!
         }
     }
 
-    override suspend fun fetchRestaurant(id: Id): FindData<RestaurantData> {
+    override suspend fun fetchRestaurant(id: Id): RestaurantData? {
         fun <T> List<T>.quickFilter(function: (T) -> Boolean): T {
             return this
                 .asSequence()
@@ -51,32 +50,23 @@ class RestaurantRepository @Inject constructor(
 
         suspend fun fetch(
             restaurantDataSourceList: List<RestaurantDataSource>
-        ): FindData<RestaurantData> {
+        ): RestaurantData? {
             return when (restaurantDataSourceList.isEmpty()) {
-                true -> FindData.NotFound()
+                true -> null
                 else -> {
                     val dataSource = restaurantDataSourceList.first()
 
                     when (val result = dataSource.fetchRestaurant(id)) {
-                        is FindData.NotFound -> fetch(restaurantDataSourceList.drop(1))
-                        is FindData.Found -> FindData.Found(result.value)
+                        null -> fetch(restaurantDataSourceList.drop(1))
+                        else -> result
                     }
                 }
             }
         }
 
         return when (val restaurantData = cache?.restaurantDataList?.quickFilter { it.id == id }) {
-            null -> fetch(dataSourceList).also { findData ->
-                findData.ifFound {
-                    updateCache(
-                        FindData.Found(
-                            RestaurantStreet(listOf(it))
-                        )
-                    )
-                }
-            }
-
-            else -> FindData.Found(restaurantData)
+            null -> fetch(dataSourceList)?.also { updateCache(RestaurantStreet(listOf(it))) }
+            else -> restaurantData
         }
     }
 
@@ -100,12 +90,13 @@ class RestaurantRepository @Inject constructor(
         restaurantRemoteDataSource.deleteRestaurantData(id)
     }
 
-    private fun updateCache(findData: FindData<RestaurantStreet>) {
+    private fun updateCache(restaurantStreet: RestaurantStreet) {
         val street = RestaurantStreet(cache?.restaurantDataList ?: emptyList())
-        cache = findData.map {
-            RestaurantStreet(
-                (it.restaurantDataList + street.restaurantDataList).distinctBy { elem -> elem.id.value }
-            )
-        }.orElse(street)
+        val fusedStreet = restaurantStreet.restaurantDataList + street.restaurantDataList
+
+        cache = when (fusedStreet.isEmpty()) {
+            true -> cache
+            false -> RestaurantStreet(fusedStreet.distinctBy { it.id.value })
+        }
     }
 }

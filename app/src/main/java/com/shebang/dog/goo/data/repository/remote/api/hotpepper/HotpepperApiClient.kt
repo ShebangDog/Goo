@@ -15,5 +15,5 @@ interface HotpepperApiClient {
     suspend fun fetchHotpepper(
         id: Id,
         format: Format = Format.Json
-    ): RestaurantData
+    ): RestaurantData?
 }

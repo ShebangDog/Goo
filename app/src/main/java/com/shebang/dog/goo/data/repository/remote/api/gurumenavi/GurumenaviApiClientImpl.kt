@@ -2,6 +2,7 @@ package com.shebang.dog.goo.data.repository.remote.api.gurumenavi
 
 import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.data.repository.response.gurumenavi.Rest
+import retrofit2.HttpException
 
 class GurumenaviApiClientImpl(
     private val gurumenaviApi: GurumenaviApi,
@@ -13,7 +14,7 @@ class GurumenaviApiClientImpl(
         range: Range,
         index: Int,
         dataCount: Int
-    ): RestaurantStreet {
+    ): RestaurantStreet = try {
 
         val restaurantDataList = extractRestaurantDataList(
             gurumenaviApi.fetchGurumenavi(
@@ -26,15 +27,17 @@ class GurumenaviApiClientImpl(
             ).rest
         )
 
-        return RestaurantStreet(restaurantDataList)
+        RestaurantStreet(restaurantDataList)
+    } catch (httpException: HttpException) {
+        RestaurantStreet(listOf())
     }
 
-    override suspend fun fetchGurumenavi(id: Id): RestaurantData {
-        val extractRestaurantDataList = extractRestaurantDataList(
+    override suspend fun fetchGurumenavi(id: Id): RestaurantData? = try {
+        extractRestaurantDataList(
             gurumenaviApi.fetchGurumenavi(apiToken, id.value).rest
-        )
-
-        return extractRestaurantDataList.first()
+        ).first { it.id == id }
+    } catch (httpException: HttpException) {
+        null
     }
 
     private fun extractRestaurantDataList(restList: List<Rest>?): List<RestaurantData> {

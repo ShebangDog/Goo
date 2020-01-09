@@ -36,16 +36,16 @@ class HotpepperApiClientImpl(
     }
 
 
-    override suspend fun fetchHotpepper(id: Id, format: Format): RestaurantData {
-        val extractRestaurantDataList = extractRestaurantDataList(
+    override suspend fun fetchHotpepper(id: Id, format: Format): RestaurantData? = try {
+        extractRestaurantDataList(
             hotpepperApi.fetchHotpepper(
                 apiToken,
                 id.value,
                 Format.Json.value
             ).results?.shop
-        )
-
-        return extractRestaurantDataList.first { it.id == id }
+        ).first { it.id == id }
+    } catch (httpException: HttpException) {
+        null
     }
 
     private fun extractRestaurantDataList(shopList: List<Shop>?): List<RestaurantData> {

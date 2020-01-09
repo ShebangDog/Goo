@@ -17,11 +17,10 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
         get() = mutableRestaurantStreet
 
     fun update(location: Location) = viewModelScope.launch(Dispatchers.IO) {
-        when (val result = repository.fetchRestaurantStreet(
-            location,
-            Range(1)
-        )) {
-            is FindData.Found -> mutableRestaurantStreet.postValue(result.value)
+        val result = repository.fetchRestaurantStreet(location, Range(1))
+
+        when (result.restaurantDataList.isNotEmpty()) {
+            true -> mutableRestaurantStreet.postValue(result)
         }
     }
 

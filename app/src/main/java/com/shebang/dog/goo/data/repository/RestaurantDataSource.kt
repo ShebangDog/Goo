@@ -6,9 +6,9 @@ interface RestaurantDataSource {
     suspend fun fetchRestaurantStreet(
         location: Location,
         range: Range
-    ): FindData<RestaurantStreet>
+    ): RestaurantStreet
 
-    suspend fun fetchRestaurant(id: Id): FindData<RestaurantData>
+    suspend fun fetchRestaurant(id: Id): RestaurantData?
 
     suspend fun saveRestaurant(restaurantData: RestaurantData)
 

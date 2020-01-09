@@ -13,5 +13,5 @@ interface GurumenaviApiClient {
 
     suspend fun fetchGurumenavi(
         id: Id
-    ): RestaurantData
+    ): RestaurantData?
 }
