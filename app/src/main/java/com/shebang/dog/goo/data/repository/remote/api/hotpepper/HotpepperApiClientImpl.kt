@@ -53,7 +53,7 @@ class HotpepperApiClientImpl(
             ?.map {
                 RestaurantData(
                     Id(it.id ?: ""),
-                    it.name ?: "",
+                    Name(it.name ?: ""),
                     it.logoImage ?: "",
                     Location(
                         Latitude(it.lat?.toDouble() ?: 0.0),

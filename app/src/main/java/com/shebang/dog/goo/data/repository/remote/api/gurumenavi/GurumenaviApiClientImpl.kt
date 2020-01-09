@@ -45,7 +45,7 @@ class GurumenaviApiClientImpl(
             ?.map {
                 RestaurantData(
                     Id(it.id ?: ""),
-                    it.name ?: "",
+                    Name(it.name ?: ""),
                     it.getImageUrl() ?: "",
                     Location(
                         Latitude(

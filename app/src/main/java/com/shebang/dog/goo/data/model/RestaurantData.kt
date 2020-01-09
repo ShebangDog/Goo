@@ -12,7 +12,7 @@ data class RestaurantData(
     val id: Id,
 
     @ColumnInfo(name = "name")
-    val name: String,
+    val name: Name,
 
     @ColumnInfo(name = "image_url")
     val imageUrl: String,

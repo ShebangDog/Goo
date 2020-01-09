@@ -10,6 +10,7 @@ import com.shebang.dog.goo.data.model.converter.*
 @TypeConverters(
     RestaurantStreetConverter::class,
     IdConverter::class,
+    NameConverter::class,
     ImageUrlConverter::class,
     LatitudeConverter::class,
     LongitudeConverter::class
