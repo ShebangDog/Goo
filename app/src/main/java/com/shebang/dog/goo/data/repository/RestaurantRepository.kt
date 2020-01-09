@@ -96,7 +96,7 @@ class RestaurantRepository @Inject constructor(
 
         cache = when (fusedStreet.isEmpty()) {
             true -> cache
-            false -> RestaurantStreet(fusedStreet.distinctBy { it.id.value })
+            false -> RestaurantStreet(fusedStreet.distinctBy { it.id })
         }
     }
 }
