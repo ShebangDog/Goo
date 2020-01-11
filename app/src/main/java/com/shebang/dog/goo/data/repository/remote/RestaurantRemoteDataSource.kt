@@ -27,7 +27,7 @@ class RestaurantRemoteDataSource @Inject constructor(
 
         return RestaurantStreet(
             (hotpepperResult.restaurantDataList + gurumenaviResult.restaurantDataList)
-                .distinctBy { it.name.hashCode() }
+                .distinctBy { it.name.formalize() }
         )
     }
 
