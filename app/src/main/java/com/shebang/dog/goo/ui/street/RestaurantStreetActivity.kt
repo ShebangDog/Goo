@@ -52,10 +52,17 @@ class RestaurantStreetActivity : AppCompatActivity() {
             adapter = restaurantStreetAdapter
         }
 
+        LocationSharedPreferenceAccessor.registerOnSharedPreferenceChangeListener(this) {
+            if (it == KEY_LOCATION_RESULT) {
+                currentLocation = LocationSharedPreferenceAccessor.getLocationResult(this)
+                restaurantStreetViewModel.update(currentLocation!!)
+            }
+        }
+
         fusedLocationClient.apply {
             val restaurantStreetActivity = this@RestaurantStreetActivity
             val locationRequest = LocationRequest.create().apply {
-                fastestInterval = 10000
+                fastestInterval = 5000
                 interval = 1800000
                 priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             }
@@ -63,22 +70,17 @@ class RestaurantStreetActivity : AppCompatActivity() {
             requestLocationUpdates(locationRequest, createPendingIntent())
 
             lastLocation.addOnSuccessListener {
-                val location = Location(
-                    Latitude(it.latitude),
-                    Longitude(it.longitude)
-                )
+                if (it != null) {
+                    val location = Location(
+                        Latitude(it.latitude),
+                        Longitude(it.longitude)
+                    )
 
-                LocationSharedPreferenceAccessor.setLocationResult(
-                    restaurantStreetActivity,
-                    location
-                )
-            }
-        }
-
-        LocationSharedPreferenceAccessor.registerOnSharedPreferenceChangeListener(this) {
-            if (it == KEY_LOCATION_RESULT) {
-                currentLocation = LocationSharedPreferenceAccessor.getLocationResult(this)
-                restaurantStreetViewModel.update(currentLocation!!)
+                    LocationSharedPreferenceAccessor.setLocationResult(
+                        restaurantStreetActivity,
+                        location
+                    )
+                }
             }
         }
     }
