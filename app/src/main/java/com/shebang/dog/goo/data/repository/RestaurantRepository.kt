@@ -51,7 +51,7 @@ class RestaurantRepository @Inject constructor(
     }
 
     override suspend fun fetchRestaurant(id: Id): RestaurantData? {
-        fun <T> List<T>.quickFilter(function: (T) -> Boolean): T {
+        fun <T> List<T>.quickPick(function: (T) -> Boolean): T {
             return this
                 .asSequence()
                 .filter(function)
@@ -74,7 +74,7 @@ class RestaurantRepository @Inject constructor(
             }
         }
 
-        return when (val restaurantData = cache?.restaurantDataList?.quickFilter { it.id == id }) {
+        return when (val restaurantData = cache?.restaurantDataList?.quickPick { it.id == id }) {
             null -> fetch(dataSourceList)
                 ?.also {
                     updateCache(RestaurantStreet(listOf(it)))
