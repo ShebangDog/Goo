@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.shebang.dog.goo.R
@@ -58,39 +59,31 @@ class RestaurantStreetActivity : AppCompatActivity() {
             }
         }
 
-//        fusedLocationClient.apply {
-//            val restaurantStreetActivity = this@RestaurantStreetActivity
-//            val locationRequest = LocationRequest.create().apply {
-//                fastestInterval = 5000
-//                interval = 1800000
-//                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-//            }
-//
-//            requestLocationUpdates(locationRequest, createPendingIntent())
-//
-//            lastLocation.addOnSuccessListener {
-//                if (it != null) {
-//                    val location = Location(
-//                        Latitude(it.latitude),
-//                        Longitude(it.longitude)
-//                    )
-//
-//                    LocationSharedPreferenceAccessor.setLocationResult(
-//                        restaurantStreetActivity,
-//                        location
-//                    )
-//                }
-//            }
-//        }
+        fusedLocationClient.apply {
+            val restaurantStreetActivity = this@RestaurantStreetActivity
+            val locationRequest = LocationRequest.create().apply {
+                fastestInterval = 5000
+                interval = 1800000
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            }
 
-        //test
-        restaurantStreetViewModel.deleteAll()
-        restaurantStreetViewModel.update(
-            Location(
-                Latitude(35.669220),
-                Longitude(139.761457)
-            )
-        )
+            requestLocationUpdates(locationRequest, createPendingIntent())
+
+            lastLocation.addOnSuccessListener {
+                if (it != null) {
+                    val location = Location(
+                        Latitude(it.latitude),
+                        Longitude(it.longitude)
+                    )
+
+                    LocationSharedPreferenceAccessor.setLocationResult(
+                        restaurantStreetActivity,
+                        location
+                    )
+                }
+            }
+        }
+
     }
 
     companion object {
