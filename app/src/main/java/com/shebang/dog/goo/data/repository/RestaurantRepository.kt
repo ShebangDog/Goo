@@ -51,11 +51,11 @@ class RestaurantRepository @Inject constructor(
     }
 
     override suspend fun fetchRestaurant(id: Id): RestaurantData? {
-        fun <T> List<T>.quickPick(function: (T) -> Boolean): T {
+        fun <T> List<T>.quickPick(function: (T) -> Boolean): T? {
             return this
                 .asSequence()
                 .filter(function)
-                .first()
+                .firstOrNull()
         }
 
         suspend fun fetch(
@@ -66,18 +66,17 @@ class RestaurantRepository @Inject constructor(
                 ?.let {
                     val dataSource = restaurantDataSourceList.first()
 
-                    dataSource.fetchRestaurant(id) ?: fetch(restaurantDataSourceList.drop(1))
-                }
+                    dataSource.fetchRestaurant(id)
+                } ?: fetch(restaurantDataSourceList.drop(1))
         }
 
         val restaurantData = cache?.restaurantDataList?.quickPick { it.id == id }
-        return restaurantData
-            ?.let { restaurantData }
-            ?: fetch(dataSourceList)
-                ?.also {
-                    updateCache(RestaurantStreet(listOf(it)))
-                    saveRestaurant(it)
-                }
+
+        return restaurantData ?: fetch(dataSourceList)
+            ?.also {
+                updateCache(RestaurantStreet(listOf(it)))
+                saveRestaurant(it)
+            }
     }
 
     override suspend fun saveRestaurant(restaurantData: RestaurantData) {
