@@ -4,7 +4,6 @@ import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.data.repository.RestaurantDataSource
 import com.shebang.dog.goo.data.repository.remote.api.gurumenavi.GurumenaviApiClient
 import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApiClient
-import com.shebang.dog.goo.util.DebugHelper
 import javax.inject.Inject
 
 class RestaurantRemoteDataSource @Inject constructor(
@@ -42,7 +41,7 @@ class RestaurantRemoteDataSource @Inject constructor(
                 )
             }
 
-            return list.also { DebugHelper.log(it) }
+            return list
         }
 
         val hotpepperResult =

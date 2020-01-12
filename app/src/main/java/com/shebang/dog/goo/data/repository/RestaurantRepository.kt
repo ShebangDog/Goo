@@ -61,28 +61,23 @@ class RestaurantRepository @Inject constructor(
         suspend fun fetch(
             restaurantDataSourceList: List<RestaurantDataSource>
         ): RestaurantData? {
-            return when (restaurantDataSourceList.isEmpty()) {
-                true -> null
-                else -> {
+            return restaurantDataSourceList
+                .takeIf { it.isNotEmpty() }
+                ?.let {
                     val dataSource = restaurantDataSourceList.first()
 
-                    when (val result = dataSource.fetchRestaurant(id)) {
-                        null -> fetch(restaurantDataSourceList.drop(1))
-                        else -> result
-                    }
+                    dataSource.fetchRestaurant(id) ?: fetch(restaurantDataSourceList.drop(1))
                 }
-            }
         }
 
-        return when (val restaurantData = cache?.restaurantDataList?.quickPick { it.id == id }) {
-            null -> fetch(dataSourceList)
+        val restaurantData = cache?.restaurantDataList?.quickPick { it.id == id }
+        return restaurantData
+            ?.let { restaurantData }
+            ?: fetch(dataSourceList)
                 ?.also {
                     updateCache(RestaurantStreet(listOf(it)))
                     saveRestaurant(it)
                 }
-
-            else -> restaurantData
-        }
     }
 
     override suspend fun saveRestaurant(restaurantData: RestaurantData) {
