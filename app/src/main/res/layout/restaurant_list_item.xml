@@ -9,66 +9,88 @@
     android:clickable="true"
     android:focusable="true">
 
-    <ImageView
-        android:id="@+id/thumbnail_image_view"
-        android:layout_width="91dp"
-        android:layout_height="99dp"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:elevation="2dp"
+        app:cardCornerRadius="10dp"
+        app:cardUseCompatPadding="true"
 
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/favorite_image_view"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
+            <ImageView
+                android:id="@+id/thumbnail_image_view"
+                android:layout_width="91dp"
+                android:layout_height="99dp"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
 
-        tools:src="@drawable/ic_goo_border" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/name_text_view"
+            <ImageView
+                android:id="@+id/favorite_image_view"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
 
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
 
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
 
-        android:textColor="#DE000000"
-        android:textSize="18sp"
+                tools:src="@drawable/ic_goo_border" />
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/thumbnail_image_view"
-        app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/name_text_view"
 
-    <TextView
-        android:id="@+id/distance_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
 
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
 
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+                android:textColor="#DE000000"
+                android:textSize="18sp"
 
-        android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/thumbnail_image_view"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/thumbnail_image_view"
-        app:layout_constraintTop_toBottomOf="@+id/name_text_view" />
+            <TextView
+                android:id="@+id/distance_text_view"
 
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+
+                android:textSize="16sp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/thumbnail_image_view"
+                app:layout_constraintTop_toBottomOf="@+id/name_text_view" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
