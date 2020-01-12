@@ -12,7 +12,10 @@ class RestaurantLocalDataSource @Inject constructor(private val restaurantDao: R
         range: Range
     ): RestaurantStreet {
 
-        return RestaurantStreet(restaurantDao.getRestaurantList().orEmpty())
+        return RestaurantStreet(
+            restaurantDao.getRestaurantList().orEmpty()
+                .filter { Location.distance(it.location, location) <= range.toDistance() }
+        )
     }
 
     override suspend fun fetchRestaurant(id: Id): RestaurantData? {
@@ -24,9 +27,7 @@ class RestaurantLocalDataSource @Inject constructor(private val restaurantDao: R
     }
 
     override suspend fun saveRestaurants(restaurantStreet: RestaurantStreet) {
-        restaurantStreet.restaurantDataList.forEach {
-            restaurantDao.insertRestaurantData(it)
-        }
+        restaurantStreet.restaurantDataList.forEach { restaurantDao.insertRestaurantData(it) }
     }
 
     override fun deleteRestaurants() {
