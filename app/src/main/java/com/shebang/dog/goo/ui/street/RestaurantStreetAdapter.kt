@@ -8,14 +8,13 @@ import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shebang.dog.goo.R
-import com.shebang.dog.goo.data.model.Location
-import com.shebang.dog.goo.data.model.RestaurantData
-import com.shebang.dog.goo.data.model.RestaurantStreet
+import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.databinding.RestaurantListItemBinding
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
+import javax.inject.Inject
 
-class RestaurantStreetAdapter(
-    private val action: (RestaurantData, ImageButton, Drawable?, Drawable?) -> Unit
+class RestaurantStreetAdapter @Inject constructor(
+    private val restaurantStreetViewModel: RestaurantStreetViewModel
 ) : RecyclerView.Adapter<RestaurantStreetAdapter.RestaurantStreetViewHolder>() {
 
     var restaurantStreet: RestaurantStreet = RestaurantStreet(emptyList())
@@ -35,8 +34,9 @@ class RestaurantStreetAdapter(
 
         fun setRestaurantData(
             restaurantData: RestaurantData,
-            action: (RestaurantData, ImageButton, Drawable?, Drawable?) -> Unit
+            onClick: (RestaurantData, ImageButton, Drawable?, Drawable?) -> Unit
         ) {
+
             binding.apply {
                 nameTextView.text = restaurantData.name.value
                 distanceTextView.text = Location.distance(
@@ -51,25 +51,23 @@ class RestaurantStreetAdapter(
                 favoriteImageButton.apply {
                     isSelected = restaurantData.favorite.value
 
-                    setImageDrawable(
-                        if (favoriteImageButton.isSelected) favorite
-                        else border
+                setImageDrawable(
+                    if (favoriteImageButton.isSelected) favorite
+                    else border
+                )
+
+                setOnClickListener {
+                    onClick.invoke(
+                        restaurantData,
+                        it as ImageButton,
+                        favorite,
+                        border
                     )
-
-                    setOnClickListener {
-                        action.invoke(
-                            restaurantData,
-                            it as ImageButton,
-                            favorite,
-                            border
-                        )
-                    }
-
                 }
 
             }
-
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantStreetViewHolder {
@@ -84,9 +82,10 @@ class RestaurantStreetAdapter(
     }
 
     override fun onBindViewHolder(holder: RestaurantStreetViewHolder, position: Int) {
-        holder.setRestaurantData(
-            restaurantStreet.restaurantDataList[position],
-            action
-        )
+        holder.setRestaurantData(restaurantStreet.restaurantDataList[position]) { restaurantData, imageButton, favorite, border ->
+            imageButton.isSelected = !imageButton.isSelected
+
+            restaurantStreetViewModel.favorite(restaurantData, imageButton, favorite, border)
+        }
     }
 }

@@ -28,10 +28,11 @@ import javax.inject.Inject
 class RestaurantStreetActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRestaurantListBinding
 
-    private lateinit var restaurantStreetAdapter: RestaurantStreetAdapter
-
     @Inject
     lateinit var restaurantStreetViewModel: RestaurantStreetViewModel
+
+    @Inject
+    lateinit var restaurantStreetAdapter: RestaurantStreetAdapter
 
     private val fusedLocationClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
     private var currentLocation: Location? = null
@@ -43,18 +44,6 @@ class RestaurantStreetActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (!checkPermissions()) requestPermissions()
-
-        restaurantStreetAdapter =
-            RestaurantStreetAdapter { restaurantData, imageButton, favorite, border ->
-                imageButton.isSelected = !imageButton.isSelected
-
-                restaurantStreetViewModel.clickFavorite(
-                    restaurantData,
-                    imageButton,
-                    favorite,
-                    border
-                )
-            }
 
         restaurantStreetViewModel.restaurantStreet
             .observe(this) { restaurantStreetAdapter.restaurantStreet = it }
