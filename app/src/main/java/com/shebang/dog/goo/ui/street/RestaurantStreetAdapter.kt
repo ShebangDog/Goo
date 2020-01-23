@@ -38,18 +38,46 @@ class RestaurantStreetAdapter @Inject constructor(
         ) {
 
             binding.apply {
-                nameTextView.text = restaurantData.name.value
-                distanceTextView.text = Location.distance(
-                    restaurantData.location,
-                    LocationSharedPreferenceAccessor.getLocationResult(context)!!
-                ).toString()
+                setName(restaurantData.name)
 
-                Glide.with(thumbnailImageView.context)
-                    .load(restaurantData.imageUrl.random())
-                    .into(thumbnailImageView)
+                setDistance(
+                    Location.distance(
+                        restaurantData.location,
+                        LocationSharedPreferenceAccessor.getLocationResult(context)!!
+                    )
+                )
 
-                favoriteImageButton.apply {
-                    isSelected = restaurantData.favorite.value
+                setThumbnail(restaurantData.imageUrl)
+
+                setFavoriteIcon(restaurantData, favorite, border, onClick)
+            }
+
+        }
+
+        private fun RestaurantListItemBinding.setName(name: Name) {
+            nameTextView.text = name.value
+        }
+
+        private fun RestaurantListItemBinding.setDistance(distance: Distance) {
+            distanceTextView.text = distance.toString()
+        }
+
+        private fun RestaurantListItemBinding.setThumbnail(imageUrl: List<String>) {
+            thumbnailImageView.also {
+                Glide.with(it.context)
+                    .load(imageUrl.random())
+                    .into(it)
+            }
+        }
+
+        private fun RestaurantListItemBinding.setFavoriteIcon(
+            restaurantData: RestaurantData,
+            favorite: Drawable?,
+            border: Drawable?,
+            onClick: (RestaurantData, ImageButton, Drawable?, Drawable?) -> Unit
+        ) {
+            favoriteImageButton.apply {
+                isSelected = restaurantData.favorite.value
 
                 setImageDrawable(
                     if (favoriteImageButton.isSelected) favorite
