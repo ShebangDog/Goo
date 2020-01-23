@@ -58,7 +58,8 @@ class HotpepperApiClientImpl(
                     Location(
                         Latitude(it.lat?.toDouble() ?: 0.0),
                         Longitude(it.lng?.toDouble() ?: 0.0)
-                    )
+                    ),
+                    Favorite(false)
                 )
             } ?: emptyList()
     }

@@ -1,5 +1,7 @@
 package com.shebang.dog.goo.ui.street
 
+import android.graphics.drawable.Drawable
+import android.widget.ImageButton
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,11 +19,24 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
         get() = mutableRestaurantStreet
 
     fun update(location: Location) = viewModelScope.launch(Dispatchers.IO) {
-        val result = repository.fetchRestaurantStreet(location, Range(1))
+        update(
+            repository.fetchRestaurantStreet(
+                location,
+                Range(1)
+            )
+        )
+    }
 
-        when (result.restaurantDataList.isNotEmpty()) {
-            true -> mutableRestaurantStreet.postValue(result)
-        }
+    fun clickFavorite(
+        restaurantData: RestaurantData,
+        imageButton: ImageButton,
+        favorite: Drawable?,
+        border: Drawable?
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        imageButton.setImageDrawable(if (imageButton.isSelected) favorite else border)
+        restaurantData.switchFavorite()
+
+        repository.saveRestaurant(restaurantData)
     }
 
     fun save(restaurantData: RestaurantData) = viewModelScope.launch(Dispatchers.IO) {
@@ -34,5 +49,12 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
 
     fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteRestaurants()
+    }
+
+    private suspend fun update(restaurantStreet: RestaurantStreet, ifEmpty: () -> Unit = {}) {
+        when (restaurantStreet.restaurantDataList.isNotEmpty()) {
+            true -> mutableRestaurantStreet.postValue(restaurantStreet)
+            false -> ifEmpty.invoke()
+        }
     }
 }

@@ -56,7 +56,8 @@ class GurumenaviApiClientImpl(
                             it.longitude?.let { value -> if (value == "") null else value }?.toDouble()
                                 ?: 0.0
                         )
-                    )
+                    ),
+                    Favorite(false)
                 )
             } ?: emptyList()
     }

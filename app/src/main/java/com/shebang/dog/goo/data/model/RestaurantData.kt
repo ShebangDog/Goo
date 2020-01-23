@@ -18,8 +18,16 @@ data class RestaurantData(
     val imageUrl: List<String>,
 
     @Embedded
-    val location: Location
+    val location: Location,
+
+    @ColumnInfo(name = "favorite")
+    var favorite: Favorite
 ) {
+
+    fun switchFavorite() {
+        favorite = favorite.switch()
+    }
+
     infix operator fun plus(other: RestaurantData): RestaurantData {
         require(name.formalize() == other.name.formalize())
 
@@ -28,7 +36,8 @@ data class RestaurantData(
             Name(name.value),
             if (imageUrl.isEmpty() xor other.imageUrl.isEmpty()) imageUrl + other.imageUrl
             else imageUrl,
-            location
+            location,
+            favorite
         )
     }
 

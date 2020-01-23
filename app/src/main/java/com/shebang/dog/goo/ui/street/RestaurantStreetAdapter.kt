@@ -1,8 +1,10 @@
 package com.shebang.dog.goo.ui.street
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shebang.dog.goo.R
@@ -12,8 +14,9 @@ import com.shebang.dog.goo.data.model.RestaurantStreet
 import com.shebang.dog.goo.databinding.RestaurantListItemBinding
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 
-class RestaurantStreetAdapter :
-    RecyclerView.Adapter<RestaurantStreetAdapter.RestaurantStreetViewHolder>() {
+class RestaurantStreetAdapter(
+    private val action: (RestaurantData, ImageButton, Drawable?, Drawable?) -> Unit
+) : RecyclerView.Adapter<RestaurantStreetAdapter.RestaurantStreetViewHolder>() {
 
     var restaurantStreet: RestaurantStreet = RestaurantStreet(emptyList())
         set(value) {
@@ -27,7 +30,13 @@ class RestaurantStreetAdapter :
         private val binding = RestaurantListItemBinding.bind(view)
         private val context = view.context
 
-        fun setRestaurantData(restaurantData: RestaurantData) {
+        private val border = context.getDrawable(R.drawable.ic_favorite_border_pink_24dp)
+        private val favorite = context.getDrawable(R.drawable.ic_favorite_pink_24dp)
+
+        fun setRestaurantData(
+            restaurantData: RestaurantData,
+            action: (RestaurantData, ImageButton, Drawable?, Drawable?) -> Unit
+        ) {
             binding.apply {
                 nameTextView.text = restaurantData.name.value
                 distanceTextView.text = Location.distance(
@@ -39,10 +48,27 @@ class RestaurantStreetAdapter :
                     .load(restaurantData.imageUrl.random())
                     .into(thumbnailImageView)
 
-                favoriteImageView.setImageDrawable(
-                    favoriteImageView.context.getDrawable(R.drawable.ic_goo_border)
-                )
+                favoriteImageButton.apply {
+                    isSelected = restaurantData.favorite.value
+
+                    setImageDrawable(
+                        if (favoriteImageButton.isSelected) favorite
+                        else border
+                    )
+
+                    setOnClickListener {
+                        action.invoke(
+                            restaurantData,
+                            it as ImageButton,
+                            favorite,
+                            border
+                        )
+                    }
+
+                }
+
             }
+
         }
     }
 
@@ -58,6 +84,9 @@ class RestaurantStreetAdapter :
     }
 
     override fun onBindViewHolder(holder: RestaurantStreetViewHolder, position: Int) {
-        holder.setRestaurantData(restaurantStreet.restaurantDataList[position])
+        holder.setRestaurantData(
+            restaurantStreet.restaurantDataList[position],
+            action
+        )
     }
 }

@@ -13,7 +13,8 @@ import com.shebang.dog.goo.data.model.converter.*
     NameConverter::class,
     ImageUrlListConverter::class,
     LatitudeConverter::class,
-    LongitudeConverter::class
+    LongitudeConverter::class,
+    FavoriteConverter::class
 )
 abstract class RestaurantDatabase : RoomDatabase() {
     abstract fun restaurantDao(): RestaurantDao
