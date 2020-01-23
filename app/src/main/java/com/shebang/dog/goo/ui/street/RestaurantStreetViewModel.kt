@@ -27,7 +27,7 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
         )
     }
 
-    fun clickFavorite(
+    fun favorite(
         restaurantData: RestaurantData,
         imageButton: ImageButton,
         favorite: Drawable?,
@@ -51,7 +51,7 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
         repository.deleteRestaurants()
     }
 
-    private suspend fun update(restaurantStreet: RestaurantStreet, ifEmpty: () -> Unit = {}) {
+    private fun update(restaurantStreet: RestaurantStreet, ifEmpty: () -> Unit = {}) {
         when (restaurantStreet.restaurantDataList.isNotEmpty()) {
             true -> mutableRestaurantStreet.postValue(restaurantStreet)
             false -> ifEmpty.invoke()
