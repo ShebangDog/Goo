@@ -20,13 +20,19 @@ import com.shebang.dog.goo.data.model.Location
 import com.shebang.dog.goo.data.model.Longitude
 import com.shebang.dog.goo.databinding.ActivityRestaurantListBinding
 import com.shebang.dog.goo.service.LocationBroadCastReceiver
-import com.shebang.dog.goo.ui.CustomApplication
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor.KEY_LOCATION_RESULT
+import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class RestaurantStreetActivity : AppCompatActivity() {
+class RestaurantStreetActivity : AppCompatActivity(), HasAndroidInjector {
     private lateinit var binding: ActivityRestaurantListBinding
+
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     @Inject
     lateinit var restaurantStreetViewModel: RestaurantStreetViewModel
@@ -37,8 +43,12 @@ class RestaurantStreetActivity : AppCompatActivity() {
     private val fusedLocationClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
     private var currentLocation: Location? = null
 
+    override fun androidInjector(): AndroidInjector<Any> {
+        return androidInjector
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as CustomApplication).applicationComponent.inject(this)
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityRestaurantListBinding.inflate(layoutInflater)
         setContentView(binding.root)
