@@ -16,13 +16,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service android:name=".service.LocationService" />
-        <activity android:name=".ui.street.RestaurantStreetActivity">
+
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.street.RestaurantStreetFragment" />
+
     </application>
 
 </manifest>

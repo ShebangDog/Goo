@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-abstract class RestaurantStreetActivityModule {
+abstract class RestaurantStreetFragmentModule {
     @ContributesAndroidInjector
-    abstract fun contributeAndroidInjector(): RestaurantStreetFragment
+    abstract fun contributeRestaurantStreetFragment(): RestaurantStreetFragment
 }
