@@ -113,7 +113,7 @@ class RestaurantStreetAdapter @Inject constructor(
         holder.setRestaurantData(restaurantStreet.restaurantDataList[position]) { restaurantData, imageButton, favorite, border ->
             imageButton.isSelected = !imageButton.isSelected
 
-            restaurantStreetViewModel.favorite(restaurantData, imageButton, favorite, border)
+            restaurantStreetViewModel.toggleFavorite(restaurantData, imageButton, favorite, border)
         }
     }
 }

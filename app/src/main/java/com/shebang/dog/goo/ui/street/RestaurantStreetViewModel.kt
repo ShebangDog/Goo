@@ -27,7 +27,7 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
         )
     }
 
-    fun favorite(
+    fun toggleFavorite(
         restaurantData: RestaurantData,
         imageButton: ImageButton,
         favorite: Drawable?,
