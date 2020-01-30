@@ -76,7 +76,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         LocationSharedPreferenceAccessor.registerOnSharedPreferenceChangeListener(safeContext) {
             if (it == KEY_LOCATION_RESULT) {
                 currentLocation = LocationSharedPreferenceAccessor.getLocationResult(safeContext)
-                restaurantStreetViewModel.update(currentLocation!!)
+                restaurantStreetViewModel.walkRestaurantStreet(currentLocation!!)
             }
         }
 
