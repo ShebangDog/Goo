@@ -6,7 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shebang.dog.goo.data.model.*
+import com.shebang.dog.goo.data.model.Location
+import com.shebang.dog.goo.data.model.Range
+import com.shebang.dog.goo.data.model.RestaurantData
+import com.shebang.dog.goo.data.model.RestaurantStreet
 import com.shebang.dog.goo.data.repository.RestaurantRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,18 +40,6 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
         restaurantData.switchFavorite()
 
         repository.saveRestaurant(restaurantData)
-    }
-
-    fun save(restaurantData: RestaurantData) = viewModelScope.launch(Dispatchers.IO) {
-        repository.saveRestaurant(restaurantData)
-    }
-
-    fun delete(id: Id) = viewModelScope.launch(Dispatchers.IO) {
-        repository.deleteRestaurantData(id)
-    }
-
-    fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
-        repository.deleteRestaurants()
     }
 
     private fun update(restaurantStreet: RestaurantStreet, ifEmpty: () -> Unit = {}) {
