@@ -9,7 +9,13 @@ import dagger.android.AndroidInjector
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [ApplicationModule::class, AndroidInjectionModule::class, RestaurantStreetFragmentModule::class])
+@Component(
+    modules = [
+        ApplicationModule::class,
+        AndroidInjectionModule::class,
+        RestaurantStreetFragmentModule::class,
+        FavoriteFragmentModule::class]
+)
 interface ApplicationComponent : AndroidInjector<CustomApplication> {
     @Component.Factory
     interface Factory {
