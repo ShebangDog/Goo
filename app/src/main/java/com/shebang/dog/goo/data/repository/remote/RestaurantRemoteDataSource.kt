@@ -15,6 +15,10 @@ class RestaurantRemoteDataSource @Inject constructor(
     private val gurumenaviStreet = GurumenaviStreet(gurumenaviApiClient)
     private val streets = listOf(hotpepperStreet, gurumenaviStreet)
 
+    override suspend fun fetchRestaurantStreet(): RestaurantStreet {
+        return RestaurantStreet(listOf())
+    }
+
     override suspend fun fetchRestaurantStreet(
         location: Location,
         range: Range
@@ -82,6 +86,10 @@ class RestaurantRemoteDataSource @Inject constructor(
     private class HotpepperStreet(private val hotpepperApiClient: HotpepperApiClient) :
         RestaurantDataSource {
 
+        override suspend fun fetchRestaurantStreet(): RestaurantStreet {
+            return RestaurantStreet(listOf())
+        }
+
         override suspend fun fetchRestaurantStreet(
             location: Location,
             range: Range
@@ -112,6 +120,11 @@ class RestaurantRemoteDataSource @Inject constructor(
 
     private class GurumenaviStreet(private val gurumenaviApiClient: GurumenaviApiClient) :
         RestaurantDataSource {
+
+        override suspend fun fetchRestaurantStreet(): RestaurantStreet {
+            return RestaurantStreet(listOf())
+        }
+
         override suspend fun fetchRestaurantStreet(
             location: Location,
             range: Range

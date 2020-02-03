@@ -12,6 +12,10 @@ class RestaurantRepository @Inject constructor(
     private var cache: RestaurantStreet? = null
     private val dataSourceList = listOf(restaurantRemoteDataSource, restaurantLocalDataSource)
 
+    override suspend fun fetchRestaurantStreet(): RestaurantStreet {
+        return restaurantLocalDataSource.fetchRestaurantStreet()
+    }
+
     override suspend fun fetchRestaurantStreet(
         location: Location,
         range: Range

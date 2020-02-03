@@ -9,6 +9,7 @@ import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.ActivityMainBinding
 import com.shebang.dog.goo.ui.favorite.FavoriteFragment
 import com.shebang.dog.goo.ui.street.RestaurantStreetFragment
+import com.shebang.dog.goo.ui.tab.TabbedFragment
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var binding: ActivityMainBinding
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        val fragmentList = listOf(RestaurantStreetFragment(), FavoriteFragment())
+        val fragmentList = listOf<TabbedFragment>(RestaurantStreetFragment(), FavoriteFragment())
 
         binding.apply {
             viewPager.apply {

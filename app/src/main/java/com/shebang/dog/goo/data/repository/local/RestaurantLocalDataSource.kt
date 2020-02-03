@@ -18,6 +18,10 @@ class RestaurantLocalDataSource @Inject constructor(private val restaurantDao: R
         )
     }
 
+    override suspend fun fetchRestaurantStreet(): RestaurantStreet {
+        return RestaurantStreet(restaurantDao.getRestaurantList().orEmpty())
+    }
+
     override suspend fun fetchRestaurant(id: Id): RestaurantData? {
         return restaurantDao.getRestaurantData(id)
     }

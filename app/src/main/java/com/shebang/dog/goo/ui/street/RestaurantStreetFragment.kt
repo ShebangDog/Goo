@@ -31,6 +31,7 @@ import javax.inject.Inject
 
 class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_list),
     HasAndroidInjector {
+
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
@@ -50,10 +51,6 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
     }
 
     private var currentLocation: Location? = null
-
-    override fun androidInjector(): AndroidInjector<Any> {
-        return androidInjector
-    }
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -79,7 +76,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         LocationSharedPreferenceAccessor.registerOnSharedPreferenceChangeListener(safeContext) {
             if (it == KEY_LOCATION_RESULT) {
                 currentLocation = LocationSharedPreferenceAccessor.getLocationResult(safeContext)
-                restaurantStreetViewModel.update(currentLocation!!)
+                restaurantStreetViewModel.walkRestaurantStreet(currentLocation!!)
             }
         }
 
@@ -105,6 +102,10 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
             }
         }
 
+    }
+
+    override fun androidInjector(): AndroidInjector<Any> {
+        return androidInjector
     }
 
     override fun getTabIconId(): Int {
