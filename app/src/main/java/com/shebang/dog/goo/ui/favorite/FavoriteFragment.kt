@@ -3,6 +3,7 @@ package com.shebang.dog.goo.ui.favorite
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentFavoriteListBinding
@@ -19,6 +20,9 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list), HasAnd
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
 
     @Inject
+    lateinit var favoriteViewModel: FavoriteViewModel
+
+    @Inject
     lateinit var restaurantStreetAdapter: RestaurantStreetAdapter
 
     private lateinit var binding: FragmentFavoriteListBinding
@@ -32,10 +36,20 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list), HasAnd
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentFavoriteListBinding.bind(view)
 
+        favoriteViewModel.restaurantStreet.observe(this) {
+            restaurantStreetAdapter.restaurantStreet = it
+        }
+
         binding.favoriteListRecycerView.apply {
             adapter = restaurantStreetAdapter
             layoutManager = LinearLayoutManager(view.context)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        favoriteViewModel.walkFavoriteRestaurantStreet()
     }
 
     override fun androidInjector(): AndroidInjector<Any> {

@@ -14,7 +14,8 @@ import javax.inject.Singleton
         ApplicationModule::class,
         AndroidInjectionModule::class,
         RestaurantStreetFragmentModule::class,
-        FavoriteFragmentModule::class]
+        FavoriteFragmentModule::class
+    ]
 )
 interface ApplicationComponent : AndroidInjector<CustomApplication> {
     @Component.Factory
