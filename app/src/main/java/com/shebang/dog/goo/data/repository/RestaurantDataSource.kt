@@ -8,6 +8,8 @@ interface RestaurantDataSource {
         range: Range
     ): RestaurantStreet
 
+    suspend fun fetchRestaurantStreet(): RestaurantStreet
+
     suspend fun fetchRestaurant(id: Id): RestaurantData?
 
     suspend fun saveRestaurant(restaurantData: RestaurantData)
