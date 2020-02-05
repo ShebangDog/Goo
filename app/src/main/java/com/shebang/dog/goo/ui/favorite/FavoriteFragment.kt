@@ -23,7 +23,7 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list), HasAnd
     lateinit var favoriteViewModel: FavoriteViewModel
 
     @Inject
-    lateinit var restaurantStreetAdapter: RestaurantStreetAdapter
+    lateinit var favoriteAdapter: FavoriteAdapter
 
     private lateinit var binding: FragmentFavoriteListBinding
 
@@ -37,11 +37,11 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list), HasAnd
         binding = FragmentFavoriteListBinding.bind(view)
 
         favoriteViewModel.restaurantStreet.observe(this) {
-            restaurantStreetAdapter.restaurantStreet = it
+            favoriteAdapter.restaurantStreet = it
         }
 
         binding.favoriteListRecycerView.apply {
-            adapter = restaurantStreetAdapter
+            adapter = favoriteAdapter
             layoutManager = LinearLayoutManager(view.context)
         }
     }
