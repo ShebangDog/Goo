@@ -11,10 +11,12 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        ApplicationModule::class,
         AndroidInjectionModule::class,
+        ApplicationModule::class,
         RestaurantStreetFragmentModule::class,
-        FavoriteFragmentModule::class
+        FavoriteFragmentModule::class,
+        RestaurantStreetViewModelModule::class,
+        FavoriteViewModelModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<CustomApplication> {

@@ -19,6 +19,8 @@ import com.shebang.dog.goo.data.model.Latitude
 import com.shebang.dog.goo.data.model.Location
 import com.shebang.dog.goo.data.model.Longitude
 import com.shebang.dog.goo.databinding.FragmentRestaurantListBinding
+import com.shebang.dog.goo.di.ViewModelFactory
+import com.shebang.dog.goo.ext.assistedViewModels
 import com.shebang.dog.goo.service.LocationBroadCastReceiver
 import com.shebang.dog.goo.ui.tab.TabbedFragment
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
@@ -28,7 +30,10 @@ import javax.inject.Inject
 
 class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_list) {
     @Inject
-    lateinit var restaurantStreetViewModel: RestaurantStreetViewModel
+    lateinit var restaurantStreetViewModelFactory: ViewModelFactory
+    private val restaurantStreetViewModel by assistedViewModels {
+        restaurantStreetViewModelFactory.create(RestaurantStreetViewModel::class.java)
+    }
 
     @Inject
     lateinit var restaurantStreetAdapter: RestaurantStreetAdapter
