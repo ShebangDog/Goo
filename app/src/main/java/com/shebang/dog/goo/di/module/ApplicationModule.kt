@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.di
+package com.shebang.dog.goo.di.module
 
 import android.content.Context
 import androidx.room.Room

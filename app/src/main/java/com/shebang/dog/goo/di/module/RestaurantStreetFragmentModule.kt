@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.di
+package com.shebang.dog.goo.di.module
 
 import com.shebang.dog.goo.ui.street.RestaurantStreetFragment
 import dagger.Module

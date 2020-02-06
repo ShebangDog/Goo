@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.di
+package com.shebang.dog.goo.di.module
 
 import androidx.lifecycle.ViewModel
 import com.shebang.dog.goo.di.annotation.key.ViewModelKey
