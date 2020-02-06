@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.di.scope
+package com.shebang.dog.goo.di.annotation.scope
 
 import javax.inject.Qualifier
 

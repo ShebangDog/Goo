@@ -14,8 +14,8 @@ import com.shebang.dog.goo.data.repository.remote.api.gurumenavi.GurumenaviApiCl
 import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApi
 import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApiClient
 import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApiClientImpl
-import com.shebang.dog.goo.di.scope.LocalDataSource
-import com.shebang.dog.goo.di.scope.RemoteDataSource
+import com.shebang.dog.goo.di.annotation.scope.LocalDataSource
+import com.shebang.dog.goo.di.annotation.scope.RemoteDataSource
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
