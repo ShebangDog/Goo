@@ -23,18 +23,10 @@ import com.shebang.dog.goo.service.LocationBroadCastReceiver
 import com.shebang.dog.goo.ui.tab.TabbedFragment
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor.KEY_LOCATION_RESULT
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_list),
-    HasAndroidInjector {
-
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
-
+class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_list) {
     @Inject
     lateinit var restaurantStreetViewModel: RestaurantStreetViewModel
 
@@ -102,10 +94,6 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
             }
         }
 
-    }
-
-    override fun androidInjector(): AndroidInjector<Any> {
-        return androidInjector
     }
 
     override fun getTabIconId(): Int {
