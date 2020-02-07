@@ -7,20 +7,19 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentFavoriteListBinding
+import com.shebang.dog.goo.di.ViewModelFactory
+import com.shebang.dog.goo.ext.assistedViewModels
 import com.shebang.dog.goo.ui.street.RestaurantStreetAdapter
 import com.shebang.dog.goo.ui.tab.TabbedFragment
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list), HasAndroidInjector {
+class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
     @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
-
-    @Inject
-    lateinit var favoriteViewModel: FavoriteViewModel
+    lateinit var favoriteViewModelFactory: ViewModelFactory
+    private val favoriteViewModel by assistedViewModels {
+        favoriteViewModelFactory.create(FavoriteViewModel::class.java)
+    }
 
     @Inject
     lateinit var favoriteAdapter: FavoriteAdapter
@@ -50,10 +49,6 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list), HasAnd
         super.onResume()
 
         favoriteViewModel.walkFavoriteRestaurantStreet()
-    }
-
-    override fun androidInjector(): AndroidInjector<Any> {
-        return androidInjector
     }
 
     override fun getTabIconId(): Int {

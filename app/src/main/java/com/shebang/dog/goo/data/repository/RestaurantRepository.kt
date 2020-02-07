@@ -1,8 +1,8 @@
 package com.shebang.dog.goo.data.repository
 
 import com.shebang.dog.goo.data.model.*
-import com.shebang.dog.goo.di.scope.LocalDataSource
-import com.shebang.dog.goo.di.scope.RemoteDataSource
+import com.shebang.dog.goo.di.annotation.scope.LocalDataSource
+import com.shebang.dog.goo.di.annotation.scope.RemoteDataSource
 import javax.inject.Inject
 
 class RestaurantRepository @Inject constructor(

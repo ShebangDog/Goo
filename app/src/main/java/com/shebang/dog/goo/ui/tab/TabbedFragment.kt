@@ -2,9 +2,10 @@ package com.shebang.dog.goo.ui.tab
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
-import androidx.fragment.app.Fragment
 
-abstract class TabbedFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId) {
+abstract class TabbedFragment(@LayoutRes private val layoutResId: Int) :
+    MyDaggerFragment(layoutResId) {
+
     @DrawableRes
     abstract fun getTabIconId(): Int
 
