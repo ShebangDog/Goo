@@ -9,7 +9,6 @@ import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentFavoriteListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
 import com.shebang.dog.goo.ext.assistedViewModels
-import com.shebang.dog.goo.ui.street.RestaurantStreetAdapter
 import com.shebang.dog.goo.ui.tab.TabbedFragment
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
