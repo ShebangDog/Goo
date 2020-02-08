@@ -3,6 +3,7 @@ package com.shebang.dog.goo.ui.favorite
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shebang.dog.goo.R
@@ -51,11 +52,15 @@ class FavoriteAdapter @Inject constructor(
             distanceTextView.text = distance.toString()
         }
 
-        private fun FavoriteListItemBinding.setThumbnail(imageUrl: List<String>) {
+        private fun FavoriteListItemBinding.setThumbnail(imageUrl: ImageUrl) {
+            thumbnailImageView.isVisible = imageUrl.stringList.isNotEmpty()
+
             thumbnailImageView.also {
-                Glide.with(it.context)
-                    .load(imageUrl.random())
-                    .into(it)
+                if (it.isVisible) {
+                    Glide.with(it.context)
+                        .load(imageUrl.stringList.first())
+                        .into(it)
+                }
             }
         }
 

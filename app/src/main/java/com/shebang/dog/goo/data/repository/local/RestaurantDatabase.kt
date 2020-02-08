@@ -11,7 +11,7 @@ import com.shebang.dog.goo.data.model.converter.*
     RestaurantStreetConverter::class,
     IdConverter::class,
     NameConverter::class,
-    ImageUrlListConverter::class,
+    ImageUrlConverter::class,
     LatitudeConverter::class,
     LongitudeConverter::class,
     FavoriteConverter::class
