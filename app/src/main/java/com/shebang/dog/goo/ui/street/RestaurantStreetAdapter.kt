@@ -51,7 +51,6 @@ class RestaurantStreetAdapter @Inject constructor(
 
                 setFavoriteIcon(restaurantData, favorite, border, onClick)
             }
-
         }
 
         private fun RestaurantListItemBinding.setName(name: Name) {
@@ -62,10 +61,10 @@ class RestaurantStreetAdapter @Inject constructor(
             distanceTextView.text = distance.toString()
         }
 
-        private fun RestaurantListItemBinding.setThumbnail(imageUrl: List<String>) {
+        private fun RestaurantListItemBinding.setThumbnail(imageUrl: ImageUrl) {
             thumbnailImageView.also {
                 Glide.with(it.context)
-                    .load(imageUrl.random())
+                    .load(imageUrl.stringList.first())
                     .into(it)
             }
         }

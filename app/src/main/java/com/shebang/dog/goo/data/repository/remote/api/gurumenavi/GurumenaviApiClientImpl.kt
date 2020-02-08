@@ -46,7 +46,7 @@ class GurumenaviApiClientImpl(
                 RestaurantData(
                     Id(it.id ?: ""),
                     Name(it.name ?: ""),
-                    it.getImageUrlList().filterNotNull(),
+                    ImageUrl(it.getImageUrlList().filterNotNull().filter { url -> url.isNotBlank() }),
                     Location(
                         Latitude(
                             it.latitude?.let { value -> if (value == "") null else value }?.toDouble()

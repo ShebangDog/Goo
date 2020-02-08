@@ -54,7 +54,11 @@ class HotpepperApiClientImpl(
                 RestaurantData(
                     Id(it.id ?: ""),
                     Name(it.name ?: ""),
-                    it.getImageUrlList().filterNotNull(),
+                    ImageUrl(
+                        it.getImageUrlList()
+                            .filterNotNull()
+                            .filter { url -> url.isNotBlank() }
+                    ),
                     Location(
                         Latitude(it.lat?.toDouble() ?: 0.0),
                         Longitude(it.lng?.toDouble() ?: 0.0)

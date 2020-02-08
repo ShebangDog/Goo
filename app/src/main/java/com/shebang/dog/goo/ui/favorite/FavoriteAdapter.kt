@@ -51,10 +51,10 @@ class FavoriteAdapter @Inject constructor(
             distanceTextView.text = distance.toString()
         }
 
-        private fun FavoriteListItemBinding.setThumbnail(imageUrl: List<String>) {
+        private fun FavoriteListItemBinding.setThumbnail(imageUrl: ImageUrl) {
             thumbnailImageView.also {
                 Glide.with(it.context)
-                    .load(imageUrl.random())
+                    .load(imageUrl.stringList.first())
                     .into(it)
             }
         }
