@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        setSupportActionBar(binding.toolBar)
+
         val fragmentList = listOf<TabbedFragment>(RestaurantStreetFragment(), FavoriteFragment())
 
         binding.apply {
