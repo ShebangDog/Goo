@@ -18,6 +18,7 @@
             android:background="@color/colorPrimary"
             android:elevation="8dp"
 
+            app:menu="@menu/app_bar_menu"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
