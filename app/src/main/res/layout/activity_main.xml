@@ -32,6 +32,9 @@
 
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
+
+            app:tabUnboundedRipple="true"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tool_bar"
