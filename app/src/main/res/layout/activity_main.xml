@@ -11,19 +11,21 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tool_bar"
-
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content"
-
             android:background="@color/colorPrimary"
-            android:elevation="8dp"
 
-            app:menu="@menu/app_bar_menu"
+            android:elevation="8dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+            app:menu="@menu/app_bar_menu"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextColor="#FFFFFF" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
@@ -33,8 +35,6 @@
 
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-
-            app:tabUnboundedRipple="true"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
