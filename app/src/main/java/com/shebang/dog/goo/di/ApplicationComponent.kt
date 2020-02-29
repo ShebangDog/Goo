@@ -17,7 +17,8 @@ import javax.inject.Singleton
         RestaurantStreetFragmentModule::class,
         FavoriteFragmentModule::class,
         RestaurantStreetViewModelModule::class,
-        FavoriteViewModelModule::class
+        FavoriteViewModelModule::class,
+        AboutActivityModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<CustomApplication> {
