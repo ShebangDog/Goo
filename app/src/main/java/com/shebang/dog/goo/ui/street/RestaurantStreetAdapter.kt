@@ -41,12 +41,15 @@ class RestaurantStreetAdapter @Inject constructor(
             binding.apply {
                 setName(restaurantData.name)
 
-                setDistance(
-                    Location.distance(
-                        restaurantData.location,
-                        LocationSharedPreferenceAccessor.getLocationResult(context)!!
+                restaurantData.location.also {
+                    if (it == null) binding.distanceTextView.isVisible = false
+                    else setDistance(
+                        Location.distance(
+                            it,
+                            LocationSharedPreferenceAccessor.getLocationResult(context)!!
+                        )
                     )
-                )
+                }
 
                 setThumbnail(restaurantData.imageUrl)
 
