@@ -49,12 +49,10 @@ class GurumenaviApiClientImpl(
                     ImageUrl(it.getImageUrlList().filterNotNull().filter { url -> url.isNotBlank() }),
                     Location(
                         Latitude(
-                            it.latitude?.let { value -> if (value == "") null else value }?.toDouble()
-                                ?: 0.0
+                            it.latitude?.takeIf { value -> value != "" }?.toDouble() ?: 0.0
                         ),
                         Longitude(
-                            it.longitude?.let { value -> if (value == "") null else value }?.toDouble()
-                                ?: 0.0
+                            it.longitude?.takeIf { value -> value != "" }?.toDouble() ?: 0.0
                         )
                     ),
                     Favorite(false)

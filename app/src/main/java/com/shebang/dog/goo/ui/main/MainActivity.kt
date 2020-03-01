@@ -1,15 +1,18 @@
 package com.shebang.dog.goo.ui.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.ActivityMainBinding
+import com.shebang.dog.goo.ui.about.AboutActivity
 import com.shebang.dog.goo.ui.favorite.FavoriteFragment
 import com.shebang.dog.goo.ui.street.RestaurantStreetFragment
-import com.shebang.dog.goo.ui.tab.TabbedFragment
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var binding: ActivityMainBinding
@@ -18,7 +21,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        val fragmentList = listOf<TabbedFragment>(RestaurantStreetFragment(), FavoriteFragment())
+        setSupportActionBar(binding.toolBar)
+
+        val fragmentList = listOf(RestaurantStreetFragment(), FavoriteFragment())
 
         binding.apply {
             viewPager.apply {
@@ -47,7 +52,28 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                     getTabAt(index)?.setIcon(tabbedFragment.getTabIconId())
                 }
             }
-
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.app_bar_menu, menu)
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.about -> {
+                showAboutScreen()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showAboutScreen() {
+        val intent = Intent(this, AboutActivity::class.java)
+        startActivity(intent)
     }
 }
