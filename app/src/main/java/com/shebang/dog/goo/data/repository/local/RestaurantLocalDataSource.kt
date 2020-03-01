@@ -14,7 +14,12 @@ class RestaurantLocalDataSource @Inject constructor(private val restaurantDao: R
 
         return RestaurantStreet(
             restaurantDao.getRestaurantList().orEmpty()
-                .filter { Location.distance(it.location, location) <= range.toDistance() }
+                .filter {
+                    it.location != null && Location.distance(
+                        it.location,
+                        location
+                    ) <= range.toDistance()
+                }
         )
     }
 

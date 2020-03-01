@@ -18,7 +18,7 @@ data class RestaurantData(
     val imageUrl: ImageUrl,
 
     @Embedded
-    val location: Location,
+    val location: Location?,
 
     @ColumnInfo(name = "favorite")
     var favorite: Favorite
