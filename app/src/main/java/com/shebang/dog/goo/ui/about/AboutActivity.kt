@@ -1,5 +1,6 @@
 package com.shebang.dog.goo.ui.about
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -53,17 +54,9 @@ class AboutActivity : MyDaggerAppCompatActivity(R.layout.activity_about) {
 
         private val aboutList = listOf(
             AboutItem(
-                title = Title("Open Source Licenses"),
-                onClick = {
-                    it.context.startActivity(
-                        Intent(
-                            it.context,
-                            OssLicensesMenuActivity::class.java
-                        )
-                    )
-                }),
-
-            AboutItem(title = Title("Currently Version"), summary = Summary("1.1"))
+                title = Title("Open source licenses"),
+                onClick = { showOssLicensesScreen(it.context) }),
+            AboutItem(title = Title("Currently version"), summary = Summary("1.1"))
         )
 
         class AboutViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -107,6 +100,12 @@ class AboutActivity : MyDaggerAppCompatActivity(R.layout.activity_about) {
 
         override fun onBindViewHolder(holder: AboutViewHolder, position: Int) {
             holder.setAbout(aboutList[position])
+        }
+
+        private fun showOssLicensesScreen(context: Context) {
+            val intent = Intent(context, OssLicensesMenuActivity::class.java)
+
+            context.startActivity(intent)
         }
 
     }
