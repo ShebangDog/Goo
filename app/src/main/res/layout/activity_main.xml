@@ -26,8 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
-            app:menu="@menu/app_bar_menu"
-            app:titleTextColor="#FFFFFF" />
+            app:menu="@menu/app_bar_menu" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
