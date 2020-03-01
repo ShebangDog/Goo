@@ -3,7 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco'
-apply plugin: "de.mannodermaus.android-junit5"
+apply plugin: 'de.mannodermaus.android-junit5'
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 kapt {
     correctErrorTypes = true
@@ -111,6 +112,8 @@ dependencies {
 
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
 
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
+
     def dagger_version = "2.25.4"
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
@@ -118,4 +121,7 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
+    def dagger_assisted_version = "0.5.2"
+    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$dagger_assisted_version"
+    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$dagger_assisted_version"
 }

@@ -1,5 +1,6 @@
 package com.shebang.dog.goo.ui.about
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.data.model.AboutItem
 import com.shebang.dog.goo.data.model.Summary
@@ -50,12 +52,23 @@ class AboutActivity : MyDaggerAppCompatActivity(R.layout.activity_about) {
         RecyclerView.Adapter<AboutAdapter.AboutViewHolder>() {
 
         private val aboutList = listOf(
-            AboutItem(title = Title("Open Source Licenses")),
+            AboutItem(
+                title = Title("Open Source Licenses"),
+                onClick = {
+                    it.context.startActivity(
+                        Intent(
+                            it.context,
+                            OssLicensesMenuActivity::class.java
+                        )
+                    )
+                }),
+
             AboutItem(title = Title("Currently Version"), summary = Summary("1.1"))
         )
 
         class AboutViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             private val binding = AboutListItemBinding.bind(view)
+            private val context = view.context
 
             fun setAbout(about: AboutItem) {
                 setTitle(about.title)
@@ -65,6 +78,7 @@ class AboutActivity : MyDaggerAppCompatActivity(R.layout.activity_about) {
                     else setSummary(it)
                 }
 
+                about.onClick?.also { setOnClick(it) }
             }
 
             private fun setTitle(title: Title) {
@@ -73,6 +87,10 @@ class AboutActivity : MyDaggerAppCompatActivity(R.layout.activity_about) {
 
             private fun setSummary(summary: Summary) {
                 binding.summaryTextView.text = summary.value
+            }
+
+            private fun setOnClick(onClick: (View) -> Unit) {
+                binding.item.setOnClickListener(onClick)
             }
         }
 
@@ -90,5 +108,6 @@ class AboutActivity : MyDaggerAppCompatActivity(R.layout.activity_about) {
         override fun onBindViewHolder(holder: AboutViewHolder, position: Int) {
             holder.setAbout(aboutList[position])
         }
+
     }
 }
