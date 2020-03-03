@@ -25,7 +25,6 @@ import com.shebang.dog.goo.service.LocationBroadCastReceiver
 import com.shebang.dog.goo.ui.tab.TabbedFragment
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor.KEY_LOCATION_RESULT
-import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_list) {
@@ -39,52 +38,39 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
     lateinit var restaurantStreetAdapter: RestaurantStreetAdapter
 
     private lateinit var binding: FragmentRestaurantListBinding
-    private lateinit var safeContext: Context
-
-    private val fusedLocationClient by lazy {
-        LocationServices.getFusedLocationProviderClient(
-            safeContext
-        )
-    }
 
     private var currentLocation: Location? = null
-
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-
-        safeContext = context
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRestaurantListBinding.bind(view)
 
-        if (!checkPermissions()) requestPermissions()
+        val context = view.context
+        if (!checkPermissions(context)) requestPermissions(context)
 
         restaurantStreetViewModel.restaurantStreet
             .observe(this) { restaurantStreetAdapter.restaurantStreet = it }
 
         binding.restaurantListRecyclerView.apply {
-            layoutManager = LinearLayoutManager(safeContext)
+            layoutManager = LinearLayoutManager(context)
             adapter = restaurantStreetAdapter
         }
 
-        LocationSharedPreferenceAccessor.registerOnSharedPreferenceChangeListener(safeContext) {
-            if (it == KEY_LOCATION_RESULT) {
-                currentLocation = LocationSharedPreferenceAccessor.getLocationResult(safeContext)
-                restaurantStreetViewModel.walkRestaurantStreet(currentLocation!!)
+        LocationSharedPreferenceAccessor.registerOnSharedPreferenceChangeListener(context) {
+            LocationSharedPreferenceAccessor.getLocationResult(context)?.also { location ->
+                if (it == KEY_LOCATION_RESULT) {
+                    currentLocation = location
+                    restaurantStreetViewModel.walkRestaurantStreet(location)
+                }
             }
         }
 
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
         fusedLocationClient.apply {
             val locationRequest = LocationRequest.create().apply {
-                fastestInterval = 5000
-                interval = 1800000
+                interval = 18000
                 priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             }
-
-            requestLocationUpdates(locationRequest, createPendingIntent())
 
             lastLocation.addOnSuccessListener {
                 val location = Location(
@@ -92,11 +78,16 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
                     Longitude(it.longitude)
                 )
 
-                LocationSharedPreferenceAccessor.setLocationResult(
-                    safeContext,
-                    location
-                )
+                LocationSharedPreferenceAccessor.setLocationResult(context, location)
             }
+
+            lastLocation.addOnFailureListener {
+                LocationSharedPreferenceAccessor.getLocationResult(context)?.also {
+                    restaurantStreetViewModel.walkRestaurantStreet(it)
+                }
+            }
+
+            requestLocationUpdates(locationRequest, createPendingIntent(context))
         }
 
     }
@@ -113,25 +104,25 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         const val REQUEST_CODE_RESTAURANT_STREET = 0
     }
 
-    private fun createPendingIntent(): PendingIntent {
-        val intent = Intent(safeContext, LocationBroadCastReceiver::class.java)
+    private fun createPendingIntent(context: Context): PendingIntent {
+        val intent = Intent(context, LocationBroadCastReceiver::class.java)
 
         intent.action = LocationBroadCastReceiver.ACTION_PROCESS_UPDATES
         return PendingIntent.getBroadcast(
-            safeContext,
+            context,
             REQUEST_CODE_RESTAURANT_STREET,
             intent,
             FLAG_UPDATE_CURRENT
         )
     }
 
-    private fun checkPermissions(): Boolean {
+    private fun checkPermissions(context: Context): Boolean {
         val fineLocationPermissionState = ActivityCompat.checkSelfPermission(
-            safeContext, Manifest.permission.ACCESS_FINE_LOCATION
+            context, Manifest.permission.ACCESS_FINE_LOCATION
         )
 
         val coarseLocationPermissionState = ActivityCompat.checkSelfPermission(
-            safeContext, Manifest.permission.ACCESS_COARSE_LOCATION
+            context, Manifest.permission.ACCESS_COARSE_LOCATION
         )
 
         val isGranted = PackageManager.PERMISSION_GRANTED
@@ -139,15 +130,15 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         return fineLocationPermissionState == isGranted && coarseLocationPermissionState == isGranted
     }
 
-    private fun requestPermissions() {
+    private fun requestPermissions(context: Context) {
         val isGranted = PackageManager.PERMISSION_GRANTED
 
         val permissionAccessFineLocationApproved = ActivityCompat.checkSelfPermission(
-            safeContext, Manifest.permission.ACCESS_FINE_LOCATION
+            context, Manifest.permission.ACCESS_FINE_LOCATION
         ) == isGranted
 
         val permissionAccessCoarseLocationApproved = ActivityCompat.checkSelfPermission(
-            safeContext, Manifest.permission.ACCESS_COARSE_LOCATION
+            context, Manifest.permission.ACCESS_COARSE_LOCATION
         ) == isGranted
 
         val shouldProvideRationale =
