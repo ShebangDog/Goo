@@ -17,7 +17,8 @@ object LocationSharedPreferenceAccessor {
     }
 
     fun getLocationResult(context: Context): Location? {
-        fun parseLocation(string: String?): Location? {
+        fun parseLocation(value: String?): Location? {
+            val string = value?.takeIf { it.isNotBlank() }
             return when (string != null) {
                 false -> null
                 true -> {
