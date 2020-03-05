@@ -6,8 +6,9 @@ import androidx.annotation.LayoutRes
 abstract class TabbedFragment(@LayoutRes private val layoutResId: Int) :
     MyDaggerFragment(layoutResId) {
 
-    @DrawableRes
-    abstract fun getTabIconId(): Int
+    abstract val tabIconId: Int
+        @DrawableRes
+        get
 
-    abstract fun getTabTitle(): String
+    abstract val tabTitle: String
 }

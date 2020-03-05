@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                     }
 
                     override fun getPageTitle(position: Int): CharSequence? {
-                        return fragmentList[position].getTabTitle()
+                        return fragmentList[position].tabTitle
                     }
                 }
             }
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             tabLayout.apply {
                 setupWithViewPager(binding.viewPager)
                 fragmentList.forEachIndexed { index, tabbedFragment ->
-                    getTabAt(index)?.setIcon(tabbedFragment.getTabIconId())
+                    getTabAt(index)?.setIcon(tabbedFragment.tabIconId)
                 }
             }
         }

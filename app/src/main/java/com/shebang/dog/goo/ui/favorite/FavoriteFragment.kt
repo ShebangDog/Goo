@@ -1,6 +1,5 @@
 package com.shebang.dog.goo.ui.favorite
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.observe
@@ -10,7 +9,6 @@ import com.shebang.dog.goo.databinding.FragmentFavoriteListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
 import com.shebang.dog.goo.ext.assistedViewModels
 import com.shebang.dog.goo.ui.tab.TabbedFragment
-import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
@@ -24,6 +22,12 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
     lateinit var favoriteAdapter: FavoriteAdapter
 
     private lateinit var binding: FragmentFavoriteListBinding
+
+    override val tabIconId: Int
+        get() = R.drawable.ic_favorite_pink_24dp
+
+    override val tabTitle: String
+        get() = "Favorite"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,13 +47,5 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
         super.onResume()
 
         favoriteViewModel.walkFavoriteRestaurantStreet()
-    }
-
-    override fun getTabIconId(): Int {
-        return R.drawable.ic_favorite_pink_24dp
-    }
-
-    override fun getTabTitle(): String {
-        return "FAVORITE"
     }
 }

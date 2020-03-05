@@ -42,6 +42,12 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         const val LOCATION_PERMISSION_REQUEST_CODE = 34
     }
 
+    override val tabIconId: Int
+        get() = R.drawable.ic_local_dining_black_24dp
+
+    override val tabTitle: String
+        get() = "FOOD"
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRestaurantListBinding.bind(view)
@@ -88,14 +94,6 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
             }
 
         }
-    }
-
-    override fun getTabIconId(): Int {
-        return R.drawable.ic_local_dining_black_24dp
-    }
-
-    override fun getTabTitle(): String {
-        return "FOOD"
     }
 
     private fun checkPermissions(context: Context): Boolean {
