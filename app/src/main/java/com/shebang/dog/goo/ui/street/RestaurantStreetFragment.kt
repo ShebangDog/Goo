@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Looper
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.observe
@@ -38,6 +37,10 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
+
+    companion object {
+        const val LOCATION_PERMISSION_REQUEST_CODE = 34
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -136,7 +139,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ),
-                    34
+                    LOCATION_PERMISSION_REQUEST_CODE
                 )
             }.show()
         } else {
@@ -146,7 +149,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ),
-                34
+                LOCATION_PERMISSION_REQUEST_CODE
             )
         }
 
