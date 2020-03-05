@@ -38,7 +38,6 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
-    private lateinit var locationCallback: LocationCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,21 +53,6 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         binding.restaurantListRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = restaurantStreetAdapter
-        }
-
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(result: LocationResult?) {
-                super.onLocationResult(result)
-
-                result?.lastLocation?.also {
-                    LocationSharedPreferenceAccessor.setLocationResult(
-                        context,
-                        convertAndroidLocation(it)
-                    )
-
-                    restaurantStreetViewModel.walkRestaurantStreet(convertAndroidLocation(it))
-                }
-            }
         }
 
         locationRequest = LocationRequest.create().apply {
@@ -87,11 +71,17 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         view?.context?.also { context ->
             locationSettingsClient = LocationServices.getSettingsClient(context)
             locationSettingsClient.checkLocationSettings(builder.build()).addOnSuccessListener {
-                fusedLocationClient.requestLocationUpdates(
-                    locationRequest,
-                    locationCallback,
-                    Looper.myLooper()
-                )
+                fusedLocationClient.lastLocation.addOnSuccessListener {
+                    val location = convertAndroidLocation(it)
+
+                    LocationSharedPreferenceAccessor.setLocationResult(
+                        context,
+                        location
+                    )
+
+                    restaurantStreetViewModel.walkRestaurantStreet(location)
+                }
+
             }
 
         }
