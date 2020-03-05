@@ -25,11 +25,6 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
 
     private lateinit var binding: FragmentFavoriteListBinding
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentFavoriteListBinding.bind(view)
