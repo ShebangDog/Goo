@@ -62,6 +62,12 @@ class HotpepperApiClientImpl(
 
         return shopList
             ?.map {
+                val location = if (it.lat != null && it.lng != null) Location(
+                    Latitude(it.lat!!.toDouble()),
+                    Longitude(it.lng!!.toDouble())
+                ) else
+                    null
+
                 RestaurantData(
                     Id(it.id ?: ""),
                     Name(it.name ?: ""),
@@ -72,10 +78,7 @@ class HotpepperApiClientImpl(
                                 url.isNotBlank() && !excludingImageList.isContainedIn(url) && url.hasExtensionOfImage()
                             }
                     ),
-                    Location(
-                        Latitude(it.lat?.toDouble() ?: 0.0),
-                        Longitude(it.lng?.toDouble() ?: 0.0)
-                    ),
+                    location,
                     Favorite(false)
                 )
             } ?: emptyList()
