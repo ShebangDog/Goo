@@ -18,7 +18,9 @@ class RestaurantRepository @Inject constructor(
 
     override suspend fun fetchRestaurantStreet(
         location: Location,
-        range: Range
+        range: Range,
+        index: Int,
+        dataCount: Int
     ): RestaurantStreet {
 
         suspend fun fetch(
@@ -29,7 +31,7 @@ class RestaurantRepository @Inject constructor(
                 true -> EmptyRestaurantStreet
                 else -> {
                     val dataSource = restaurantDataSourceList.first()
-                    val result = dataSource.fetchRestaurantStreet(location, range)
+                    val result = dataSource.fetchRestaurantStreet(location, range, index, dataCount)
                     when (result.restaurantDataList.isEmpty()) {
                         true -> fetch(restaurantDataSourceList.drop(1))
                         false -> result
