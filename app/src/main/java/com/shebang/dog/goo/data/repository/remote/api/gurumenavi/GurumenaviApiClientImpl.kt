@@ -29,7 +29,7 @@ class GurumenaviApiClientImpl(
 
         RestaurantStreet(restaurantDataList)
     } catch (httpException: HttpException) {
-        RestaurantStreet(listOf())
+        EmptyRestaurantStreet
     }
 
     override suspend fun fetchGurumenavi(id: Id): RestaurantData? = try {

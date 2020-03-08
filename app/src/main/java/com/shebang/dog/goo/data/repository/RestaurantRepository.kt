@@ -26,7 +26,7 @@ class RestaurantRepository @Inject constructor(
         ): RestaurantStreet {
 
             return when (restaurantDataSourceList.isEmpty()) {
-                true -> RestaurantStreet(listOf())
+                true -> EmptyRestaurantStreet
                 else -> {
                     val dataSource = restaurantDataSourceList.first()
                     val result = dataSource.fetchRestaurantStreet(location, range)

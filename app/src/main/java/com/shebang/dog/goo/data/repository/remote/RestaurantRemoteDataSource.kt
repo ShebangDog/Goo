@@ -16,7 +16,7 @@ class RestaurantRemoteDataSource @Inject constructor(
     private val streets = listOf(hotpepperStreet, gurumenaviStreet)
 
     override suspend fun fetchRestaurantStreet(): RestaurantStreet {
-        return RestaurantStreet(listOf())
+        return EmptyRestaurantStreet
     }
 
     override suspend fun fetchRestaurantStreet(
@@ -87,7 +87,7 @@ class RestaurantRemoteDataSource @Inject constructor(
         RestaurantDataSource {
 
         override suspend fun fetchRestaurantStreet(): RestaurantStreet {
-            return RestaurantStreet(listOf())
+            return RestaurantStreet(emptyList())
         }
 
         override suspend fun fetchRestaurantStreet(
@@ -122,7 +122,7 @@ class RestaurantRemoteDataSource @Inject constructor(
         RestaurantDataSource {
 
         override suspend fun fetchRestaurantStreet(): RestaurantStreet {
-            return RestaurantStreet(listOf())
+            return EmptyRestaurantStreet
         }
 
         override suspend fun fetchRestaurantStreet(
