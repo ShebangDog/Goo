@@ -11,9 +11,8 @@ class RestaurantRemoteDataSource @Inject constructor(
     gurumenaviApiClient: GurumenaviApiClient
 ) : RestaurantDataSource {
 
-    private val hotpepperStreet = HotpepperStreet(hotpepperApiClient)
-    private val gurumenaviStreet = GurumenaviStreet(gurumenaviApiClient)
-    private val streets = listOf(hotpepperStreet, gurumenaviStreet)
+    private val streets =
+        listOf(HotpepperStreet(hotpepperApiClient), GurumenaviStreet(gurumenaviApiClient))
 
     override suspend fun fetchRestaurantStreet(): RestaurantStreet {
         return EmptyRestaurantStreet
@@ -48,20 +47,19 @@ class RestaurantRemoteDataSource @Inject constructor(
             return list
         }
 
-        val hotpepperResult =
-            hotpepperStreet.fetchRestaurantStreet(location, range)
-
-        val gurumenaviResult =
-            gurumenaviStreet.fetchRestaurantStreet(location, range)
-
-        return RestaurantStreet((hotpepperResult + gurumenaviResult).restaurantDataList.distinctAndFuse())
+        return RestaurantStreet(
+            streets.fold<RestaurantDataSource, RestaurantStreet>(
+                EmptyRestaurantStreet
+            ) { result, dataSource ->
+                result + dataSource.fetchRestaurantStreet(location, range)
+            }.restaurantDataList.distinctAndFuse()
+        )
     }
 
     override suspend fun fetchRestaurant(id: Id): RestaurantData? {
-        val hotpepperResult = hotpepperStreet.fetchRestaurant(id)
-        val gurumenaviResult = gurumenaviStreet.fetchRestaurant(id)
-
-        return hotpepperResult ?: gurumenaviResult
+        return streets.fold<RestaurantDataSource, RestaurantData?>(null) { result, dataSource ->
+            result ?: dataSource.fetchRestaurant(id)
+        }
     }
 
     override suspend fun saveRestaurant(restaurantData: RestaurantData) {
