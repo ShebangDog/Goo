@@ -84,23 +84,19 @@ class RestaurantRepository @Inject constructor(
     }
 
     override suspend fun saveRestaurant(restaurantData: RestaurantData) {
-        restaurantLocalDataSource.saveRestaurant(restaurantData)
-        restaurantRemoteDataSource.saveRestaurant(restaurantData)
+        dataSourceList.forEach { it.saveRestaurant(restaurantData) }
     }
 
     override suspend fun saveRestaurants(restaurantStreet: RestaurantStreet) {
-        restaurantLocalDataSource.saveRestaurants(restaurantStreet)
-        restaurantRemoteDataSource.saveRestaurants(restaurantStreet)
+        dataSourceList.forEach { it.saveRestaurants(restaurantStreet) }
     }
 
     override fun deleteRestaurants() {
-        restaurantLocalDataSource.deleteRestaurants()
-        restaurantRemoteDataSource.deleteRestaurants()
+        dataSourceList.forEach { it.deleteRestaurants() }
     }
 
     override fun deleteRestaurantData(id: Id) {
-        restaurantLocalDataSource.deleteRestaurantData(id)
-        restaurantRemoteDataSource.deleteRestaurantData(id)
+        dataSourceList.forEach { it.deleteRestaurantData(id) }
     }
 
     private fun updateCache(restaurantStreet: RestaurantStreet) {
