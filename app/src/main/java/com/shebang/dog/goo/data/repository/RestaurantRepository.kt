@@ -105,7 +105,7 @@ class RestaurantRepository @Inject constructor(
 
     private fun updateCache(restaurantStreet: RestaurantStreet) {
         val street = RestaurantStreet(cache?.restaurantDataList ?: emptyList())
-        val fusedStreet = restaurantStreet.restaurantDataList + street.restaurantDataList
+        val fusedStreet = (restaurantStreet + street).restaurantDataList
 
         cache = when (fusedStreet.isEmpty()) {
             true -> cache

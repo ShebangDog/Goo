@@ -54,10 +54,7 @@ class RestaurantRemoteDataSource @Inject constructor(
         val gurumenaviResult =
             gurumenaviStreet.fetchRestaurantStreet(location, range)
 
-        return RestaurantStreet(
-            (hotpepperResult.restaurantDataList + gurumenaviResult.restaurantDataList)
-                .distinctAndFuse()
-        )
+        return RestaurantStreet((hotpepperResult + gurumenaviResult).restaurantDataList.distinctAndFuse())
     }
 
     override suspend fun fetchRestaurant(id: Id): RestaurantData? {
