@@ -25,7 +25,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
 
-                android:minHeight="56dp">
+                android:minHeight="78dp">
 
                 <ImageView
                     android:id="@+id/thumbnail_image_view"
