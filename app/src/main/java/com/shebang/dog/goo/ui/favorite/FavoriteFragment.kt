@@ -37,7 +37,7 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
             favoriteAdapter.restaurantStreet = it
         }
 
-        binding.favoriteListRecycerView.apply {
+        binding.favoriteListRecyclerView.apply {
             adapter = favoriteAdapter
             layoutManager = LinearLayoutManager(view.context)
         }
