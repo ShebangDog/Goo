@@ -24,7 +24,9 @@
                 android:layout_height="wrap_content"
 
                 android:background="?attr/selectableItemBackground"
-                android:clickable="true">
+                android:clickable="true"
+
+                android:minHeight="48dp">
 
                 <ImageView
                     android:id="@+id/thumbnail_image_view"
@@ -46,7 +48,6 @@
                     android:layout_height="wrap_content"
 
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
 
                     android:textColor="#DE000000"
@@ -54,7 +55,8 @@
 
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/thumbnail_image_view"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/distance_text_view" />
 
                 <TextView
                     android:id="@+id/distance_text_view"
@@ -63,9 +65,7 @@
                     android:layout_height="wrap_content"
 
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
 
                     android:textSize="16sp"
 

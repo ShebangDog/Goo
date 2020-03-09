@@ -14,8 +14,6 @@
             android:layout_height="wrap_content"
             android:elevation="2dp"
 
-            android:minHeight="64dp"
-
             app:cardCornerRadius="10dp"
             app:cardUseCompatPadding="true"
 
@@ -28,7 +26,9 @@
                 android:layout_height="wrap_content"
 
                 android:background="?attr/selectableItemBackground"
-                android:clickable="true">
+                android:clickable="true"
+
+                android:minHeight="48dp">
 
                 <ImageView
                     android:id="@+id/thumbnail_image_view"
@@ -84,7 +84,6 @@
                     android:layout_height="wrap_content"
 
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
 
                     android:textSize="16sp"
