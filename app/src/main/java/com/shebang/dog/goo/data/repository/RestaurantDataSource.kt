@@ -5,7 +5,9 @@ import com.shebang.dog.goo.data.model.*
 interface RestaurantDataSource {
     suspend fun fetchRestaurantStreet(
         location: Location,
-        range: Range
+        range: Range,
+        index: Index,
+        dataCount: Int = 5
     ): RestaurantStreet
 
     suspend fun fetchRestaurantStreet(): RestaurantStreet

@@ -7,8 +7,8 @@ interface GurumenaviApiClient {
         latitude: Latitude,
         longitude: Longitude,
         range: Range,
-        index: Int = 1,
-        dataCount: Int = 10
+        index: Int,
+        dataCount: Int = 5
     ): RestaurantStreet
 
     suspend fun fetchGurumenavi(

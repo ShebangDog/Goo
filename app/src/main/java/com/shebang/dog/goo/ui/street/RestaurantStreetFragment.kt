@@ -8,9 +8,11 @@ import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
 import com.shebang.dog.goo.R
+import com.shebang.dog.goo.data.model.Index
 import com.shebang.dog.goo.data.model.Latitude
 import com.shebang.dog.goo.data.model.Location
 import com.shebang.dog.goo.data.model.Longitude
@@ -18,6 +20,7 @@ import com.shebang.dog.goo.databinding.FragmentRestaurantListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
 import com.shebang.dog.goo.ext.assistedViewModels
 import com.shebang.dog.goo.ui.tab.TabbedFragment
+import com.shebang.dog.goo.util.EndlessRecyclerViewScrollListener
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
 
@@ -37,6 +40,8 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
+
+    private var currentLocation: Location? = null
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 34
@@ -59,9 +64,18 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         restaurantStreetViewModel.restaurantStreet
             .observe(this) { restaurantStreetAdapter.restaurantStreet = it }
 
+        val linearLayoutManager = LinearLayoutManager(context)
         binding.restaurantListRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = linearLayoutManager
             adapter = restaurantStreetAdapter
+
+            addOnScrollListener(object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
+                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                    currentLocation?.also {
+                        restaurantStreetViewModel.walkRestaurantStreet(it, Index(page + 1))
+                    }
+                }
+            })
         }
 
         locationRequest = LocationRequest.create().apply {
@@ -82,6 +96,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
             locationSettingsClient.checkLocationSettings(builder.build()).addOnSuccessListener {
                 fusedLocationClient.lastLocation.addOnSuccessListener {
                     val location = convertAndroidLocation(it)
+                    currentLocation = location
 
                     LocationSharedPreferenceAccessor.setLocationResult(
                         context,

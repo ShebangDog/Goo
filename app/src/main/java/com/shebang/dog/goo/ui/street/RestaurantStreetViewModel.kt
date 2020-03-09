@@ -6,10 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shebang.dog.goo.data.model.Location
-import com.shebang.dog.goo.data.model.Range
-import com.shebang.dog.goo.data.model.RestaurantData
-import com.shebang.dog.goo.data.model.RestaurantStreet
+import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.data.repository.RestaurantRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,13 +18,10 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
     val restaurantStreet: LiveData<RestaurantStreet>
         get() = mutableRestaurantStreet
 
-    fun walkRestaurantStreet(location: Location) = viewModelScope.launch(Dispatchers.IO) {
-        update(
-            repository.fetchRestaurantStreet(
-                location,
-                Range(1)
-            )
-        )
+    fun walkRestaurantStreet(location: Location, index: Index = Index(1)) {
+        viewModelScope.launch(Dispatchers.IO) {
+            update(repository.fetchRestaurantStreet(location, Range(5), index))
+        }
     }
 
     fun toggleFavorite(
@@ -44,8 +38,10 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
 
     private fun update(restaurantStreet: RestaurantStreet, ifEmpty: () -> Unit = {}) {
         when (restaurantStreet.restaurantDataList.isNotEmpty()) {
-            true -> mutableRestaurantStreet.postValue(restaurantStreet)
-            false -> ifEmpty.invoke()
+            false -> ifEmpty()
+            true -> mutableRestaurantStreet.postValue(
+                (mutableRestaurantStreet.value ?: EmptyRestaurantStreet) + restaurantStreet
+            )
         }
     }
 }
