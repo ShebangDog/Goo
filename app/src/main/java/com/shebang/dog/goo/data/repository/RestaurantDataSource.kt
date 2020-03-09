@@ -6,8 +6,8 @@ interface RestaurantDataSource {
     suspend fun fetchRestaurantStreet(
         location: Location,
         range: Range,
-        index: Int,
-        dataCount: Int
+        index: Index,
+        dataCount: Int = 5
     ): RestaurantStreet
 
     suspend fun fetchRestaurantStreet(): RestaurantStreet

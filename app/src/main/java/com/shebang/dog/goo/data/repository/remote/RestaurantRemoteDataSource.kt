@@ -12,7 +12,7 @@ class RestaurantRemoteDataSource @Inject constructor(
 ) : RestaurantDataSource {
 
     private val streets = listOf(
-        GurumenaviStreet(gurumenaviApiClient)
+        GurumenaviStreet(gurumenaviApiClient), HotpepperStreet(hotpepperApiClient)
     )
 
     override suspend fun fetchRestaurantStreet(): RestaurantStreet {
@@ -22,7 +22,7 @@ class RestaurantRemoteDataSource @Inject constructor(
     override suspend fun fetchRestaurantStreet(
         location: Location,
         range: Range,
-        index: Int,
+        index: Index,
         dataCount: Int
     ): RestaurantStreet {
         fun List<RestaurantData>.distinctAndFuse(): List<RestaurantData> {
@@ -91,14 +91,14 @@ class RestaurantRemoteDataSource @Inject constructor(
         override suspend fun fetchRestaurantStreet(
             location: Location,
             range: Range,
-            index: Int,
+            index: Index,
             dataCount: Int
         ): RestaurantStreet {
             return hotpepperApiClient.fetchHotpepper(
                 location.latitude,
                 location.longitude,
                 range,
-                index,
+                index.toHotpepperValue(dataCount),
                 dataCount
             )
         }
@@ -134,7 +134,7 @@ class RestaurantRemoteDataSource @Inject constructor(
         override suspend fun fetchRestaurantStreet(
             location: Location,
             range: Range,
-            index: Int,
+            index: Index,
             dataCount: Int
         ): RestaurantStreet {
 
@@ -142,7 +142,8 @@ class RestaurantRemoteDataSource @Inject constructor(
                 location.latitude,
                 location.longitude,
                 range,
-                index, dataCount
+                index.toGurumenaviValue(),
+                dataCount
             )
         }
 

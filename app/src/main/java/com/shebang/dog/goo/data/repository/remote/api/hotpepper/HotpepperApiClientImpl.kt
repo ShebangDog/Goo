@@ -65,8 +65,7 @@ class HotpepperApiClientImpl(
                 val location = if (it.lat != null && it.lng != null) Location(
                     Latitude(it.lat!!.toDouble()),
                     Longitude(it.lng!!.toDouble())
-                ) else
-                    null
+                ) else null
 
                 RestaurantData(
                     Id(it.id ?: ""),

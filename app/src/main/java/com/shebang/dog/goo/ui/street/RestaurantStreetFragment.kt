@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
 import com.shebang.dog.goo.R
+import com.shebang.dog.goo.data.model.Index
 import com.shebang.dog.goo.data.model.Latitude
 import com.shebang.dog.goo.data.model.Location
 import com.shebang.dog.goo.data.model.Longitude
@@ -19,7 +20,6 @@ import com.shebang.dog.goo.databinding.FragmentRestaurantListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
 import com.shebang.dog.goo.ext.assistedViewModels
 import com.shebang.dog.goo.ui.tab.TabbedFragment
-import com.shebang.dog.goo.util.DebugHelper
 import com.shebang.dog.goo.util.EndlessRecyclerViewScrollListener
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
@@ -71,10 +71,8 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
 
             addOnScrollListener(object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                    DebugHelper.log("on load more $currentLocation")
                     currentLocation?.also {
-                        DebugHelper.log("on load more not null")
-                        restaurantStreetViewModel.walkRestaurantStreet(it, 2)
+                        restaurantStreetViewModel.walkRestaurantStreet(it, Index(page + 1))
                     }
                 }
             })

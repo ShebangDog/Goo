@@ -8,7 +8,7 @@ interface HotpepperApiClient {
         longitude: Longitude,
         range: Range,
         index: Int,
-        dataCount: Int,
+        dataCount: Int = 5,
         format: Format = Format.Json
     ): RestaurantStreet
 

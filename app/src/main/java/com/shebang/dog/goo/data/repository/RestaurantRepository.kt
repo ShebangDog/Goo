@@ -19,7 +19,7 @@ class RestaurantRepository @Inject constructor(
     override suspend fun fetchRestaurantStreet(
         location: Location,
         range: Range,
-        index: Int,
+        index: Index,
         dataCount: Int
     ): RestaurantStreet {
 
@@ -46,14 +46,12 @@ class RestaurantRepository @Inject constructor(
             )
         }
 
-        return when (cache?.restaurantDataList.isNullOrEmpty()) {
-            true -> fetch(dataSourceList).applyFavorite()
-                .also {
-                    updateCache(it)
-                    saveRestaurants(it)
-                }
-            else -> cache!!
-        }
+        val result = fetch(dataSourceList).applyFavorite()
+
+        updateCache(result)
+        saveRestaurants(result)
+
+        return result
     }
 
     override suspend fun fetchRestaurant(id: Id): RestaurantData? {
