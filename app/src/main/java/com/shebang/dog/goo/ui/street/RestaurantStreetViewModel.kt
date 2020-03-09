@@ -21,11 +21,14 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
     val restaurantStreet: LiveData<RestaurantStreet>
         get() = mutableRestaurantStreet
 
-    fun walkRestaurantStreet(location: Location) = viewModelScope.launch(Dispatchers.IO) {
+    fun walkRestaurantStreet(location: Location, index: Int = 1, dataCount: Int = 15) =
+        viewModelScope.launch(Dispatchers.IO) {
         update(
             repository.fetchRestaurantStreet(
                 location,
-                Range(1)
+                Range(5),
+                index,
+                dataCount
             )
         )
     }

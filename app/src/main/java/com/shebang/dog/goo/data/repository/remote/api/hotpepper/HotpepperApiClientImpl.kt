@@ -32,7 +32,7 @@ class HotpepperApiClientImpl(
 
         RestaurantStreet(restaurantList)
     } catch (httpException: HttpException) {
-        RestaurantStreet(listOf())
+        EmptyRestaurantStreet
     }
 
     override suspend fun fetchHotpepper(id: Id, format: Format): RestaurantData? = try {

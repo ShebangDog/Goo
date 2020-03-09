@@ -18,7 +18,9 @@ class RestaurantRepository @Inject constructor(
 
     override suspend fun fetchRestaurantStreet(
         location: Location,
-        range: Range
+        range: Range,
+        index: Int,
+        dataCount: Int
     ): RestaurantStreet {
 
         suspend fun fetch(
@@ -26,10 +28,10 @@ class RestaurantRepository @Inject constructor(
         ): RestaurantStreet {
 
             return when (restaurantDataSourceList.isEmpty()) {
-                true -> RestaurantStreet(listOf())
+                true -> EmptyRestaurantStreet
                 else -> {
                     val dataSource = restaurantDataSourceList.first()
-                    val result = dataSource.fetchRestaurantStreet(location, range)
+                    val result = dataSource.fetchRestaurantStreet(location, range, index, dataCount)
                     when (result.restaurantDataList.isEmpty()) {
                         true -> fetch(restaurantDataSourceList.drop(1))
                         false -> result
@@ -84,28 +86,24 @@ class RestaurantRepository @Inject constructor(
     }
 
     override suspend fun saveRestaurant(restaurantData: RestaurantData) {
-        restaurantLocalDataSource.saveRestaurant(restaurantData)
-        restaurantRemoteDataSource.saveRestaurant(restaurantData)
+        dataSourceList.forEach { it.saveRestaurant(restaurantData) }
     }
 
     override suspend fun saveRestaurants(restaurantStreet: RestaurantStreet) {
-        restaurantLocalDataSource.saveRestaurants(restaurantStreet)
-        restaurantRemoteDataSource.saveRestaurants(restaurantStreet)
+        dataSourceList.forEach { it.saveRestaurants(restaurantStreet) }
     }
 
     override fun deleteRestaurants() {
-        restaurantLocalDataSource.deleteRestaurants()
-        restaurantRemoteDataSource.deleteRestaurants()
+        dataSourceList.forEach { it.deleteRestaurants() }
     }
 
     override fun deleteRestaurantData(id: Id) {
-        restaurantLocalDataSource.deleteRestaurantData(id)
-        restaurantRemoteDataSource.deleteRestaurantData(id)
+        dataSourceList.forEach { it.deleteRestaurantData(id) }
     }
 
     private fun updateCache(restaurantStreet: RestaurantStreet) {
         val street = RestaurantStreet(cache?.restaurantDataList ?: emptyList())
-        val fusedStreet = restaurantStreet.restaurantDataList + street.restaurantDataList
+        val fusedStreet = (restaurantStreet + street).restaurantDataList
 
         cache = when (fusedStreet.isEmpty()) {
             true -> cache
