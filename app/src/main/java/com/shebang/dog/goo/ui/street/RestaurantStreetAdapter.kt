@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.data.model.*
+import com.shebang.dog.goo.databinding.RestaurantCardViewBinding
 import com.shebang.dog.goo.databinding.RestaurantListItemBinding
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
@@ -37,12 +38,13 @@ class RestaurantStreetAdapter @Inject constructor(
             restaurantData: RestaurantData,
             onClick: (RestaurantData, ImageButton, Drawable?, Drawable?) -> Unit
         ) {
+            val cardView = binding.cardView
 
-            binding.apply {
+            cardView.apply {
                 setName(restaurantData.name)
 
                 restaurantData.location.also {
-                    if (it == null) binding.distanceTextView.isVisible = false
+                    if (it == null) cardView.distanceTextView.isVisible = false
                     else setDistance(
                         Location.distance(
                             it,
@@ -57,15 +59,15 @@ class RestaurantStreetAdapter @Inject constructor(
             }
         }
 
-        private fun RestaurantListItemBinding.setName(name: Name) {
+        private fun RestaurantCardViewBinding.setName(name: Name) {
             nameTextView.text = name.value
         }
 
-        private fun RestaurantListItemBinding.setDistance(distance: Distance) {
+        private fun RestaurantCardViewBinding.setDistance(distance: Distance) {
             distanceTextView.text = distance.toString()
         }
 
-        private fun RestaurantListItemBinding.setThumbnail(imageUrl: ImageUrl) {
+        private fun RestaurantCardViewBinding.setThumbnail(imageUrl: ImageUrl) {
             thumbnailImageView.isVisible = imageUrl.stringList.isNotEmpty()
 
             thumbnailImageView.also {
@@ -77,7 +79,7 @@ class RestaurantStreetAdapter @Inject constructor(
             }
         }
 
-        private fun RestaurantListItemBinding.setFavoriteIcon(
+        private fun RestaurantCardViewBinding.setFavoriteIcon(
             restaurantData: RestaurantData,
             favorite: Drawable?,
             border: Drawable?,

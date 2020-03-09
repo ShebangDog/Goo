@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.databinding.FavoriteListItemBinding
+import com.shebang.dog.goo.databinding.RestaurantCardViewBinding
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
 
@@ -29,11 +30,13 @@ class FavoriteAdapter @Inject constructor(
         private val context = view.context
 
         fun setRestaurantData(restaurantData: RestaurantData) {
-            binding.apply {
+            val cardView = binding.cardView
+
+            cardView.apply {
                 setName(restaurantData.name)
 
                 restaurantData.location.also {
-                    if (it == null) distanceTextView.isVisible = false
+                    if (it == null) cardView.distanceTextView.isVisible = false
                     else setDistance(
                         Location.distance(
                             it,
@@ -42,19 +45,21 @@ class FavoriteAdapter @Inject constructor(
                     )
                 }
                 setThumbnail(restaurantData.imageUrl)
+
+                removeFavoriteIcon()
             }
 
         }
 
-        private fun FavoriteListItemBinding.setName(name: Name) {
+        private fun RestaurantCardViewBinding.setName(name: Name) {
             nameTextView.text = name.value
         }
 
-        private fun FavoriteListItemBinding.setDistance(distance: Distance) {
+        private fun RestaurantCardViewBinding.setDistance(distance: Distance) {
             distanceTextView.text = distance.toString()
         }
 
-        private fun FavoriteListItemBinding.setThumbnail(imageUrl: ImageUrl) {
+        private fun RestaurantCardViewBinding.setThumbnail(imageUrl: ImageUrl) {
             thumbnailImageView.isVisible = imageUrl.stringList.isNotEmpty()
 
             thumbnailImageView.also {
@@ -64,6 +69,10 @@ class FavoriteAdapter @Inject constructor(
                         .into(it)
                 }
             }
+        }
+
+        private fun RestaurantCardViewBinding.removeFavoriteIcon() {
+            favoriteImageButton.isVisible = false
         }
 
     }
