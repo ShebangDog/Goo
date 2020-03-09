@@ -39,7 +39,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
     private lateinit var locationSettingsClient: SettingsClient
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
+    private val locationRequest: LocationRequest by lazy { createLocationRequest() }
 
     private var currentLocation: Location? = null
 
@@ -78,37 +78,26 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
             })
         }
 
-        locationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 10000 / 2
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
-        view?.context?.also { context ->
-            locationSettingsClient = LocationServices.getSettingsClient(context)
-            locationSettingsClient.checkLocationSettings(builder.build()).addOnSuccessListener {
-                fusedLocationClient.lastLocation.addOnSuccessListener {
-                    val location = convertAndroidLocation(it)
-                    currentLocation = location
 
-                    LocationSharedPreferenceAccessor.setLocationResult(
-                        context,
-                        location
-                    )
+        locationSettingsClient = LocationServices.getSettingsClient(context)
+        locationSettingsClient.checkLocationSettings(builder.build()).addOnSuccessListener {
+            fusedLocationClient.lastLocation.addOnSuccessListener {
+                val location = convertAndroidLocation(it)
+                currentLocation = location
 
-                    restaurantStreetViewModel.walkRestaurantStreet(location)
-                }
+                LocationSharedPreferenceAccessor.setLocationResult(
+                    context,
+                    location
+                )
 
+                restaurantStreetViewModel.walkRestaurantStreet(location)
             }
 
         }
+
     }
 
     private fun checkPermissions(context: Context): Boolean {
@@ -175,4 +164,11 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         )
     }
 
+    private fun createLocationRequest(): LocationRequest {
+        return LocationRequest.create().apply {
+            interval = 10000
+            fastestInterval = 10000 / 2
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+    }
 }
