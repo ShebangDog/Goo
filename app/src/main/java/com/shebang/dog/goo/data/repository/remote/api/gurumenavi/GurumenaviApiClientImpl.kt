@@ -29,7 +29,7 @@ class GurumenaviApiClientImpl(
 
         RestaurantStreet(restaurantDataList)
     } catch (httpException: HttpException) {
-        RestaurantStreet(listOf())
+        EmptyRestaurantStreet
     }
 
     override suspend fun fetchGurumenavi(id: Id): RestaurantData? = try {
@@ -43,18 +43,21 @@ class GurumenaviApiClientImpl(
     private fun extractRestaurantDataList(restList: List<Rest>?): List<RestaurantData> {
         return restList
             ?.map {
+                val rawLatitude = it.latitude?.takeIf { str -> str.isNotBlank() }?.toDouble()
+                val rawLongitude = it.longitude?.takeIf { str -> str.isNotBlank() }?.toDouble()
+
+                val location = if (rawLatitude != null && rawLongitude != null)
+                    Location(
+                        Latitude(rawLatitude),
+                        Longitude(rawLongitude)
+                    ) else null
+
                 RestaurantData(
                     Id(it.id ?: ""),
                     Name(it.name ?: ""),
-                    ImageUrl(it.getImageUrlList().filterNotNull().filter { url -> url.isNotBlank() }),
-                    Location(
-                        Latitude(
-                            it.latitude?.takeIf { value -> value != "" }?.toDouble() ?: 0.0
-                        ),
-                        Longitude(
-                            it.longitude?.takeIf { value -> value != "" }?.toDouble() ?: 0.0
-                        )
-                    ),
+                    ImageUrl(
+                        it.getImageUrlList().filterNotNull().filter { url -> url.isNotBlank() }),
+                    location,
                     Favorite(false)
                 )
             } ?: emptyList()
