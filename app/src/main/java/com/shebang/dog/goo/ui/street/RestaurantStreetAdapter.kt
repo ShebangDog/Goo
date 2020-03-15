@@ -19,7 +19,7 @@ class RestaurantStreetAdapter @Inject constructor(
     private val restaurantStreetViewModel: RestaurantStreetViewModel
 ) : RecyclerView.Adapter<RestaurantStreetAdapter.RestaurantStreetViewHolder>() {
 
-    var restaurantStreet: RestaurantStreet = RestaurantStreet(emptyList())
+    var restaurantStreet: RestaurantStreet = EmptyRestaurantStreet
         set(value) {
             field = value
             notifyDataSetChanged()
