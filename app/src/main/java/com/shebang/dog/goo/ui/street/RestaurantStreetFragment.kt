@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -61,8 +62,10 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
 
         if (!checkPermissions(context)) requestPermissions(context)
 
-        restaurantStreetViewModel.restaurantStreet
-            .observe(this) { restaurantStreetAdapter.restaurantStreet = it }
+        restaurantStreetViewModel.restaurantStreet.observe(this) {
+            restaurantStreetAdapter.restaurantStreet = it
+            binding.progressBar.isVisible = it.restaurantDataList.isEmpty()
+        }
 
         val linearLayoutManager = LinearLayoutManager(context)
         binding.restaurantListRecyclerView.apply {

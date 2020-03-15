@@ -2,6 +2,7 @@ package com.shebang.dog.goo.ui.favorite
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shebang.dog.goo.R
@@ -35,6 +36,7 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
 
         favoriteViewModel.restaurantStreet.observe(this) {
             favoriteAdapter.restaurantStreet = it
+            binding.progressBar.isVisible = it.restaurantDataList.isEmpty()
         }
 
         binding.favoriteListRecyclerView.apply {
