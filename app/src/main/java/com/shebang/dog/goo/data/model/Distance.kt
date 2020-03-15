@@ -2,7 +2,7 @@ package com.shebang.dog.goo.data.model
 
 import kotlin.math.pow
 
-data class Distance(val value: Double) {
+data class Distance(val value: Double) : Comparable<Distance> {
     init {
         require(0 <= value)
     }
@@ -22,7 +22,7 @@ data class Distance(val value: Double) {
         return "ここから $distance$unit"
     }
 
-    infix operator fun compareTo(other: Distance): Int {
+    override fun compareTo(other: Distance): Int {
         return value.compareTo(other.value)
     }
 
