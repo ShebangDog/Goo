@@ -21,9 +21,7 @@ class FavoriteViewModel @Inject constructor(private val repository: RestaurantRe
         val favoriteRestaurantStreet =
             repository.fetchRestaurantStreet().restaurantDataList.filter { it.favorite.value }
 
-        favoriteRestaurantStreet.also {
-            if (it.isNotEmpty()) mutableRestaurantStreet.postValue(RestaurantStreet(it))
-        }
+        mutableRestaurantStreet.postValue(RestaurantStreet(favoriteRestaurantStreet))
     }
 
 }
