@@ -6,7 +6,9 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.*
+import androidx.recyclerview.widget.RecyclerView.NO_POSITION
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.data.model.Index
 import com.shebang.dog.goo.data.model.Latitude
@@ -18,6 +20,7 @@ import com.shebang.dog.goo.ext.assistedViewModels
 import com.shebang.dog.goo.ui.tab.TabbedFragment
 import com.shebang.dog.goo.util.EndlessRecyclerViewScrollListener
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
+import com.shebang.dog.goo.util.PermissionGranter
 import javax.inject.Inject
 
 class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_list) {
@@ -31,12 +34,9 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
     lateinit var restaurantStreetAdapter: RestaurantStreetAdapter
 
     private lateinit var binding: FragmentRestaurantListBinding
-
-    private lateinit var locationSettingsClient: SettingsClient
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private val locationRequest: LocationRequest by lazy { createLocationRequest() }
-
     private var currentLocation: Location? = null
 
     override val tabIconId: Int
@@ -48,15 +48,13 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRestaurantListBinding.bind(view)
-
-        val context = view.context
+        linearLayoutManager = LinearLayoutManager(context)
 
         restaurantStreetViewModel.restaurantStreet.observe(this) {
             restaurantStreetAdapter.restaurantStreet = it
-            binding.progressBar.isVisible = it.restaurantDataList.isEmpty()
+            binding.progressBar.isVisible = !isShownRecyclerViewItem()
         }
 
-        val linearLayoutManager = LinearLayoutManager(context)
         binding.restaurantListRecyclerView.apply {
             layoutManager = linearLayoutManager
             adapter = restaurantStreetAdapter
@@ -70,29 +68,24 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
             })
         }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
     }
 
     override fun onResume() {
         super.onResume()
 
-        if (restaurantStreetViewModel.restaurantStreet.value?.restaurantDataList.isNullOrEmpty())
-            context?.also { context ->
-                fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-                val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        context?.also { context ->
+            if (!isShownRecyclerViewItem() && PermissionGranter.checkPermissions(context)) {
+                fusedLocationClient.lastLocation.addOnSuccessListener {
+                    val location = convertAndroidLocation(it)
+                    currentLocation = location
+                    LocationSharedPreferenceAccessor.setLocationResult(context, location)
 
-                locationSettingsClient = LocationServices.getSettingsClient(context)
-                locationSettingsClient.checkLocationSettings(builder.build())
-                    .addOnSuccessListener {
-                        fusedLocationClient.lastLocation.addOnSuccessListener {
-                            val location = convertAndroidLocation(it)
-                            currentLocation = location
-                            LocationSharedPreferenceAccessor.setLocationResult(context, location)
+                    restaurantStreetViewModel.walkRestaurantStreet(location)
+                }
 
-                            restaurantStreetViewModel.walkRestaurantStreet(location)
-                        }
-
-                    }
             }
+        }
     }
 
     private fun convertAndroidLocation(location: android.location.Location): Location {
@@ -102,11 +95,8 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         )
     }
 
-    private fun createLocationRequest(): LocationRequest {
-        return LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 10000 / 2
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
+    private fun isShownRecyclerViewItem(): Boolean {
+        return linearLayoutManager.findFirstVisibleItemPosition() != NO_POSITION
     }
+
 }

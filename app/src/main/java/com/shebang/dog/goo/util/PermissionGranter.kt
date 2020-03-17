@@ -2,6 +2,7 @@ package com.shebang.dog.goo.util
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import androidx.core.content.ContextCompat
 
@@ -13,6 +14,12 @@ object PermissionGranter {
     )
 
     private const val REQUEST_CODE = 34
+
+    fun checkPermissions(context: Context): Boolean {
+        return permissions.none {
+            ContextCompat.checkSelfPermission(context, it) != PERMISSION_GRANTED
+        }
+    }
 
     fun requestPermission(activity: Activity) {
         permissions
