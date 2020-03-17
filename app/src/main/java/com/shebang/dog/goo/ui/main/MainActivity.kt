@@ -13,6 +13,7 @@ import com.shebang.dog.goo.databinding.ActivityMainBinding
 import com.shebang.dog.goo.ui.about.AboutActivity
 import com.shebang.dog.goo.ui.favorite.FavoriteFragment
 import com.shebang.dog.goo.ui.street.RestaurantStreetFragment
+import com.shebang.dog.goo.util.PermissionGranter
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var binding: ActivityMainBinding
@@ -53,6 +54,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 }
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        PermissionGranter.requestPermission(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

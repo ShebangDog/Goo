@@ -1,17 +1,12 @@
 package com.shebang.dog.goo.ui.street
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.*
-import com.google.android.material.snackbar.Snackbar
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.data.model.Index
 import com.shebang.dog.goo.data.model.Latitude
@@ -44,10 +39,6 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
 
     private var currentLocation: Location? = null
 
-    companion object {
-        const val LOCATION_PERMISSION_REQUEST_CODE = 34
-    }
-
     override val tabIconId: Int
         get() = R.drawable.ic_local_dining_black_24dp
 
@@ -59,8 +50,6 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         binding = FragmentRestaurantListBinding.bind(view)
 
         val context = view.context
-
-        if (!checkPermissions(context)) requestPermissions(context)
 
         restaurantStreetViewModel.restaurantStreet.observe(this) {
             restaurantStreetAdapter.restaurantStreet = it
@@ -81,83 +70,29 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
             })
         }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    }
 
-        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+    override fun onResume() {
+        super.onResume()
 
-        locationSettingsClient = LocationServices.getSettingsClient(context)
-        locationSettingsClient.checkLocationSettings(builder.build()).addOnSuccessListener {
-            fusedLocationClient.lastLocation.addOnSuccessListener {
-                val location = convertAndroidLocation(it)
-                currentLocation = location
+        if (restaurantStreetViewModel.restaurantStreet.value?.restaurantDataList.isNullOrEmpty())
+            context?.also { context ->
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+                val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
 
-                LocationSharedPreferenceAccessor.setLocationResult(
-                    context,
-                    location
-                )
+                locationSettingsClient = LocationServices.getSettingsClient(context)
+                locationSettingsClient.checkLocationSettings(builder.build())
+                    .addOnSuccessListener {
+                        fusedLocationClient.lastLocation.addOnSuccessListener {
+                            val location = convertAndroidLocation(it)
+                            currentLocation = location
+                            LocationSharedPreferenceAccessor.setLocationResult(context, location)
 
-                restaurantStreetViewModel.walkRestaurantStreet(location)
+                            restaurantStreetViewModel.walkRestaurantStreet(location)
+                        }
+
+                    }
             }
-
-        }
-
-    }
-
-    private fun checkPermissions(context: Context): Boolean {
-        val fineLocationPermissionState = ActivityCompat.checkSelfPermission(
-            context, Manifest.permission.ACCESS_FINE_LOCATION
-        )
-
-        val coarseLocationPermissionState = ActivityCompat.checkSelfPermission(
-            context, Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-
-        val isGranted = PackageManager.PERMISSION_GRANTED
-
-        return fineLocationPermissionState == isGranted && coarseLocationPermissionState == isGranted
-    }
-
-    private fun requestPermissions(context: Context) {
-        val isGranted = PackageManager.PERMISSION_GRANTED
-
-        val permissionAccessFineLocationApproved = ActivityCompat.checkSelfPermission(
-            context, Manifest.permission.ACCESS_FINE_LOCATION
-        ) == isGranted
-
-        val permissionAccessCoarseLocationApproved = ActivityCompat.checkSelfPermission(
-            context, Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == isGranted
-
-        val shouldProvideRationale =
-            permissionAccessFineLocationApproved && permissionAccessCoarseLocationApproved
-
-        if (shouldProvideRationale) {
-            Snackbar.make(
-                binding.restaurantListFragment,
-                R.string.permission_rationale,
-                Snackbar.LENGTH_INDEFINITE
-            ).setAction(R.string.ok) {
-                // Request permission
-                ActivityCompat.requestPermissions(
-                    activity!!,
-                    arrayOf(
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    ),
-                    LOCATION_PERMISSION_REQUEST_CODE
-                )
-            }.show()
-        } else {
-            ActivityCompat.requestPermissions(
-                activity!!,
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ),
-                LOCATION_PERMISSION_REQUEST_CODE
-            )
-        }
-
     }
 
     private fun convertAndroidLocation(location: android.location.Location): Location {
