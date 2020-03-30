@@ -34,7 +34,7 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentFavoriteListBinding.bind(view)
 
-        favoriteViewModel.restaurantStreet.observe(this) {
+        favoriteViewModel.restaurantStreet.observe(viewLifecycleOwner) {
             favoriteAdapter.restaurantStreet = it
             binding.progressBar.isVisible = it.restaurantDataList.isEmpty()
         }

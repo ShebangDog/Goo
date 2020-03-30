@@ -50,7 +50,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         binding = FragmentRestaurantListBinding.bind(view)
         linearLayoutManager = LinearLayoutManager(context)
 
-        restaurantStreetViewModel.restaurantStreet.observe(this) {
+        restaurantStreetViewModel.restaurantStreet.observe(viewLifecycleOwner) {
             restaurantStreetAdapter.restaurantStreet = it
             binding.progressBar.isVisible = !isShownRecyclerViewItem()
         }
