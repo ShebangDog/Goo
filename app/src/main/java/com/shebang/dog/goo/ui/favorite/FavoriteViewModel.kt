@@ -17,13 +17,17 @@ class FavoriteViewModel @Inject constructor(private val repository: RestaurantRe
     val restaurantStreet: LiveData<RestaurantStreet>
         get() = mutableRestaurantStreet
 
+    private val mutableLoadingState = MutableLiveData(false)
+    val loadingState: LiveData<Boolean>
+        get() = mutableLoadingState
+
     fun walkFavoriteRestaurantStreet() = viewModelScope.launch(Dispatchers.IO) {
+        mutableLoadingState.postValue(true)
         val favoriteRestaurantStreet =
             repository.fetchRestaurantStreet().restaurantDataList.filter { it.favorite.value }
 
-        favoriteRestaurantStreet.also {
-            if (it.isNotEmpty()) mutableRestaurantStreet.postValue(RestaurantStreet(it))
-        }
+        mutableRestaurantStreet.postValue(RestaurantStreet(favoriteRestaurantStreet))
+        mutableLoadingState.postValue(false)
     }
 
 }

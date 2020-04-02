@@ -2,7 +2,6 @@ package com.shebang.dog.goo.ui.street
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -52,7 +51,11 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
 
         restaurantStreetViewModel.restaurantStreet.observe(viewLifecycleOwner) {
             restaurantStreetAdapter.restaurantStreet = it
-            binding.progressBar.isVisible = !isShownRecyclerViewItem()
+        }
+
+        binding.progressBar.show()
+        restaurantStreetViewModel.loadingState.observe(viewLifecycleOwner) {
+            binding.progressBar.apply { if (it) show() else hide() }
         }
 
         binding.restaurantListRecyclerView.apply {

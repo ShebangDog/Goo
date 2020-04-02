@@ -39,6 +39,11 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
             binding.progressBar.isVisible = it.restaurantDataList.isEmpty()
         }
 
+        binding.progressBar.show()
+        favoriteViewModel.loadingState.observe(viewLifecycleOwner) {
+            binding.progressBar.apply { if (it) show() else hide() }
+        }
+
         binding.favoriteListRecyclerView.apply {
             adapter = favoriteAdapter
             layoutManager = LinearLayoutManager(view.context)
