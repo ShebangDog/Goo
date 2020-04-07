@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.shebang.dog.goo.R
-import com.shebang.dog.goo.data.model.Index
-import com.shebang.dog.goo.data.model.Latitude
-import com.shebang.dog.goo.data.model.Location
-import com.shebang.dog.goo.data.model.Longitude
+import com.shebang.dog.goo.model.Index
+import com.shebang.dog.goo.model.Latitude
+import com.shebang.dog.goo.model.Location
+import com.shebang.dog.goo.model.Longitude
 import com.shebang.dog.goo.databinding.FragmentRestaurantListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
 import com.shebang.dog.goo.ext.assistedViewModels

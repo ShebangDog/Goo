@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.shebang.dog.goo.R
-import com.shebang.dog.goo.data.model.AboutItem
-import com.shebang.dog.goo.data.model.Summary
-import com.shebang.dog.goo.data.model.Title
+import com.shebang.dog.goo.model.AboutItem
+import com.shebang.dog.goo.model.Summary
+import com.shebang.dog.goo.model.Title
 import com.shebang.dog.goo.databinding.AboutListItemBinding
 import com.shebang.dog.goo.databinding.ActivityAboutBinding
 import com.shebang.dog.goo.ui.tab.MyDaggerAppCompatActivity
