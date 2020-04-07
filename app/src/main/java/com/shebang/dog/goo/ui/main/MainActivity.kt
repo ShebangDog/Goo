@@ -7,7 +7,8 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.ActivityMainBinding
 import com.shebang.dog.goo.ui.about.AboutActivity
@@ -24,35 +25,31 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         setSupportActionBar(binding.toolBar)
 
-        val fragmentList = listOf(RestaurantStreetFragment(), FavoriteFragment())
+        val fragmentList = listOf({ RestaurantStreetFragment() }, { FavoriteFragment() })
+        val fragmentListForTab = fragmentList.map { constructor ->
+            constructor().let { FragmentDataOnTab(it.tabTitle, it.tabIconId) }
+        }
 
         binding.apply {
             viewPager.apply {
                 offscreenPageLimit = fragmentList.size
-                adapter = object : FragmentPagerAdapter(
-                    supportFragmentManager,
-                    BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+                adapter = object : FragmentStateAdapter(
+                    supportFragmentManager, lifecycle
                 ) {
-                    override fun getItem(position: Int): Fragment {
-                        return fragmentList[position]
-                    }
-
-                    override fun getCount(): Int {
+                    override fun getItemCount(): Int {
                         return fragmentList.size
                     }
 
-                    override fun getPageTitle(position: Int): CharSequence? {
-                        return fragmentList[position].tabTitle
+                    override fun createFragment(position: Int): Fragment {
+                        return fragmentList[position].invoke()
                     }
                 }
             }
 
-            tabLayout.apply {
-                setupWithViewPager(binding.viewPager)
-                fragmentList.forEachIndexed { index, tabbedFragment ->
-                    getTabAt(index)?.setIcon(tabbedFragment.tabIconId)
-                }
-            }
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                tab.setIcon(fragmentListForTab[position].iconId)
+                tab.text = fragmentListForTab[position].title
+            }.attach()
         }
     }
 
@@ -83,4 +80,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val intent = Intent(this, AboutActivity::class.java)
         startActivity(intent)
     }
+
+    data class FragmentDataOnTab(val title: String, val iconId: Int)
 }
