@@ -4,6 +4,10 @@ import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.data.repository.RestaurantDataSource
 import com.shebang.dog.goo.data.repository.remote.api.gurumenavi.GurumenaviApiClient
 import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApiClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RestaurantRemoteDataSource @Inject constructor(
@@ -15,16 +19,34 @@ class RestaurantRemoteDataSource @Inject constructor(
         GurumenaviStreet(gurumenaviApiClient), HotpepperStreet(hotpepperApiClient)
     )
 
-    override suspend fun fetchRestaurantStreet(): RestaurantStreet {
-        return EmptyRestaurantStreet
+    @ExperimentalCoroutinesApi
+    override fun fetchRestaurantStreet(): Flow<RestaurantStreet> {
+        fun fetch(
+            dataSourceList: List<RestaurantDataSource>,
+            restaurantStreet: RestaurantStreet = EmptyRestaurantStreet
+        ): Flow<RestaurantStreet> {
+
+            return when (dataSourceList.isEmpty()) {
+                true -> flowOf(restaurantStreet).flowOn(Dispatchers.IO)
+                false -> {
+                    val dataSource = dataSourceList.first()
+                    dataSource.fetchRestaurantStreet().flatMapLatest {
+                        fetch(dataSourceList.drop(1), restaurantStreet + it)
+                    }
+                }
+            }
+        }
+
+        return fetch(streets)
     }
 
-    override suspend fun fetchRestaurantStreet(
+    @ExperimentalCoroutinesApi
+    override fun fetchRestaurantStreet(
         location: Location,
         range: Range,
         index: Index,
         dataCount: Int
-    ): RestaurantStreet {
+    ): Flow<RestaurantStreet> {
         fun List<RestaurantData>.distinctAndFuse(): List<RestaurantData> {
             val set = HashSet<String>()
             val list = ArrayList<RestaurantData>()
@@ -50,13 +72,13 @@ class RestaurantRemoteDataSource @Inject constructor(
             return list
         }
 
-        return RestaurantStreet(
-            streets.fold<RestaurantDataSource, RestaurantStreet>(
-                EmptyRestaurantStreet
-            ) { result, dataSource ->
-                result + dataSource.fetchRestaurantStreet(location, range, index, dataCount)
-            }.restaurantDataList.distinctAndFuse()
-        )
+        val gurumenaviStreet =
+            streets.first().fetchRestaurantStreet(location, range, index, dataCount)
+        val hotpepperStreet = streets[1].fetchRestaurantStreet(location, range, index, dataCount)
+
+        return combine(gurumenaviStreet, hotpepperStreet) { gurumenavi, hotpepper ->
+            RestaurantStreet((gurumenavi + hotpepper).restaurantDataList.distinctAndFuse())
+        }
     }
 
     override suspend fun fetchRestaurant(id: Id): RestaurantData? {
@@ -84,27 +106,33 @@ class RestaurantRemoteDataSource @Inject constructor(
     private class HotpepperStreet(private val hotpepperApiClient: HotpepperApiClient) :
         RestaurantDataSource {
 
-        override suspend fun fetchRestaurantStreet(): RestaurantStreet {
-            return EmptyRestaurantStreet
+        @ExperimentalCoroutinesApi
+        override fun fetchRestaurantStreet(): Flow<RestaurantStreet> {
+            return flowOf(EmptyRestaurantStreet).flowOn(Dispatchers.IO)
         }
 
-        override suspend fun fetchRestaurantStreet(
+        @ExperimentalCoroutinesApi
+        override fun fetchRestaurantStreet(
             location: Location,
             range: Range,
             index: Index,
             dataCount: Int
-        ): RestaurantStreet {
-            return hotpepperApiClient.fetchHotpepper(
-                location.latitude,
-                location.longitude,
-                range,
-                index.toHotpepperValue(dataCount),
-                dataCount
-            )
+        ): Flow<RestaurantStreet> {
+            return flow {
+                emit(
+                    hotpepperApiClient.fetchHotpepper(
+                        location.latitude,
+                        location.longitude,
+                        range,
+                        index.toHotpepperValue(dataCount),
+                        dataCount
+                    )
+                )
+            }.flowOn(Dispatchers.IO)
         }
 
         override suspend fun fetchRestaurant(id: Id): RestaurantData? {
-            return hotpepperApiClient.fetchHotpepper(id)
+            return withContext(Dispatchers.IO) { hotpepperApiClient.fetchHotpepper(id) }
         }
 
         override suspend fun saveRestaurant(restaurantData: RestaurantData) {
@@ -127,28 +155,34 @@ class RestaurantRemoteDataSource @Inject constructor(
     private class GurumenaviStreet(private val gurumenaviApiClient: GurumenaviApiClient) :
         RestaurantDataSource {
 
-        override suspend fun fetchRestaurantStreet(): RestaurantStreet {
-            return EmptyRestaurantStreet
+        @ExperimentalCoroutinesApi
+        override fun fetchRestaurantStreet(): Flow<RestaurantStreet> {
+            return flowOf(EmptyRestaurantStreet).flowOn(Dispatchers.IO)
         }
 
-        override suspend fun fetchRestaurantStreet(
+        @ExperimentalCoroutinesApi
+        override fun fetchRestaurantStreet(
             location: Location,
             range: Range,
             index: Index,
             dataCount: Int
-        ): RestaurantStreet {
+        ): Flow<RestaurantStreet> {
 
-            return gurumenaviApiClient.fetchGurumenavi(
-                location.latitude,
-                location.longitude,
-                range,
-                index.toGurumenaviValue(),
-                dataCount
-            )
+            return flow {
+                emit(
+                    gurumenaviApiClient.fetchGurumenavi(
+                        location.latitude,
+                        location.longitude,
+                        range,
+                        index.toGurumenaviValue(),
+                        dataCount
+                    )
+                )
+            }.flowOn(Dispatchers.IO)
         }
 
         override suspend fun fetchRestaurant(id: Id): RestaurantData? {
-            return gurumenaviApiClient.fetchGurumenavi(id)
+            return withContext(Dispatchers.IO) { gurumenaviApiClient.fetchGurumenavi(id) }
         }
 
         override suspend fun saveRestaurant(restaurantData: RestaurantData) {

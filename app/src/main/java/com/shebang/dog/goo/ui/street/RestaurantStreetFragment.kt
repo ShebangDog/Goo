@@ -20,6 +20,7 @@ import com.shebang.dog.goo.ui.tab.TabbedFragment
 import com.shebang.dog.goo.util.EndlessRecyclerViewScrollListener
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import com.shebang.dog.goo.util.PermissionGranter
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_list) {
@@ -44,6 +45,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
     override val tabTitle: String
         get() = "FOOD"
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRestaurantListBinding.bind(view)
@@ -74,13 +76,14 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(view.context)
     }
 
+    @ExperimentalCoroutinesApi
     override fun onResume() {
         super.onResume()
 
         context?.also { context ->
             if (!isShownRecyclerViewItem() && PermissionGranter.checkPermissions(context)) {
                 fusedLocationClient.lastLocation.addOnSuccessListener {
-                    val location = convertAndroidLocation(it)
+                    val location = convertAndroidLocation(it ?: return@addOnSuccessListener)
                     currentLocation = location
                     LocationSharedPreferenceAccessor.setLocationResult(context, location)
 

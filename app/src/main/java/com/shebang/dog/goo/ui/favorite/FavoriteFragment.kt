@@ -10,6 +10,7 @@ import com.shebang.dog.goo.databinding.FragmentFavoriteListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
 import com.shebang.dog.goo.ext.assistedViewModels
 import com.shebang.dog.goo.ui.tab.TabbedFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
@@ -50,6 +51,7 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
         }
     }
 
+    @ExperimentalCoroutinesApi
     override fun onResume() {
         super.onResume()
 

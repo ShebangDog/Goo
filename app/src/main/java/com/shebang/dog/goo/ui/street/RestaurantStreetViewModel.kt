@@ -9,6 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.data.repository.RestaurantRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,11 +25,17 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
     val loadingState: LiveData<Boolean>
         get() = mutableLoadingState
 
+    @ExperimentalCoroutinesApi
     fun walkRestaurantStreet(location: Location, index: Index = Index(1)) {
-        viewModelScope.launch(Dispatchers.IO) {
-            mutableLoadingState.postValue(true)
-            update(repository.fetchRestaurantStreet(location, Range(5), index))
-            mutableLoadingState.postValue(false)
+        viewModelScope.launch {
+            repository.fetchRestaurantStreet(location, Range(5), index)
+                .onStart { mutableLoadingState.value = true }
+                .collect {
+                    val concatStreet = (mutableRestaurantStreet.value ?: EmptyRestaurantStreet) + it
+
+                    mutableRestaurantStreet.value = concatStreet
+                    mutableLoadingState.value = false
+                }
         }
     }
 
@@ -35,19 +44,11 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
         imageButton: ImageButton,
         favorite: Drawable?,
         border: Drawable?
-    ) = viewModelScope.launch(Dispatchers.IO) {
+    ) = viewModelScope.launch {
         imageButton.setImageDrawable(if (imageButton.isSelected) favorite else border)
         restaurantData.switchFavorite()
 
         repository.saveRestaurant(restaurantData)
     }
 
-    private fun update(restaurantStreet: RestaurantStreet, ifEmpty: () -> Unit = {}) {
-        when (restaurantStreet.restaurantDataList.isNotEmpty()) {
-            false -> ifEmpty()
-            true -> mutableRestaurantStreet.postValue(
-                (mutableRestaurantStreet.value ?: EmptyRestaurantStreet) + restaurantStreet
-            )
-        }
-    }
 }
