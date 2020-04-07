@@ -41,10 +41,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tool_bar"
 
+            app:tabIndicatorColor="@color/colorAccent"
             app:tabIconTint="@color/tab_selector"
             app:tabSelectedTextColor="@color/tab_selector" />
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
 
             android:layout_width="match_parent"
