@@ -6,14 +6,15 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.shebang.dog.goo.data.model.Id
 import com.shebang.dog.goo.data.model.RestaurantData
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RestaurantDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRestaurantData(restaurantData: RestaurantData)
+    suspend fun insertRestaurantData(restaurantData: RestaurantData)
 
     @Query("SELECT * FROM restaurant_data_table")
-    fun getRestaurantList(): List<RestaurantData>?
+    fun getRestaurantList(): Flow<List<RestaurantData>>
 
     @Query("DELETE FROM restaurant_data_table")
     fun deleteRestaurantStreet()
@@ -22,5 +23,5 @@ interface RestaurantDao {
     fun deleteRestaurantData(id: Id)
 
     @Query("SELECT * FROM restaurant_data_table WHERE id = :id")
-    fun getRestaurantData(id: Id): RestaurantData?
+    suspend fun getRestaurantData(id: Id): RestaurantData?
 }

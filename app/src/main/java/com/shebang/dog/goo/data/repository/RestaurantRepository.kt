@@ -3,6 +3,9 @@ package com.shebang.dog.goo.data.repository
 import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.di.annotation.scope.LocalDataSource
 import com.shebang.dog.goo.di.annotation.scope.RemoteDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class RestaurantRepository @Inject constructor(
@@ -12,46 +15,50 @@ class RestaurantRepository @Inject constructor(
     private var cache: RestaurantStreet? = null
     private val dataSourceList = listOf(restaurantRemoteDataSource, restaurantLocalDataSource)
 
-    override suspend fun fetchRestaurantStreet(): RestaurantStreet {
+    override fun fetchRestaurantStreet(): Flow<RestaurantStreet> {
         return restaurantLocalDataSource.fetchRestaurantStreet()
     }
 
-    override suspend fun fetchRestaurantStreet(
+    @ExperimentalCoroutinesApi
+    override fun fetchRestaurantStreet(
         location: Location,
         range: Range,
         index: Index,
         dataCount: Int
-    ): RestaurantStreet {
+    ): Flow<RestaurantStreet> {
 
-        suspend fun fetch(
+        fun fetch(
             restaurantDataSourceList: List<RestaurantDataSource>
-        ): RestaurantStreet {
+        ): Flow<RestaurantStreet> {
 
             return when (restaurantDataSourceList.isEmpty()) {
-                true -> EmptyRestaurantStreet
-                else -> {
+                true -> flowOf(EmptyRestaurantStreet).flowOn(Dispatchers.IO)
+                false -> {
                     val dataSource = restaurantDataSourceList.first()
                     val result = dataSource.fetchRestaurantStreet(location, range, index, dataCount)
-                    when (result.restaurantDataList.isEmpty()) {
-                        true -> fetch(restaurantDataSourceList.drop(1))
-                        false -> result
+
+                    result.flatMapLatest {
+                        if (it.restaurantDataList.isEmpty()) fetch(restaurantDataSourceList.drop(1))
+                        else flowOf(it).flowOn(Dispatchers.IO)
                     }
                 }
             }
         }
 
-        suspend fun RestaurantStreet.applyFavorite(): RestaurantStreet {
-            return RestaurantStreet(
-                restaurantDataList.map { restaurantLocalDataSource.fetchRestaurant(it.id) ?: it }
-            )
+        fun Flow<RestaurantStreet>.applyFavorite(): Flow<RestaurantStreet> {
+            return map { restaurantStreet ->
+                RestaurantStreet(restaurantStreet.restaurantDataList.map {
+                    restaurantLocalDataSource.fetchRestaurant(
+                        it.id
+                    ) ?: it
+                })
+            }
         }
 
-        val result = fetch(dataSourceList).applyFavorite()
-
-        updateCache(result)
-        saveRestaurants(result)
-
-        return result
+        return fetch(dataSourceList).applyFavorite().onEach {
+            updateCache(it)
+            saveRestaurants(it)
+        }
     }
 
     override suspend fun fetchRestaurant(id: Id): RestaurantData? {
