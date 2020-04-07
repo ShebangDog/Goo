@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.di
+package com.shebang.dog.goo.di.module
 
 import android.content.Context
 import androidx.room.Room
@@ -14,10 +14,12 @@ import com.shebang.dog.goo.data.repository.remote.api.gurumenavi.GurumenaviApiCl
 import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApi
 import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApiClient
 import com.shebang.dog.goo.data.repository.remote.api.hotpepper.HotpepperApiClientImpl
-import com.shebang.dog.goo.di.scope.LocalDataSource
-import com.shebang.dog.goo.di.scope.RemoteDataSource
+import com.shebang.dog.goo.di.annotation.scope.LocalDataSource
+import com.shebang.dog.goo.di.annotation.scope.RemoteDataSource
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -73,9 +75,16 @@ class ApplicationModule {
     }
 
     private fun createRetrofitBuilder(baseUrl: String): Retrofit {
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val client = OkHttpClient.Builder().addInterceptor(logging).build()
+
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
             .build()
     }
 }

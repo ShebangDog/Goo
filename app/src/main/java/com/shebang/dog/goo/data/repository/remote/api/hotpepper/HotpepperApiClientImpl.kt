@@ -32,9 +32,8 @@ class HotpepperApiClientImpl(
 
         RestaurantStreet(restaurantList)
     } catch (httpException: HttpException) {
-        RestaurantStreet(listOf())
+        EmptyRestaurantStreet
     }
-
 
     override suspend fun fetchHotpepper(id: Id, format: Format): RestaurantData? = try {
         extractRestaurantDataList(
@@ -49,16 +48,36 @@ class HotpepperApiClientImpl(
     }
 
     private fun extractRestaurantDataList(shopList: List<Shop>?): List<RestaurantData> {
+        fun List<String>.isContainedIn(string: String): Boolean {
+            return fold(false) { res, elem ->
+                res || string.contains(elem)
+            }
+        }
+
+        fun String.hasExtensionOfImage(): Boolean {
+            return this.contains(Regex(pattern = ".*\\.(jpg|jpeg|png|gif|bmp)"))
+        }
+
+        val excludingImageList = listOf("noimage")
+
         return shopList
             ?.map {
+                val location = if (it.lat != null && it.lng != null) Location(
+                    Latitude(it.lat!!.toDouble()),
+                    Longitude(it.lng!!.toDouble())
+                ) else null
+
                 RestaurantData(
                     Id(it.id ?: ""),
                     Name(it.name ?: ""),
-                    it.getImageUrlList().filterNotNull(),
-                    Location(
-                        Latitude(it.lat?.toDouble() ?: 0.0),
-                        Longitude(it.lng?.toDouble() ?: 0.0)
+                    ImageUrl(
+                        it.getImageUrlList()
+                            .filterNotNull()
+                            .filter { url ->
+                                url.isNotBlank() && !excludingImageList.isContainedIn(url) && url.hasExtensionOfImage()
+                            }
                     ),
+                    location,
                     Favorite(false)
                 )
             } ?: emptyList()

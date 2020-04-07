@@ -1,8 +1,11 @@
 package com.shebang.dog.goo.data.repository
 
 import com.shebang.dog.goo.data.model.*
-import com.shebang.dog.goo.di.scope.LocalDataSource
-import com.shebang.dog.goo.di.scope.RemoteDataSource
+import com.shebang.dog.goo.di.annotation.scope.LocalDataSource
+import com.shebang.dog.goo.di.annotation.scope.RemoteDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class RestaurantRepository @Inject constructor(
@@ -12,41 +15,49 @@ class RestaurantRepository @Inject constructor(
     private var cache: RestaurantStreet? = null
     private val dataSourceList = listOf(restaurantRemoteDataSource, restaurantLocalDataSource)
 
-    override suspend fun fetchRestaurantStreet(
-        location: Location,
-        range: Range
-    ): RestaurantStreet {
+    override fun fetchRestaurantStreet(): Flow<RestaurantStreet> {
+        return restaurantLocalDataSource.fetchRestaurantStreet()
+    }
 
-        suspend fun fetch(
+    @ExperimentalCoroutinesApi
+    override fun fetchRestaurantStreet(
+        location: Location,
+        range: Range,
+        index: Index,
+        dataCount: Int
+    ): Flow<RestaurantStreet> {
+
+        fun fetch(
             restaurantDataSourceList: List<RestaurantDataSource>
-        ): RestaurantStreet {
+        ): Flow<RestaurantStreet> {
 
             return when (restaurantDataSourceList.isEmpty()) {
-                true -> RestaurantStreet(listOf())
-                else -> {
+                true -> flowOf(EmptyRestaurantStreet).flowOn(Dispatchers.IO)
+                false -> {
                     val dataSource = restaurantDataSourceList.first()
-                    val result = dataSource.fetchRestaurantStreet(location, range)
-                    when (result.restaurantDataList.isEmpty()) {
-                        true -> fetch(restaurantDataSourceList.drop(1))
-                        false -> result
+                    val result = dataSource.fetchRestaurantStreet(location, range, index, dataCount)
+
+                    result.flatMapLatest {
+                        if (it.restaurantDataList.isEmpty()) fetch(restaurantDataSourceList.drop(1))
+                        else flowOf(it).flowOn(Dispatchers.IO)
                     }
                 }
             }
         }
 
-        suspend fun RestaurantStreet.applyFavorite(): RestaurantStreet {
-            return RestaurantStreet(
-                restaurantDataList.map { restaurantLocalDataSource.fetchRestaurant(it.id) ?: it }
-            )
+        fun Flow<RestaurantStreet>.applyFavorite(): Flow<RestaurantStreet> {
+            return map { restaurantStreet ->
+                RestaurantStreet(restaurantStreet.restaurantDataList.map {
+                    restaurantLocalDataSource.fetchRestaurant(
+                        it.id
+                    ) ?: it
+                })
+            }
         }
 
-        return when (cache?.restaurantDataList.isNullOrEmpty()) {
-            true -> fetch(dataSourceList).applyFavorite()
-                .also {
-                    updateCache(it)
-                    saveRestaurants(it)
-                }
-            else -> cache!!
+        return fetch(dataSourceList).applyFavorite().onEach {
+            updateCache(it)
+            saveRestaurants(it)
         }
     }
 
@@ -80,28 +91,24 @@ class RestaurantRepository @Inject constructor(
     }
 
     override suspend fun saveRestaurant(restaurantData: RestaurantData) {
-        restaurantLocalDataSource.saveRestaurant(restaurantData)
-        restaurantRemoteDataSource.saveRestaurant(restaurantData)
+        dataSourceList.forEach { it.saveRestaurant(restaurantData) }
     }
 
     override suspend fun saveRestaurants(restaurantStreet: RestaurantStreet) {
-        restaurantLocalDataSource.saveRestaurants(restaurantStreet)
-        restaurantRemoteDataSource.saveRestaurants(restaurantStreet)
+        dataSourceList.forEach { it.saveRestaurants(restaurantStreet) }
     }
 
     override fun deleteRestaurants() {
-        restaurantLocalDataSource.deleteRestaurants()
-        restaurantRemoteDataSource.deleteRestaurants()
+        dataSourceList.forEach { it.deleteRestaurants() }
     }
 
     override fun deleteRestaurantData(id: Id) {
-        restaurantLocalDataSource.deleteRestaurantData(id)
-        restaurantRemoteDataSource.deleteRestaurantData(id)
+        dataSourceList.forEach { it.deleteRestaurantData(id) }
     }
 
     private fun updateCache(restaurantStreet: RestaurantStreet) {
         val street = RestaurantStreet(cache?.restaurantDataList ?: emptyList())
-        val fusedStreet = restaurantStreet.restaurantDataList + street.restaurantDataList
+        val fusedStreet = (restaurantStreet + street).restaurantDataList
 
         cache = when (fusedStreet.isEmpty()) {
             true -> cache

@@ -7,7 +7,7 @@ import com.shebang.dog.goo.data.model.Location
 import com.shebang.dog.goo.data.model.Longitude
 
 object LocationSharedPreferenceAccessor {
-    const val KEY_LOCATION_RESULT = "location result"
+    private const val KEY_LOCATION_RESULT = "location result"
 
     fun setLocationResult(context: Context, location: Location) {
         PreferenceManager.getDefaultSharedPreferences(context)
@@ -17,7 +17,8 @@ object LocationSharedPreferenceAccessor {
     }
 
     fun getLocationResult(context: Context): Location? {
-        fun parseLocation(string: String?): Location? {
+        fun parseLocation(value: String?): Location? {
+            val string = value?.takeIf { it.isNotBlank() }
             return when (string != null) {
                 false -> null
                 true -> {
@@ -33,15 +34,5 @@ object LocationSharedPreferenceAccessor {
             .getString(KEY_LOCATION_RESULT, "")
 
         return parseLocation(result)
-    }
-
-    fun registerOnSharedPreferenceChangeListener(
-        context: Context,
-        onSharedPreferenceChange: (key: String) -> Unit
-    ) {
-        PreferenceManager.getDefaultSharedPreferences(context)
-            .registerOnSharedPreferenceChangeListener { _, string: String ->
-                onSharedPreferenceChange.invoke(string)
-            }
     }
 }

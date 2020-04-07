@@ -2,32 +2,48 @@ package com.shebang.dog.goo.data.repository.local
 
 import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.data.repository.RestaurantDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RestaurantLocalDataSource @Inject constructor(private val restaurantDao: RestaurantDao) :
     RestaurantDataSource {
 
-    override suspend fun fetchRestaurantStreet(
+    @ExperimentalCoroutinesApi
+    override fun fetchRestaurantStreet(
         location: Location,
-        range: Range
-    ): RestaurantStreet {
+        range: Range,
+        index: Index,
+        dataCount: Int
+    ): Flow<RestaurantStreet> {
 
-        return RestaurantStreet(
-            restaurantDao.getRestaurantList().orEmpty()
-                .filter { Location.distance(it.location, location) <= range.toDistance() }
-        )
+        return flowOf(EmptyRestaurantStreet).flowOn(Dispatchers.IO)
+    }
+
+    @ExperimentalCoroutinesApi
+    override fun fetchRestaurantStreet(): Flow<RestaurantStreet> {
+        return restaurantDao.getRestaurantList().map { RestaurantStreet(it) }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun fetchRestaurant(id: Id): RestaurantData? {
-        return restaurantDao.getRestaurantData(id)
+        return withContext(Dispatchers.IO) { restaurantDao.getRestaurantData(id) }
     }
 
     override suspend fun saveRestaurant(restaurantData: RestaurantData) {
-        restaurantDao.insertRestaurantData(restaurantData)
+        withContext(Dispatchers.IO) { restaurantDao.insertRestaurantData(restaurantData) }
     }
 
     override suspend fun saveRestaurants(restaurantStreet: RestaurantStreet) {
-        restaurantStreet.restaurantDataList.forEach { restaurantDao.insertRestaurantData(it) }
+        withContext(Dispatchers.IO) {
+            restaurantStreet.restaurantDataList.forEach {
+                restaurantDao.insertRestaurantData(it)
+            }
+        }
     }
 
     override fun deleteRestaurants() {

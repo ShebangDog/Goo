@@ -11,7 +11,7 @@ interface GurumenaviApi {
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double,
         @Query("range") range: Int,
-        @Query("offset") index: Int,
+        @Query("offset_page") index: Int,
         @Query("hit_per_page") dataCount: Int
     ): Gurumenavi
 

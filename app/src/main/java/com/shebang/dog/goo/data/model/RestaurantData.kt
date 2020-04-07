@@ -15,10 +15,10 @@ data class RestaurantData(
     val name: Name,
 
     @ColumnInfo(name = "image_url")
-    val imageUrl: List<String>,
+    val imageUrl: ImageUrl,
 
     @Embedded
-    val location: Location,
+    val location: Location?,
 
     @ColumnInfo(name = "favorite")
     var favorite: Favorite
@@ -34,8 +34,7 @@ data class RestaurantData(
         return RestaurantData(
             id,
             Name(name.value),
-            if (imageUrl.isEmpty() xor other.imageUrl.isEmpty()) imageUrl + other.imageUrl
-            else imageUrl,
+            imageUrl + other.imageUrl,
             location,
             favorite
         )

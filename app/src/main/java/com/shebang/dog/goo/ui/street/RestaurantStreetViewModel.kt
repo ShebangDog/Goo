@@ -9,6 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.shebang.dog.goo.data.model.*
 import com.shebang.dog.goo.data.repository.RestaurantRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,43 +21,34 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
     val restaurantStreet: LiveData<RestaurantStreet>
         get() = mutableRestaurantStreet
 
-    fun update(location: Location) = viewModelScope.launch(Dispatchers.IO) {
-        update(
-            repository.fetchRestaurantStreet(
-                location,
-                Range(1)
-            )
-        )
+    private val mutableLoadingState = MutableLiveData(false)
+    val loadingState: LiveData<Boolean>
+        get() = mutableLoadingState
+
+    @ExperimentalCoroutinesApi
+    fun walkRestaurantStreet(location: Location, index: Index = Index(1)) {
+        viewModelScope.launch {
+            repository.fetchRestaurantStreet(location, Range(5), index)
+                .onStart { mutableLoadingState.value = true }
+                .collect {
+                    val concatStreet = (mutableRestaurantStreet.value ?: EmptyRestaurantStreet) + it
+
+                    mutableRestaurantStreet.value = concatStreet
+                    mutableLoadingState.value = false
+                }
+        }
     }
 
-    fun favorite(
+    fun toggleFavorite(
         restaurantData: RestaurantData,
         imageButton: ImageButton,
         favorite: Drawable?,
         border: Drawable?
-    ) = viewModelScope.launch(Dispatchers.IO) {
+    ) = viewModelScope.launch {
         imageButton.setImageDrawable(if (imageButton.isSelected) favorite else border)
         restaurantData.switchFavorite()
 
         repository.saveRestaurant(restaurantData)
     }
 
-    fun save(restaurantData: RestaurantData) = viewModelScope.launch(Dispatchers.IO) {
-        repository.saveRestaurant(restaurantData)
-    }
-
-    fun delete(id: Id) = viewModelScope.launch(Dispatchers.IO) {
-        repository.deleteRestaurantData(id)
-    }
-
-    fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
-        repository.deleteRestaurants()
-    }
-
-    private fun update(restaurantStreet: RestaurantStreet, ifEmpty: () -> Unit = {}) {
-        when (restaurantStreet.restaurantDataList.isNotEmpty()) {
-            true -> mutableRestaurantStreet.postValue(restaurantStreet)
-            false -> ifEmpty.invoke()
-        }
-    }
 }
