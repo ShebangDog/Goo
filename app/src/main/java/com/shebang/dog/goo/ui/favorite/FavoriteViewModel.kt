@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shebang.dog.goo.data.model.RestaurantStreet
-import com.shebang.dog.goo.data.repository.RestaurantRepository
-import kotlinx.coroutines.Dispatchers
+import com.shebang.dog.goo.model.RestaurantStreet
+import com.shebang.dog.goo.data.RestaurantRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,11 +19,22 @@ class FavoriteViewModel @Inject constructor(private val repository: RestaurantRe
     val restaurantStreet: LiveData<RestaurantStreet>
         get() = mutableRestaurantStreet
 
-    fun walkFavoriteRestaurantStreet() = viewModelScope.launch(Dispatchers.IO) {
-        val favoriteRestaurantStreet =
-            repository.fetchRestaurantStreet().restaurantDataList.filter { it.favorite.value }
+    private val mutableLoadingState = MutableLiveData(false)
+    val loadingState: LiveData<Boolean>
+        get() = mutableLoadingState
 
-        mutableRestaurantStreet.postValue(RestaurantStreet(favoriteRestaurantStreet))
+    @ExperimentalCoroutinesApi
+    fun walkFavoriteRestaurantStreet() = viewModelScope.launch {
+        repository.fetchRestaurantStreet()
+            .onStart { mutableLoadingState.value = true }
+            .collect { street ->
+                val favoriteStreet = RestaurantStreet(
+                    street.restaurantDataList.filter { it.favorite.value }
+                )
+
+                mutableRestaurantStreet.value = favoriteStreet
+                mutableLoadingState.value = false
+            }
     }
 
 }

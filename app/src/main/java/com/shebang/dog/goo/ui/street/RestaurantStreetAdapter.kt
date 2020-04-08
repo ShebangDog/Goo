@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shebang.dog.goo.R
-import com.shebang.dog.goo.data.model.*
+import com.shebang.dog.goo.model.*
 import com.shebang.dog.goo.databinding.RestaurantCardViewBinding
 import com.shebang.dog.goo.databinding.RestaurantListItemBinding
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor

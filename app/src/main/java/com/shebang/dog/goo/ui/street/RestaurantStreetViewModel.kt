@@ -6,9 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shebang.dog.goo.data.model.*
-import com.shebang.dog.goo.data.repository.RestaurantRepository
-import kotlinx.coroutines.Dispatchers
+import com.shebang.dog.goo.model.*
+import com.shebang.dog.goo.data.RestaurantRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,9 +19,21 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
     val restaurantStreet: LiveData<RestaurantStreet>
         get() = mutableRestaurantStreet
 
+    private val mutableLoadingState = MutableLiveData(false)
+    val loadingState: LiveData<Boolean>
+        get() = mutableLoadingState
+
+    @ExperimentalCoroutinesApi
     fun walkRestaurantStreet(location: Location, index: Index = Index(1)) {
-        viewModelScope.launch(Dispatchers.IO) {
-            update(repository.fetchRestaurantStreet(location, Range(5), index))
+        viewModelScope.launch {
+            repository.fetchRestaurantStreet(location, Range(5), index)
+                .onStart { mutableLoadingState.value = true }
+                .collect {
+                    val concatStreet = (mutableRestaurantStreet.value ?: EmptyRestaurantStreet) + it
+
+                    mutableRestaurantStreet.value = concatStreet
+                    mutableLoadingState.value = false
+                }
         }
     }
 
@@ -29,19 +42,11 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
         imageButton: ImageButton,
         favorite: Drawable?,
         border: Drawable?
-    ) = viewModelScope.launch(Dispatchers.IO) {
+    ) = viewModelScope.launch {
         imageButton.setImageDrawable(if (imageButton.isSelected) favorite else border)
         restaurantData.switchFavorite()
 
         repository.saveRestaurant(restaurantData)
     }
 
-    private fun update(restaurantStreet: RestaurantStreet, ifEmpty: () -> Unit = {}) {
-        when (restaurantStreet.restaurantDataList.isNotEmpty()) {
-            false -> ifEmpty()
-            true -> mutableRestaurantStreet.postValue(
-                (mutableRestaurantStreet.value ?: EmptyRestaurantStreet) + restaurantStreet
-            )
-        }
-    }
 }

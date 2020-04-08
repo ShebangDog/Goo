@@ -2,9 +2,9 @@ package com.shebang.dog.goo.util
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import com.shebang.dog.goo.data.model.Latitude
-import com.shebang.dog.goo.data.model.Location
-import com.shebang.dog.goo.data.model.Longitude
+import com.shebang.dog.goo.model.Latitude
+import com.shebang.dog.goo.model.Location
+import com.shebang.dog.goo.model.Longitude
 
 object LocationSharedPreferenceAccessor {
     private const val KEY_LOCATION_RESULT = "location result"
