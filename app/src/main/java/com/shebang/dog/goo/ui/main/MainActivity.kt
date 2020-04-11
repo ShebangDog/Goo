@@ -47,6 +47,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAboutScreen() {
-        navigationController.navigate(R.id.action_homeFragment_to_aboutActivity)
+        navigationController.navigate(R.id.aboutActivity)
     }
 }

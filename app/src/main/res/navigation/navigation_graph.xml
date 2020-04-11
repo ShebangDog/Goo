@@ -27,11 +27,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.shebang.dog.goo.ui.home.HomeFragment"
-        android:label="HomeFragment">
-        <action
-            android:id="@+id/action_homeFragment_to_aboutActivity"
-            app:destination="@id/aboutActivity" />
-    </fragment>
+        android:label="HomeFragment" />
     <activity
         android:id="@+id/aboutActivity"
         android:name="com.shebang.dog.goo.ui.about.AboutActivity"
