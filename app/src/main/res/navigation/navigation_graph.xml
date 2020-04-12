@@ -6,8 +6,17 @@
 
     <fragment
         android:id="@+id/restaurantDetail"
-        android:name="com.shebang.dog.goo.ui.detail.RestaurantDetail"
-        android:label="RestaurantDetail" />
+        android:name="com.shebang.dog.goo.ui.detail.RestaurantDetailFragment"
+        android:label="RestaurantDetail">
+        <argument
+            android:name="name"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="thumbnail"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/restaurantStreetFragment"
         android:name="com.shebang.dog.goo.ui.street.RestaurantStreetFragment"
