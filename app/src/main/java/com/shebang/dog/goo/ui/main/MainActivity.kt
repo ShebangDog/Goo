@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.ActivityMainBinding
 import com.shebang.dog.goo.util.PermissionGranter
@@ -21,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         navigationController = findNavController(R.id.nav_host_fragment)
 
         setSupportActionBar(binding.toolBar)
+        setUpToolbarWithNavigationController()
     }
 
     override fun onStart() {
@@ -44,6 +47,12 @@ class MainActivity : AppCompatActivity() {
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setUpToolbarWithNavigationController() {
+        val appBarConfiguration = AppBarConfiguration(navigationController.graph)
+
+        binding.toolBar.setupWithNavController(navigationController, appBarConfiguration)
     }
 
     private fun showAboutScreen() {
