@@ -9,11 +9,7 @@
         android:name="com.shebang.dog.goo.ui.detail.RestaurantDetailFragment"
         android:label="RestaurantDetail">
         <argument
-            android:name="name"
-            android:defaultValue=""
-            app:argType="string" />
-        <argument
-            android:name="thumbnail"
+            android:name="id"
             android:defaultValue=""
             app:argType="string" />
     </fragment>
@@ -36,7 +32,11 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.shebang.dog.goo.ui.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment">
+        <action
+            android:id="@+id/action_homeFragment_to_restaurantDetail"
+            app:destination="@id/restaurantDetail" />
+    </fragment>
     <activity
         android:id="@+id/aboutActivity"
         android:name="com.shebang.dog.goo.ui.about.AboutActivity"
