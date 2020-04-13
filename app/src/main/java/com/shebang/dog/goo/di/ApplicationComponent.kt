@@ -18,6 +18,8 @@ import javax.inject.Singleton
         FavoriteFragmentModule::class,
         RestaurantStreetViewModelModule::class,
         FavoriteViewModelModule::class,
+        RestaurantDetailFragmentModule::class,
+        RestaurantDetailViewModelModule::class,
         AboutActivityModule::class
     ]
 )
