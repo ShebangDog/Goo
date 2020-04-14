@@ -80,7 +80,10 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         super.onResume()
 
         context?.also { context ->
-            if (PermissionGranter.checkPermissions(context)) {
+            if (restaurantStreetViewModel.isEmptyRestaurantStreet() &&
+                PermissionGranter.checkPermissions(context)
+            ) {
+
                 fusedLocationClient.lastLocation.addOnSuccessListener {
                     val location = convertAndroidLocation(it ?: return@addOnSuccessListener)
                     currentLocation = location

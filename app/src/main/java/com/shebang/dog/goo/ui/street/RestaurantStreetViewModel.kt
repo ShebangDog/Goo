@@ -29,6 +29,10 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
     val loadingState: LiveData<Boolean>
         get() = mutableLoadingState
 
+    fun isEmptyRestaurantStreet(): Boolean {
+        return restaurantStreet.value?.restaurantDataList.isNullOrEmpty()
+    }
+
     @ExperimentalCoroutinesApi
     fun walkRestaurantStreet(location: Location, index: Index = Index(1)) {
         viewModelScope.launch {
