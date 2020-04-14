@@ -1,9 +1,9 @@
 package com.shebang.dog.goo.data.remote
 
-import com.shebang.dog.goo.model.*
 import com.shebang.dog.goo.data.RestaurantDataSource
 import com.shebang.dog.goo.data.remote.api.gurumenavi.GurumenaviApiClient
 import com.shebang.dog.goo.data.remote.api.hotpepper.HotpepperApiClient
+import com.shebang.dog.goo.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -57,6 +57,7 @@ class RestaurantRemoteDataSource @Inject constructor(
                     if (set.add(key)) elem
                     else {
                         val index = list
+                            .asSequence()
                             .mapIndexed { index, restaurant -> index to restaurant }
                             .filter { it.second.name.formalize() == key }
                             .map { it.first }
