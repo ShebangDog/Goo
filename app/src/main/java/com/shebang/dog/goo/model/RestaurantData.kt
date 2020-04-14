@@ -36,7 +36,7 @@ data class RestaurantData(
             Name(name.value),
             imageUrl + other.imageUrl,
             location,
-            favorite
+            other.favorite or favorite
         )
     }
 
