@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.RestaurantListItemBinding
@@ -12,6 +13,7 @@ import com.shebang.dog.goo.model.EmptyRestaurantStreet
 import com.shebang.dog.goo.model.Location
 import com.shebang.dog.goo.model.RestaurantData
 import com.shebang.dog.goo.model.RestaurantStreet
+import com.shebang.dog.goo.ui.home.HomeFragmentDirections
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
 
@@ -56,6 +58,15 @@ class RestaurantStreetAdapter @Inject constructor(
                 setThumbnail(restaurantData.imageUrl)
 
                 setFavoriteIcon(restaurantData, favorite, border, onClick)
+            }
+
+            itemView.setOnClickListener {
+
+                val action = HomeFragmentDirections.actionToRestaurantDetail(
+                    restaurantData.id.value
+                )
+
+                it.findNavController().navigate(action)
             }
         }
 

@@ -3,12 +3,14 @@ package com.shebang.dog.goo.ui.favorite
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FavoriteListItemBinding
 import com.shebang.dog.goo.model.Location
 import com.shebang.dog.goo.model.RestaurantData
 import com.shebang.dog.goo.model.RestaurantStreet
+import com.shebang.dog.goo.ui.home.HomeFragmentDirections
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
 
@@ -46,6 +48,14 @@ class FavoriteAdapter @Inject constructor(
                 setThumbnail(restaurantData.imageUrl)
 
                 removeFavoriteIcon()
+
+                itemView.setOnClickListener {
+                    val action = HomeFragmentDirections.actionToRestaurantDetail(
+                        restaurantData.id.value
+                    )
+
+                    it.findNavController().navigate(action)
+                }
             }
 
         }

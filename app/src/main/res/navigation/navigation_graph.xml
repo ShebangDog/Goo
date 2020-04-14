@@ -34,7 +34,7 @@
         android:name="com.shebang.dog.goo.ui.home.HomeFragment"
         android:label="Goo">
         <action
-            android:id="@+id/action_homeFragment_to_restaurantDetail"
+            android:id="@+id/action_to_restaurantDetail"
             app:destination="@id/restaurantDetail" />
     </fragment>
     <activity
