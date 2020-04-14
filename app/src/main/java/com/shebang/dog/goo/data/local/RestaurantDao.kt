@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.shebang.dog.goo.model.Id
-import com.shebang.dog.goo.model.RestaurantData
+import com.shebang.dog.goo.model.restaurant.Id
+import com.shebang.dog.goo.model.restaurant.RestaurantData
 import kotlinx.coroutines.flow.Flow
 
 @Dao

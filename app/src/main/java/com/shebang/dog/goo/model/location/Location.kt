@@ -1,6 +1,7 @@
-package com.shebang.dog.goo.model
+package com.shebang.dog.goo.model.location
 
 import androidx.room.ColumnInfo
+import com.shebang.dog.goo.model.restaurant.Distance
 
 data class Location(
     @ColumnInfo(name = "latitude")
@@ -24,7 +25,9 @@ data class Location(
                 }
             }
 
-            return Distance(locationList.first().distanceTo(locationList[1]).toDouble())
+            return Distance(
+                locationList.first().distanceTo(locationList[1]).toDouble()
+            )
         }
     }
 }

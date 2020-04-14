@@ -1,7 +1,7 @@
 package com.shebang.dog.goo.model.converter
 
 import androidx.room.TypeConverter
-import com.shebang.dog.goo.model.ImageUrl
+import com.shebang.dog.goo.model.restaurant.ImageUrl
 
 class ImageUrlConverter {
     @TypeConverter
@@ -11,7 +11,10 @@ class ImageUrlConverter {
 
     @TypeConverter
     fun stringToImageUrl(string: String): ImageUrl {
-        return ImageUrl(string.split(separator).filter { it.isNotBlank() })
+        return ImageUrl(
+            string.split(
+                separator
+            ).filter { it.isNotBlank() })
     }
 
     companion object {

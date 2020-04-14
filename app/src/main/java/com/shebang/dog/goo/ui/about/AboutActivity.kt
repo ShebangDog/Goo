@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.shebang.dog.goo.R
-import com.shebang.dog.goo.model.AboutItem
-import com.shebang.dog.goo.model.Summary
-import com.shebang.dog.goo.model.Title
 import com.shebang.dog.goo.databinding.AboutListItemBinding
 import com.shebang.dog.goo.databinding.ActivityAboutBinding
+import com.shebang.dog.goo.model.about.AboutItem
+import com.shebang.dog.goo.model.about.Summary
+import com.shebang.dog.goo.model.about.Title
 import com.shebang.dog.goo.ui.tab.MyDaggerAppCompatActivity
 import javax.inject.Inject
 
@@ -56,7 +56,10 @@ class AboutActivity : MyDaggerAppCompatActivity(R.layout.activity_about) {
             AboutItem(
                 title = Title("Open source licenses"),
                 onClick = { showOssLicensesScreen(it.context) }),
-            AboutItem(title = Title("Currently version"), summary = Summary("1.1"))
+            AboutItem(
+                title = Title("Currently version"),
+                summary = Summary("1.1")
+            )
         )
 
         class AboutViewHolder(view: View) : RecyclerView.ViewHolder(view) {

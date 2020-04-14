@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco'
 apply plugin: 'de.mannodermaus.android-junit5'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 kapt {
     correctErrorTypes = true

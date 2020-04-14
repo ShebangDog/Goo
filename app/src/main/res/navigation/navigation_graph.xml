@@ -6,34 +6,32 @@
 
     <fragment
         android:id="@+id/restaurantDetail"
-        android:name="com.shebang.dog.goo.ui.detail.RestaurantDetail"
-        android:label="RestaurantDetail" />
+        android:name="com.shebang.dog.goo.ui.detail.RestaurantDetailFragment"
+        android:label="Goo">
+        <argument
+            android:name="id"
+            android:defaultValue="@null"
+            app:argType="com.shebang.dog.goo.model.restaurant.Id"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/restaurantStreetFragment"
         android:name="com.shebang.dog.goo.ui.street.RestaurantStreetFragment"
-        android:label="RestaurantStreetFragment">
-        <action
-            android:id="@+id/action_restaurantStreetFragment_to_restaurantDetail"
-            app:destination="@id/restaurantDetail" />
-    </fragment>
+        android:label="Goo" />
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.shebang.dog.goo.ui.favorite.FavoriteFragment"
-        android:label="FavoriteFragment">
-        <action
-            android:id="@+id/action_favoriteFragment_to_restaurantDetail"
-            app:destination="@id/restaurantDetail" />
-    </fragment>
+        android:label="Goo" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.shebang.dog.goo.ui.home.HomeFragment"
-        android:label="HomeFragment">
+        android:label="Goo">
         <action
-            android:id="@+id/action_homeFragment_to_aboutActivity"
-            app:destination="@id/aboutActivity" />
+            android:id="@+id/action_to_restaurantDetail"
+            app:destination="@id/restaurantDetail" />
     </fragment>
     <activity
         android:id="@+id/aboutActivity"
         android:name="com.shebang.dog.goo.ui.about.AboutActivity"
-        android:label="AboutActivity" />
+        android:label="Goo" />
 </navigation>

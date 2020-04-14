@@ -12,9 +12,9 @@ import com.shebang.dog.goo.databinding.FragmentRestaurantListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
 import com.shebang.dog.goo.ext.assistedViewModels
 import com.shebang.dog.goo.model.Index
-import com.shebang.dog.goo.model.Latitude
-import com.shebang.dog.goo.model.Location
-import com.shebang.dog.goo.model.Longitude
+import com.shebang.dog.goo.model.location.Latitude
+import com.shebang.dog.goo.model.location.Location
+import com.shebang.dog.goo.model.location.Longitude
 import com.shebang.dog.goo.ui.tab.TabbedFragment
 import com.shebang.dog.goo.util.EndlessRecyclerViewScrollListener
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
