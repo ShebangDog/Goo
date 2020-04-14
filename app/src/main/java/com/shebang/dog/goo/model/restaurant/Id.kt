@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.model
+package com.shebang.dog.goo.model.restaurant
 
 data class Id(val value: String) {
     override fun equals(other: Any?): Boolean {

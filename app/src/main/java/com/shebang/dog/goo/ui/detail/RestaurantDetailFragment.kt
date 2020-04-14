@@ -11,7 +11,7 @@ import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentRestaurantDetailBinding
 import com.shebang.dog.goo.di.ViewModelFactory
 import com.shebang.dog.goo.ext.assistedViewModels
-import com.shebang.dog.goo.model.Id
+import com.shebang.dog.goo.model.restaurant.Id
 import com.shebang.dog.goo.ui.tab.MyDaggerFragment
 import javax.inject.Inject
 

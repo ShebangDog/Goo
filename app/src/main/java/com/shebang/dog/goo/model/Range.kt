@@ -1,5 +1,7 @@
 package com.shebang.dog.goo.model
 
+import com.shebang.dog.goo.model.restaurant.Distance
+
 data class Range(val value: Int) {
     init {
         require((1..5).contains(value))
@@ -11,6 +13,10 @@ data class Range(val value: Int) {
 
     companion object {
         private val distanceList =
-            listOf(300, 500, 1000, 2000, 3000).map { Distance(it.toDouble()) }
+            listOf(300, 500, 1000, 2000, 3000).map {
+                Distance(
+                    it.toDouble()
+                )
+            }
     }
 }

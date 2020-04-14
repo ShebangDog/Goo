@@ -7,9 +7,9 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FavoriteListItemBinding
-import com.shebang.dog.goo.model.Location
-import com.shebang.dog.goo.model.RestaurantData
 import com.shebang.dog.goo.model.RestaurantStreet
+import com.shebang.dog.goo.model.location.Location
+import com.shebang.dog.goo.model.restaurant.RestaurantData
 import com.shebang.dog.goo.ui.home.HomeFragmentDirections
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject

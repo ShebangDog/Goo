@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.model
+package com.shebang.dog.goo.model.restaurant
 
 data class Favorite(val value: Boolean) {
     fun switch(): Favorite {

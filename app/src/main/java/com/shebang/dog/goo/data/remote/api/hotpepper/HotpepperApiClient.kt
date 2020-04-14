@@ -1,6 +1,12 @@
 package com.shebang.dog.goo.data.remote.api.hotpepper
 
-import com.shebang.dog.goo.model.*
+import com.shebang.dog.goo.model.Format
+import com.shebang.dog.goo.model.Range
+import com.shebang.dog.goo.model.RestaurantStreet
+import com.shebang.dog.goo.model.location.Latitude
+import com.shebang.dog.goo.model.location.Longitude
+import com.shebang.dog.goo.model.restaurant.Id
+import com.shebang.dog.goo.model.restaurant.RestaurantData
 
 interface HotpepperApiClient {
     suspend fun fetchHotpepper(

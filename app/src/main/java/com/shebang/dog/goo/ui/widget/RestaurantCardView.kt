@@ -11,10 +11,10 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.shebang.dog.goo.R
-import com.shebang.dog.goo.model.Distance
-import com.shebang.dog.goo.model.ImageUrl
-import com.shebang.dog.goo.model.Name
-import com.shebang.dog.goo.model.RestaurantData
+import com.shebang.dog.goo.model.restaurant.Distance
+import com.shebang.dog.goo.model.restaurant.ImageUrl
+import com.shebang.dog.goo.model.restaurant.Name
+import com.shebang.dog.goo.model.restaurant.RestaurantData
 
 class RestaurantCardView(context: Context, attr: AttributeSet) : MaterialCardView(context, attr) {
     private val nameTextView: TextView

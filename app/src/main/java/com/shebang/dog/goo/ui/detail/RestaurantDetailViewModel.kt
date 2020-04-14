@@ -2,7 +2,7 @@ package com.shebang.dog.goo.ui.detail
 
 import androidx.lifecycle.*
 import com.shebang.dog.goo.data.RestaurantRepository
-import com.shebang.dog.goo.model.Id
+import com.shebang.dog.goo.model.restaurant.Id
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
