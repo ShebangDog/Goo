@@ -17,17 +17,11 @@
         android:id="@+id/restaurantStreetFragment"
         android:name="com.shebang.dog.goo.ui.street.RestaurantStreetFragment"
         android:label="Goo">
-        <action
-            android:id="@+id/action_restaurantStreetFragment_to_restaurantDetail"
-            app:destination="@id/restaurantDetail" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.shebang.dog.goo.ui.favorite.FavoriteFragment"
         android:label="Goo">
-        <action
-            android:id="@+id/action_favoriteFragment_to_restaurantDetail"
-            app:destination="@id/restaurantDetail" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
