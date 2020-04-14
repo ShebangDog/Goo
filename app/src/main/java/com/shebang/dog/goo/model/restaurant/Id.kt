@@ -1,6 +1,8 @@
 package com.shebang.dog.goo.model.restaurant
 
-data class Id(val value: String) {
+import java.io.Serializable
+
+data class Id(val value: String) : Serializable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

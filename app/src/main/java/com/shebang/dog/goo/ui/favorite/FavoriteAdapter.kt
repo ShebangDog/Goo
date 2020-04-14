@@ -50,10 +50,8 @@ class FavoriteAdapter @Inject constructor(
                 removeFavoriteIcon()
 
                 itemView.setOnClickListener {
-                    val action = HomeFragmentDirections.actionToRestaurantDetail(
-                        restaurantData.id.value
-                    )
 
+                    val action = HomeFragmentDirections.actionToRestaurantDetail(restaurantData.id)
                     it.findNavController().navigate(action)
                 }
             }

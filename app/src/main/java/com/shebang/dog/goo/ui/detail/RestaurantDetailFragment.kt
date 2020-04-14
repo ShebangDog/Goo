@@ -11,7 +11,6 @@ import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentRestaurantDetailBinding
 import com.shebang.dog.goo.di.ViewModelFactory
 import com.shebang.dog.goo.ext.assistedViewModels
-import com.shebang.dog.goo.model.restaurant.Id
 import com.shebang.dog.goo.ui.tab.MyDaggerFragment
 import javax.inject.Inject
 
@@ -47,6 +46,8 @@ class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_d
         }
 
         val args: RestaurantDetailFragmentArgs by navArgs()
-        viewModel.showDetail(Id(args.id))
+        val id = args.id ?: return
+
+        viewModel.showDetail(id)
     }
 }
