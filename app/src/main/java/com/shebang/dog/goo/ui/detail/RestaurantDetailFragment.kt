@@ -1,9 +1,8 @@
 package com.shebang.dog.goo.ui.detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -23,14 +22,6 @@ class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_d
 
     private lateinit var binding: FragmentRestaurantDetailBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentRestaurantDetailBinding.bind(view)
@@ -39,9 +30,14 @@ class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_d
             restaurantData?.also {
                 binding.restaurantNameTextView.text = it.name.value
 
-                Glide.with(view)
-                    .load(it.imageUrl)
-                    .into(binding.thumbnailImageView)
+                when (val firstImageUrl = it.imageUrl.stringList.firstOrNull()) {
+                    null -> binding.thumbnailImageView.isVisible = false
+                    else -> {
+                        Glide.with(view)
+                            .load(firstImageUrl)
+                            .into(binding.thumbnailImageView)
+                    }
+                }
             }
         }
 
