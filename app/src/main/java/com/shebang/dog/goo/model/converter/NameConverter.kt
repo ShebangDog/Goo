@@ -1,7 +1,7 @@
 package com.shebang.dog.goo.model.converter
 
 import androidx.room.TypeConverter
-import com.shebang.dog.goo.model.Name
+import com.shebang.dog.goo.model.restaurant.Name
 
 class NameConverter {
     @TypeConverter

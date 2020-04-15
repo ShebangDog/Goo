@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.model
+package com.shebang.dog.goo.model.about
 
 import android.view.View
 

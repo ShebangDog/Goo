@@ -6,10 +6,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shebang.dog.goo.model.*
 import com.shebang.dog.goo.data.RestaurantRepository
+import com.shebang.dog.goo.model.EmptyRestaurantStreet
+import com.shebang.dog.goo.model.Index
+import com.shebang.dog.goo.model.Range
+import com.shebang.dog.goo.model.RestaurantStreet
+import com.shebang.dog.goo.model.location.Location
+import com.shebang.dog.goo.model.restaurant.RestaurantData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +28,10 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
     private val mutableLoadingState = MutableLiveData(false)
     val loadingState: LiveData<Boolean>
         get() = mutableLoadingState
+
+    fun isEmptyRestaurantStreet(): Boolean {
+        return restaurantStreet.value?.restaurantDataList.isNullOrEmpty()
+    }
 
     @ExperimentalCoroutinesApi
     fun walkRestaurantStreet(location: Location, index: Index = Index(1)) {

@@ -1,7 +1,7 @@
 package com.shebang.dog.goo.model.converter
 
 import androidx.room.TypeConverter
-import com.shebang.dog.goo.model.Longitude
+import com.shebang.dog.goo.model.location.Longitude
 
 class LongitudeConverter {
     @TypeConverter

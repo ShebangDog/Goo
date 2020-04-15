@@ -1,9 +1,10 @@
-package com.shebang.dog.goo.model
+package com.shebang.dog.goo.model.restaurant
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.shebang.dog.goo.model.location.Location
 
 @Entity(tableName = "restaurant_data_table")
 data class RestaurantData(
@@ -36,7 +37,7 @@ data class RestaurantData(
             Name(name.value),
             imageUrl + other.imageUrl,
             location,
-            favorite
+            other.favorite or favorite
         )
     }
 
