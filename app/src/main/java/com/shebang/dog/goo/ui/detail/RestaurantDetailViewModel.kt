@@ -16,6 +16,8 @@ class RestaurantDetailViewModel @Inject constructor(repository: RestaurantReposi
         }
     }
 
+    val restaurantImageUrlList = restaurantData.map { it?.imageUrl?.stringList ?: emptyList() }
+
     fun showDetail(id: Id) = viewModelScope.launch {
         restaurantId.value = id
     }
