@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,16 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentRestaurantDetailBinding
 import com.shebang.dog.goo.di.ViewModelFactory
-import com.shebang.dog.goo.ext.assistedViewModels
 import com.shebang.dog.goo.ui.tab.MyDaggerFragment
 import javax.inject.Inject
 
 class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_detail) {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel by assistedViewModels {
-        viewModelFactory.create(RestaurantDetailViewModel::class.java)
-    }
+    private val viewModel by viewModels<RestaurantDetailViewModel> { viewModelFactory }
 
     private lateinit var binding: FragmentRestaurantDetailBinding
     private val restaurantThumbnailAdapter = RestaurantThumbnailAdapter()

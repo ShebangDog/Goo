@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,6 @@ import com.google.android.gms.location.LocationServices
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentRestaurantListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
-import com.shebang.dog.goo.ext.assistedViewModels
 import com.shebang.dog.goo.model.Index
 import com.shebang.dog.goo.model.location.Latitude
 import com.shebang.dog.goo.model.location.Location
@@ -26,10 +26,8 @@ import javax.inject.Inject
 
 class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_list) {
     @Inject
-    lateinit var restaurantStreetViewModelFactory: ViewModelFactory
-    private val restaurantStreetViewModel by assistedViewModels {
-        restaurantStreetViewModelFactory.create(RestaurantStreetViewModel::class.java)
-    }
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel by viewModels<RestaurantStreetViewModel> { viewModelFactory }
 
     @Inject
     lateinit var restaurantStreetAdapter: RestaurantStreetAdapter
@@ -61,12 +59,12 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
 
         val linearLayoutManager = LinearLayoutManager(context)
 
-        restaurantStreetViewModel.restaurantStreet.observe(viewLifecycleOwner) {
+        viewModel.restaurantStreet.observe(viewLifecycleOwner) {
             restaurantStreetAdapter.restaurantStreet = it
         }
 
         binding.progressBar.show()
-        restaurantStreetViewModel.loadingState.observe(viewLifecycleOwner) {
+        viewModel.loadingState.observe(viewLifecycleOwner) {
             binding.progressBar.apply { if (it) show() else hide() }
         }
 
@@ -77,7 +75,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
             addOnScrollListener(object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                     currentLocation?.also {
-                        restaurantStreetViewModel.walkRestaurantStreet(it, Index(page + 1))
+                        viewModel.walkRestaurantStreet(it, Index(page + 1))
                     }
                 }
             })
@@ -91,7 +89,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         super.onResume()
 
         context?.also { context ->
-            if (restaurantStreetViewModel.isEmptyRestaurantStreet() &&
+            if (viewModel.isEmptyRestaurantStreet() &&
                 PermissionGranter.checkPermissions(context)
             ) {
 
@@ -100,7 +98,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
                     currentLocation = location
                     LocationSharedPreferenceAccessor.setLocationResult(context, location)
 
-                    restaurantStreetViewModel.walkRestaurantStreet(location)
+                    viewModel.walkRestaurantStreet(location)
                 }
 
             }
