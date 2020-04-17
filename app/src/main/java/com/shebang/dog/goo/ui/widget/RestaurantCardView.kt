@@ -5,43 +5,34 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
-import com.shebang.dog.goo.R
+import com.shebang.dog.goo.databinding.RestaurantCardViewBinding
 import com.shebang.dog.goo.model.restaurant.Distance
 import com.shebang.dog.goo.model.restaurant.ImageUrl
 import com.shebang.dog.goo.model.restaurant.Name
 import com.shebang.dog.goo.model.restaurant.RestaurantData
 
 class RestaurantCardView(context: Context, attr: AttributeSet) : MaterialCardView(context, attr) {
-    private val nameTextView: TextView
-    private val distanceTextView: TextView
-    private val thumbnailImageView: ImageView
-    private val favoriteImageButton: ImageButton
+    private val binding: RestaurantCardViewBinding
 
     init {
         val inflater = LayoutInflater.from(context)
-        inflater.inflate(R.layout.restaurant_card_view, this, true)
 
-        nameTextView = findViewById(R.id.name_text_view)
-        distanceTextView = findViewById(R.id.distance_text_view)
-        thumbnailImageView = findViewById(R.id.thumbnail_image_view)
-        favoriteImageButton = findViewById(R.id.favorite_image_button)
+        binding = RestaurantCardViewBinding.inflate(inflater, this, true)
     }
 
     fun setName(name: Name) {
-        nameTextView.text = name.value
+        binding.nameTextView.text = name.value
     }
 
     fun setDistance(distance: Distance) {
-        distanceTextView.text = distance.toString()
+        binding.distanceTextView.text = distance.toString()
     }
 
     fun setThumbnail(imageUrl: ImageUrl) {
-        thumbnailImageView.apply {
+        binding.thumbnailImageView.apply {
             isVisible = imageUrl.stringList.isNotEmpty()
 
             also {
@@ -60,11 +51,11 @@ class RestaurantCardView(context: Context, attr: AttributeSet) : MaterialCardVie
         border: Drawable?,
         onClick: (RestaurantData, ImageButton, Drawable?, Drawable?) -> Unit
     ) {
-        favoriteImageButton.apply {
+        binding.favoriteImageButton.apply {
             isSelected = restaurantData.favorite.value
 
             setImageDrawable(
-                if (favoriteImageButton.isSelected) favorite
+                if (isSelected) favorite
                 else border
             )
 
@@ -81,11 +72,11 @@ class RestaurantCardView(context: Context, attr: AttributeSet) : MaterialCardVie
     }
 
     fun removeFavoriteIcon() {
-        favoriteImageButton.isVisible = false
+        binding.favoriteImageButton.isVisible = false
     }
 
     fun hideDistanceTextView() {
-        distanceTextView.isVisible = false
+        binding.distanceTextView.isVisible = false
     }
 
 }
