@@ -2,7 +2,6 @@ package com.shebang.dog.goo.ui.street
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.navigation.findNavController
@@ -28,11 +27,10 @@ class RestaurantStreetAdapter @Inject constructor(
         }
 
     class RestaurantStreetViewHolder(
-        view: View
-    ) : RecyclerView.ViewHolder(view) {
-        private val binding = RestaurantListItemBinding.bind(view)
-        private val context = view.context
+        private val binding: RestaurantListItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
+        private val context = binding.root.context
         private val border = context.getDrawable(R.drawable.ic_favorite_border_pink_24dp)
         private val favorite = context.getDrawable(R.drawable.ic_favorite_pink_24dp)
 
@@ -70,10 +68,10 @@ class RestaurantStreetAdapter @Inject constructor(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantStreetViewHolder {
-        val inflate = LayoutInflater.from(parent.context)
-            .inflate(R.layout.restaurant_list_item, parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = RestaurantListItemBinding.inflate(inflater, parent, false)
 
-        return RestaurantStreetViewHolder(inflate)
+        return RestaurantStreetViewHolder(binding)
     }
 
     override fun getItemCount(): Int {

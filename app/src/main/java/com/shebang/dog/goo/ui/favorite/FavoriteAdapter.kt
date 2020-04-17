@@ -1,11 +1,9 @@
 package com.shebang.dog.goo.ui.favorite
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FavoriteListItemBinding
 import com.shebang.dog.goo.model.RestaurantStreet
 import com.shebang.dog.goo.model.location.Location
@@ -25,10 +23,8 @@ class FavoriteAdapter @Inject constructor(
         }
 
     class RestaurantStreetViewHolder(
-        view: View
-    ) : RecyclerView.ViewHolder(view) {
-        private val binding = FavoriteListItemBinding.bind(view)
-        private val context = view.context
+        private val binding: FavoriteListItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun setRestaurantData(restaurantData: RestaurantData) {
             val cardView = binding.cardView
@@ -60,10 +56,10 @@ class FavoriteAdapter @Inject constructor(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantStreetViewHolder {
-        val inflate = LayoutInflater.from(parent.context)
-            .inflate(R.layout.favorite_list_item, parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = FavoriteListItemBinding.inflate(inflater, parent, false)
 
-        return RestaurantStreetViewHolder(inflate)
+        return RestaurantStreetViewHolder(binding)
     }
 
     override fun getItemCount(): Int {

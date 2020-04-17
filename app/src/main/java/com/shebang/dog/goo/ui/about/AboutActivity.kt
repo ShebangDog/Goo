@@ -62,9 +62,8 @@ class AboutActivity : MyDaggerAppCompatActivity(R.layout.activity_about) {
             )
         )
 
-        class AboutViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            private val binding = AboutListItemBinding.bind(view)
-            private val context = view.context
+        class AboutViewHolder(private val binding: AboutListItemBinding) :
+            RecyclerView.ViewHolder(binding.root) {
 
             fun setAbout(about: AboutItem) {
                 setTitle(about.title)
@@ -91,10 +90,10 @@ class AboutActivity : MyDaggerAppCompatActivity(R.layout.activity_about) {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AboutViewHolder {
-            val inflate = LayoutInflater.from(parent.context)
-                .inflate(R.layout.about_list_item, parent, false)
+            val inflater = LayoutInflater.from(parent.context)
+            val binding = AboutListItemBinding.inflate(inflater, parent, false)
 
-            return AboutViewHolder(inflate)
+            return AboutViewHolder(binding)
         }
 
         override fun getItemCount(): Int {
