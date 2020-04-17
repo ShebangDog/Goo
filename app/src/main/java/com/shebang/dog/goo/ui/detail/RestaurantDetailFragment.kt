@@ -1,7 +1,9 @@
 package com.shebang.dog.goo.ui.detail
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
@@ -24,9 +26,18 @@ class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_d
     private lateinit var binding: FragmentRestaurantDetailBinding
     private val restaurantThumbnailAdapter = RestaurantThumbnailAdapter()
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentRestaurantDetailBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentRestaurantDetailBinding.bind(view)
 
         val horizontalLinearLayoutManager = LinearLayoutManager(context).apply {
             orientation = RecyclerView.HORIZONTAL

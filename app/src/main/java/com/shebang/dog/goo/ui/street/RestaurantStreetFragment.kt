@@ -1,7 +1,9 @@
 package com.shebang.dog.goo.ui.street
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +35,6 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
     lateinit var restaurantStreetAdapter: RestaurantStreetAdapter
 
     private lateinit var binding: FragmentRestaurantListBinding
-    private lateinit var linearLayoutManager: LinearLayoutManager
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var currentLocation: Location? = null
@@ -44,11 +45,21 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
     override val tabTitle: String
         get() = "FOOD"
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentRestaurantListBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentRestaurantListBinding.bind(view)
-        linearLayoutManager = LinearLayoutManager(context)
+
+        val linearLayoutManager = LinearLayoutManager(context)
 
         restaurantStreetViewModel.restaurantStreet.observe(viewLifecycleOwner) {
             restaurantStreetAdapter.restaurantStreet = it
