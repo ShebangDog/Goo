@@ -37,6 +37,8 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var currentLocation: Location? = null
 
+    private var currentPage = 0
+
     override val tabIconId: Int
         get() = R.drawable.ic_local_dining_black_24dp
 
@@ -48,6 +50,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = FragmentRestaurantListBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -74,8 +77,9 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
 
             addOnScrollListener(object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                    currentPage += 1
                     currentLocation?.also {
-                        viewModel.walkRestaurantStreet(it, Index(page + 1))
+                        viewModel.walkRestaurantStreet(it, Index(currentPage + 1))
                     }
                 }
             })
