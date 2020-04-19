@@ -5,9 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shebang.dog.goo.R
@@ -19,7 +18,7 @@ import javax.inject.Inject
 class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_detail) {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel by viewModels<RestaurantDetailViewModel> { viewModelFactory }
+    private val viewModel by activityViewModels<RestaurantDetailViewModel> { viewModelFactory }
 
     private lateinit var binding: FragmentRestaurantDetailBinding
     private val restaurantThumbnailAdapter = RestaurantThumbnailAdapter()
@@ -54,10 +53,5 @@ class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_d
             if (it.isEmpty()) binding.restaurantThumbnailRecyclerView.isVisible = false
             restaurantThumbnailAdapter.restaurantThumbnailList = it
         }
-
-        val args: RestaurantDetailFragmentArgs by navArgs()
-        val id = args.id ?: return
-
-        viewModel.showDetail(id)
     }
 }

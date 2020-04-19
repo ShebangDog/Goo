@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
@@ -11,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentFavoriteListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
-import com.shebang.dog.goo.ui.home.HomeFragmentDirections
+import com.shebang.dog.goo.ui.detail.RestaurantDetailViewModel
 import com.shebang.dog.goo.ui.tab.TabbedFragment
 import com.shebang.dog.goo.ui.widget.RestaurantCardView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,6 +22,7 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private val viewModel by viewModels<FavoriteViewModel> { viewModelFactory }
+    private val sharedViewModel by activityViewModels<RestaurantDetailViewModel> { viewModelFactory }
 
     @Inject
     lateinit var favoriteAdapter: FavoriteAdapter
@@ -59,9 +61,8 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
             layoutManager = LinearLayoutManager(view.context)
             adapter = favoriteAdapter.apply {
                 onClickListener = RestaurantCardView.OnClickListener { it, restaurantData ->
-
-                    val action = HomeFragmentDirections.actionToRestaurantDetail(restaurantData.id)
-                    it.findNavController().navigate(action)
+                    sharedViewModel.showDetail(restaurantData.id)
+                    it.findNavController().navigate(R.id.restaurantDetail)
                 }
             }
         }
