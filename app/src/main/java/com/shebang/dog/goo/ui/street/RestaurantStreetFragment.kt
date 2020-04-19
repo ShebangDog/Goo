@@ -1,8 +1,13 @@
 package com.shebang.dog.goo.ui.street
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -10,12 +15,13 @@ import com.google.android.gms.location.LocationServices
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentRestaurantListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
-import com.shebang.dog.goo.ext.assistedViewModels
 import com.shebang.dog.goo.model.Index
 import com.shebang.dog.goo.model.location.Latitude
 import com.shebang.dog.goo.model.location.Location
 import com.shebang.dog.goo.model.location.Longitude
+import com.shebang.dog.goo.ui.detail.RestaurantDetailViewModel
 import com.shebang.dog.goo.ui.tab.TabbedFragment
+import com.shebang.dog.goo.ui.widget.RestaurantCardView
 import com.shebang.dog.goo.util.EndlessRecyclerViewScrollListener
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import com.shebang.dog.goo.util.PermissionGranter
@@ -24,19 +30,19 @@ import javax.inject.Inject
 
 class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_list) {
     @Inject
-    lateinit var restaurantStreetViewModelFactory: ViewModelFactory
-    private val restaurantStreetViewModel by assistedViewModels {
-        restaurantStreetViewModelFactory.create(RestaurantStreetViewModel::class.java)
-    }
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel by viewModels<RestaurantStreetViewModel> { viewModelFactory }
+    private val sharedViewModel by activityViewModels<RestaurantDetailViewModel> { viewModelFactory }
 
     @Inject
     lateinit var restaurantStreetAdapter: RestaurantStreetAdapter
 
     private lateinit var binding: FragmentRestaurantListBinding
-    private lateinit var linearLayoutManager: LinearLayoutManager
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var currentLocation: Location? = null
+
+    private var currentPage = 0
 
     override val tabIconId: Int
         get() = R.drawable.ic_local_dining_black_24dp
@@ -44,29 +50,62 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
     override val tabTitle: String
         get() = "FOOD"
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        binding = FragmentRestaurantListBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
     @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentRestaurantListBinding.bind(view)
-        linearLayoutManager = LinearLayoutManager(context)
 
-        restaurantStreetViewModel.restaurantStreet.observe(viewLifecycleOwner) {
+        val linearLayoutManager = LinearLayoutManager(context)
+
+        viewModel.restaurantStreet.observe(viewLifecycleOwner) {
             restaurantStreetAdapter.restaurantStreet = it
         }
 
         binding.progressBar.show()
-        restaurantStreetViewModel.loadingState.observe(viewLifecycleOwner) {
+        viewModel.loadingState.observe(viewLifecycleOwner) {
             binding.progressBar.apply { if (it) show() else hide() }
         }
 
         binding.restaurantListRecyclerView.apply {
             layoutManager = linearLayoutManager
-            adapter = restaurantStreetAdapter
+            adapter = restaurantStreetAdapter.apply {
+
+                onClickFavoriteIconListener =
+                    RestaurantCardView.OnClickFavoriteIconListener { restaurantData, imageButton, favorite, border ->
+
+                        imageButton.isSelected = !imageButton.isSelected
+
+                        viewModel.toggleFavorite(
+                            restaurantData,
+                            imageButton,
+                            favorite,
+                            border
+                        )
+                    }
+
+                onClickListener = RestaurantCardView.OnClickListener { it, restaurantData ->
+
+                    sharedViewModel.showDetail(restaurantData.id)
+                    it.findNavController().navigate(R.id.restaurantDetail)
+                }
+
+            }
 
             addOnScrollListener(object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                    currentPage += 1
                     currentLocation?.also {
-                        restaurantStreetViewModel.walkRestaurantStreet(it, Index(page + 1))
+                        viewModel.walkRestaurantStreet(it, Index(currentPage + 1))
                     }
                 }
             })
@@ -80,7 +119,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         super.onResume()
 
         context?.also { context ->
-            if (restaurantStreetViewModel.isEmptyRestaurantStreet() &&
+            if (viewModel.isEmptyRestaurantStreet() &&
                 PermissionGranter.checkPermissions(context)
             ) {
 
@@ -89,7 +128,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
                     currentLocation = location
                     LocationSharedPreferenceAccessor.setLocationResult(context, location)
 
-                    restaurantStreetViewModel.walkRestaurantStreet(location)
+                    viewModel.walkRestaurantStreet(location)
                 }
 
             }
