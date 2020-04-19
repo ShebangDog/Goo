@@ -1,10 +1,7 @@
 package com.shebang.dog.goo.ui.street
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageButton
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.RestaurantListItemBinding
@@ -12,7 +9,7 @@ import com.shebang.dog.goo.model.EmptyRestaurantStreet
 import com.shebang.dog.goo.model.RestaurantStreet
 import com.shebang.dog.goo.model.location.Location
 import com.shebang.dog.goo.model.restaurant.RestaurantData
-import com.shebang.dog.goo.ui.home.HomeFragmentDirections
+import com.shebang.dog.goo.ui.widget.RestaurantCardView
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
 
@@ -26,6 +23,9 @@ class RestaurantStreetAdapter @Inject constructor(
             notifyDataSetChanged()
         }
 
+    var onClickFavoriteIconListener: RestaurantCardView.OnClickFavoriteIconListener? = null
+    var onClickListener: RestaurantCardView.OnClickListener? = null
+
     class RestaurantStreetViewHolder(
         private val binding: RestaurantListItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -36,8 +36,10 @@ class RestaurantStreetAdapter @Inject constructor(
 
         fun setRestaurantData(
             restaurantData: RestaurantData,
-            onClick: (RestaurantData, ImageButton, Drawable?, Drawable?) -> Unit
+            onClickFavoriteIconListener: RestaurantCardView.OnClickFavoriteIconListener?,
+            onClickListener: RestaurantCardView.OnClickListener?
         ) {
+
             val cardView = binding.cardView
 
             cardView.apply {
@@ -55,14 +57,10 @@ class RestaurantStreetAdapter @Inject constructor(
 
                 setThumbnail(restaurantData.imageUrl)
 
-                setFavoriteIcon(restaurantData, favorite, border, onClick)
+                setFavoriteIcon(restaurantData, favorite, border, onClickFavoriteIconListener)
             }
 
-            itemView.setOnClickListener {
-
-                val action = HomeFragmentDirections.actionToRestaurantDetail(restaurantData.id)
-                it.findNavController().navigate(action)
-            }
+            itemView.setOnClickListener { onClickListener?.onClick(it, restaurantData) }
         }
 
     }
@@ -79,10 +77,10 @@ class RestaurantStreetAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: RestaurantStreetViewHolder, position: Int) {
-        holder.setRestaurantData(restaurantStreet.restaurantDataList[position]) { restaurantData, imageButton, favorite, border ->
-            imageButton.isSelected = !imageButton.isSelected
-
-            restaurantStreetViewModel.toggleFavorite(restaurantData, imageButton, favorite, border)
-        }
+        holder.setRestaurantData(
+            restaurantStreet.restaurantDataList[position],
+            onClickFavoriteIconListener,
+            onClickListener
+        )
     }
 }

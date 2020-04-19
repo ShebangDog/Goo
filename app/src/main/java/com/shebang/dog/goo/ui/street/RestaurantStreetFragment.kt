@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -17,7 +18,9 @@ import com.shebang.dog.goo.model.Index
 import com.shebang.dog.goo.model.location.Latitude
 import com.shebang.dog.goo.model.location.Location
 import com.shebang.dog.goo.model.location.Longitude
+import com.shebang.dog.goo.ui.home.HomeFragmentDirections
 import com.shebang.dog.goo.ui.tab.TabbedFragment
+import com.shebang.dog.goo.ui.widget.RestaurantCardView
 import com.shebang.dog.goo.util.EndlessRecyclerViewScrollListener
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import com.shebang.dog.goo.util.PermissionGranter
@@ -73,7 +76,28 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
 
         binding.restaurantListRecyclerView.apply {
             layoutManager = linearLayoutManager
-            adapter = restaurantStreetAdapter
+            adapter = restaurantStreetAdapter.apply {
+
+                onClickFavoriteIconListener =
+                    RestaurantCardView.OnClickFavoriteIconListener { restaurantData, imageButton, favorite, border ->
+
+                        imageButton.isSelected = !imageButton.isSelected
+
+                        viewModel.toggleFavorite(
+                            restaurantData,
+                            imageButton,
+                            favorite,
+                            border
+                        )
+                    }
+
+                onClickListener = RestaurantCardView.OnClickListener { it, restaurantData ->
+
+                    val action = HomeFragmentDirections.actionToRestaurantDetail(restaurantData.id)
+                    it.findNavController().navigate(action)
+                }
+
+            }
 
             addOnScrollListener(object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {

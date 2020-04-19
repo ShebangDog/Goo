@@ -2,13 +2,12 @@ package com.shebang.dog.goo.ui.favorite
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.shebang.dog.goo.databinding.FavoriteListItemBinding
 import com.shebang.dog.goo.model.RestaurantStreet
 import com.shebang.dog.goo.model.location.Location
 import com.shebang.dog.goo.model.restaurant.RestaurantData
-import com.shebang.dog.goo.ui.home.HomeFragmentDirections
+import com.shebang.dog.goo.ui.widget.RestaurantCardView
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
 
@@ -22,11 +21,16 @@ class FavoriteAdapter @Inject constructor(
             notifyDataSetChanged()
         }
 
+    var onClickListener: RestaurantCardView.OnClickListener? = null
+
     class RestaurantStreetViewHolder(
         private val binding: FavoriteListItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun setRestaurantData(restaurantData: RestaurantData) {
+        fun setRestaurantData(
+            restaurantData: RestaurantData,
+            onClickListener: RestaurantCardView.OnClickListener?
+        ) {
             val cardView = binding.cardView
 
             cardView.apply {
@@ -45,11 +49,7 @@ class FavoriteAdapter @Inject constructor(
 
                 removeFavoriteIcon()
 
-                itemView.setOnClickListener {
-
-                    val action = HomeFragmentDirections.actionToRestaurantDetail(restaurantData.id)
-                    it.findNavController().navigate(action)
-                }
+                itemView.setOnClickListener { onClickListener?.onClick(it, restaurantData) }
             }
 
         }
@@ -67,6 +67,6 @@ class FavoriteAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: RestaurantStreetViewHolder, position: Int) {
-        holder.setRestaurantData(restaurantStreet.restaurantDataList[position])
+        holder.setRestaurantData(restaurantStreet.restaurantDataList[position], onClickListener)
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageButton
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
@@ -49,7 +50,7 @@ class RestaurantCardView(context: Context, attr: AttributeSet) : MaterialCardVie
         restaurantData: RestaurantData,
         favorite: Drawable?,
         border: Drawable?,
-        onClick: (RestaurantData, ImageButton, Drawable?, Drawable?) -> Unit
+        onClickFavoriteIconListener: OnClickFavoriteIconListener?
     ) {
         binding.favoriteImageButton.apply {
             isSelected = restaurantData.favorite.value
@@ -60,7 +61,7 @@ class RestaurantCardView(context: Context, attr: AttributeSet) : MaterialCardVie
             )
 
             setOnClickListener {
-                onClick.invoke(
+                onClickFavoriteIconListener?.onClickFavoriteIcon(
                     restaurantData,
                     it as ImageButton,
                     favorite,
@@ -79,4 +80,49 @@ class RestaurantCardView(context: Context, attr: AttributeSet) : MaterialCardVie
         binding.distanceTextView.isVisible = false
     }
 
+    interface OnClickFavoriteIconListener {
+        fun onClickFavoriteIcon(
+            restaurantData: RestaurantData,
+            imageButton: ImageButton,
+            favorite: Drawable?,
+            border: Drawable?
+        )
+    }
+
+    interface OnClickListener {
+        fun onClick(
+            view: View,
+            restaurantData: RestaurantData
+        )
+    }
+
+    companion object {
+        fun OnClickFavoriteIconListener(
+            onClickFavoriteIcon: (
+                restaurantData: RestaurantData,
+                imageButton: ImageButton,
+                favorite: Drawable?,
+                border: Drawable?
+            ) -> Unit
+        ): OnClickFavoriteIconListener {
+            return object : OnClickFavoriteIconListener {
+                override fun onClickFavoriteIcon(
+                    restaurantData: RestaurantData,
+                    imageButton: ImageButton,
+                    favorite: Drawable?,
+                    border: Drawable?
+                ) {
+                    onClickFavoriteIcon(restaurantData, imageButton, favorite, border)
+                }
+            }
+        }
+
+        fun OnClickListener(onClick: (view: View, restaurantData: RestaurantData) -> Unit): OnClickListener {
+            return object : OnClickListener {
+                override fun onClick(view: View, restaurantData: RestaurantData) {
+                    onClick(view, restaurantData)
+                }
+            }
+        }
+    }
 }
