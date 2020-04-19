@@ -13,9 +13,8 @@ import com.shebang.dog.goo.ui.widget.RestaurantCardView
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
 
-class RestaurantStreetAdapter @Inject constructor(
-    private val restaurantStreetViewModel: RestaurantStreetViewModel
-) : RecyclerView.Adapter<RestaurantStreetAdapter.RestaurantStreetViewHolder>() {
+class RestaurantStreetAdapter @Inject constructor() :
+    RecyclerView.Adapter<RestaurantStreetAdapter.RestaurantStreetViewHolder>() {
 
     var restaurantStreet: RestaurantStreet = EmptyRestaurantStreet
         set(value) {

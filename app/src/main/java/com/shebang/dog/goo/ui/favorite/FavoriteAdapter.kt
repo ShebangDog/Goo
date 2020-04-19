@@ -11,9 +11,8 @@ import com.shebang.dog.goo.ui.widget.RestaurantCardView
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
 
-class FavoriteAdapter @Inject constructor(
-    private val favoriteViewModel: FavoriteViewModel
-) : RecyclerView.Adapter<FavoriteAdapter.RestaurantStreetViewHolder>() {
+class FavoriteAdapter @Inject constructor() :
+    RecyclerView.Adapter<FavoriteAdapter.RestaurantStreetViewHolder>() {
 
     var restaurantStreet: RestaurantStreet = RestaurantStreet(emptyList())
         set(value) {
