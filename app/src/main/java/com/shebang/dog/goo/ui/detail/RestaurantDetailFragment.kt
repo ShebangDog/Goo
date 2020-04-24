@@ -44,8 +44,35 @@ class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_d
         }
 
         viewModel.restaurantImageUrlList.observe(viewLifecycleOwner) {
-            if (it.isEmpty()) binding.viewPager.isVisible = false
+            showViewPager()
+            when {
+                it.isEmpty() -> {
+                    hideViewPager()
+                }
+                it.size == 1 -> {
+                    hideIndicator()
+                }
+            }
+
             restaurantThumbnailAdapter.restaurantThumbnailList = it
         }
+    }
+
+    private fun hideViewPager() {
+        binding.viewPager.isVisible = false
+        hideIndicator()
+    }
+
+    private fun hideIndicator() {
+        binding.dotsIndicator.isVisible = false
+    }
+
+    private fun showViewPager() {
+        binding.viewPager.isVisible = true
+        showIndicator()
+    }
+
+    private fun showIndicator() {
+        binding.dotsIndicator.isVisible = true
     }
 }
