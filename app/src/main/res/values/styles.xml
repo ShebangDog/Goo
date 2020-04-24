@@ -1,10 +1,10 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="titleTextColor">@color/titleTextColor</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="android:colorSecondary">@color/secondaryColor</item>
+        <item name="colorOnSurface">@color/primaryColor</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
