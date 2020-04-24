@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.shebang.dog.goo.databinding.RestaurantDetailThumbnailBinding
@@ -30,6 +31,7 @@ class RestaurantThumbnailAdapter :
                 Glide.with(binding.root)
                     .load(imageUrl)
                     .listener(GlideListener(binding.progressBar))
+                    .transform(RoundedCorners(25))
                     .into(it)
             }
         }
