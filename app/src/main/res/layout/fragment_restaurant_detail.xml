@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.shebang.dog.goo.ui.detail.RestaurantDetailViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -27,6 +36,7 @@
                     android:id="@+id/view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="256dp"
+                    android:visibility="@{viewModel.restaurantImageUrlList.empty ? View.GONE : View.VISIBLE}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -42,6 +52,7 @@
                     app:dotsSize="14dp"
                     app:dotsSpacing="4dp"
                     app:dotsWidthFactor="2.5"
+                    android:visibility="@{viewModel.restaurantImageUrlList.size() &lt; 2 ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="@id/view_pager"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -54,9 +65,12 @@
                     android:layout_height="wrap_content"
 
                     android:layout_marginBottom="4dp"
+
+                    android:text="@{viewModel.restaurantData.name.value}"
                     android:textAlignment="center"
                     android:textColor="#DE000000"
                     android:textSize="18sp"
+
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
