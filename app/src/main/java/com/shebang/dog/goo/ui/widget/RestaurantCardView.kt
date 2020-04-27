@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.card.MaterialCardView
 import com.shebang.dog.goo.databinding.RestaurantCardViewBinding
 import com.shebang.dog.goo.model.restaurant.Distance
@@ -40,6 +41,7 @@ class RestaurantCardView(context: Context, attr: AttributeSet) : MaterialCardVie
                 if (it.isVisible) {
                     Glide.with(it.context)
                         .load(imageUrl.stringList.first())
+                        .transform(RoundedCorners(18))
                         .into(it)
                 }
             }

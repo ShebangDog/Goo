@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentRestaurantDetailBinding
 import com.shebang.dog.goo.di.ViewModelFactory
@@ -36,13 +34,9 @@ class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_d
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val horizontalLinearLayoutManager = LinearLayoutManager(context).apply {
-            orientation = RecyclerView.HORIZONTAL
-        }
-
-        binding.restaurantThumbnailRecyclerView.apply {
-            adapter = restaurantThumbnailAdapter
-            layoutManager = horizontalLinearLayoutManager
+        binding.apply {
+            viewPager.adapter = restaurantThumbnailAdapter
+            dotsIndicator.setViewPager2(viewPager)
         }
 
         viewModel.restaurantData.observe(viewLifecycleOwner) { restaurantData ->
@@ -50,7 +44,7 @@ class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_d
         }
 
         viewModel.restaurantImageUrlList.observe(viewLifecycleOwner) {
-            if (it.isEmpty()) binding.restaurantThumbnailRecyclerView.isVisible = false
+            if (it.isEmpty()) binding.viewPager.isVisible = false
             restaurantThumbnailAdapter.restaurantThumbnailList = it
         }
     }
