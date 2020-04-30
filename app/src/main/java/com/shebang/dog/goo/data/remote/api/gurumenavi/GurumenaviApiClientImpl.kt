@@ -2,7 +2,7 @@ package com.shebang.dog.goo.data.remote.api.gurumenavi
 
 import com.shebang.dog.goo.data.response.gurumenavi.Rest
 import com.shebang.dog.goo.model.EmptyRestaurantStreet
-import com.shebang.dog.goo.model.Range
+import com.shebang.dog.goo.model.query.Range
 import com.shebang.dog.goo.model.RestaurantStreet
 import com.shebang.dog.goo.model.location.Latitude
 import com.shebang.dog.goo.model.location.Location

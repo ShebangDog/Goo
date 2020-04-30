@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.model
+package com.shebang.dog.goo.model.query
 
 import com.shebang.dog.goo.model.restaurant.Distance
 

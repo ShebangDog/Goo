@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shebang.dog.goo.data.RestaurantRepository
 import com.shebang.dog.goo.model.EmptyRestaurantStreet
-import com.shebang.dog.goo.model.Index
-import com.shebang.dog.goo.model.Range
+import com.shebang.dog.goo.model.query.Index
+import com.shebang.dog.goo.model.query.Range
 import com.shebang.dog.goo.model.RestaurantStreet
 import com.shebang.dog.goo.model.location.Location
 import com.shebang.dog.goo.model.restaurant.RestaurantData
@@ -34,9 +34,16 @@ class RestaurantStreetViewModel @Inject constructor(private val repository: Rest
     }
 
     @ExperimentalCoroutinesApi
-    fun walkRestaurantStreet(location: Location, index: Index = Index(1)) {
+    fun walkRestaurantStreet(
+        location: Location, index: Index = Index(
+            1
+        )
+    ) {
         viewModelScope.launch {
-            repository.fetchRestaurantStreet(location, Range(5), index)
+            repository.fetchRestaurantStreet(
+                location,
+                Range(5), index
+            )
                 .onStart { mutableLoadingState.value = true }
                 .collect {
                     val concatStreet = (mutableRestaurantStreet.value ?: EmptyRestaurantStreet) + it

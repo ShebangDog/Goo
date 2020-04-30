@@ -2,8 +2,8 @@ package com.shebang.dog.goo.data.remote.api.hotpepper
 
 import com.shebang.dog.goo.data.response.hotpepper.Shop
 import com.shebang.dog.goo.model.EmptyRestaurantStreet
-import com.shebang.dog.goo.model.Format
-import com.shebang.dog.goo.model.Range
+import com.shebang.dog.goo.model.query.Format
+import com.shebang.dog.goo.model.query.Range
 import com.shebang.dog.goo.model.RestaurantStreet
 import com.shebang.dog.goo.model.location.Latitude
 import com.shebang.dog.goo.model.location.Location
