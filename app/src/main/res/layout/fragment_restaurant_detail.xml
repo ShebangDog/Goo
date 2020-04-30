@@ -57,7 +57,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:progressMode="true" />
 
-                <com.shebang.dog.goo.ui.widget.SelectableItemCardView
+                <com.shebang.dog.goo.ui.widget.ItemWithImageCardView
                     android:id="@+id/restaurant_name_card_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/view_pager" />
 
-                <com.shebang.dog.goo.ui.widget.SelectableItemCardView
+                <com.shebang.dog.goo.ui.widget.ItemWithImageCardView
                     android:id="@+id/phone_card_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                     app:contentsText="@{viewModel.restaurantData.phoneNumber.value}"
                     app:layout_constraintTop_toBottomOf="@id/restaurant_name_card_view" />
 
-                <com.shebang.dog.goo.ui.widget.SelectableItemCardView
+                <com.shebang.dog.goo.ui.widget.ItemWithImageCardView
                     android:id="@+id/map_card_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

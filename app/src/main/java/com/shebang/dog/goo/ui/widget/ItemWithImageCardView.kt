@@ -6,26 +6,26 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import com.google.android.material.card.MaterialCardView
 import com.shebang.dog.goo.R
-import com.shebang.dog.goo.databinding.SelectableItemCardViewBinding
+import com.shebang.dog.goo.databinding.ItemWithImageCardViewBinding
 
-class SelectableItemCardView(context: Context, attr: AttributeSet) :
+class ItemWithImageCardView(context: Context, attr: AttributeSet) :
     MaterialCardView(context, attr) {
 
-    private val binding: SelectableItemCardViewBinding
+    private val binding: ItemWithImageCardViewBinding
     private val typedArray = context.theme.obtainStyledAttributes(
         attr,
-        R.styleable.SelectableItemCardView,
+        R.styleable.ItemWithImageCardView,
         0, 0
     )
 
     init {
         val inflater = LayoutInflater.from(context)
-        binding = SelectableItemCardViewBinding.inflate(inflater, this, true)
+        binding = ItemWithImageCardViewBinding.inflate(inflater, this, true)
 
         typedArray.apply {
             try {
-                setIconSrc(getDrawable(R.styleable.SelectableItemCardView_iconSrc))
-                setContentsText(getString(R.styleable.SelectableItemCardView_contentsText))
+                setIconSrc(getDrawable(R.styleable.ItemWithImageCardView_iconSrc))
+                setContentsText(getString(R.styleable.ItemWithImageCardView_contentsText))
             } finally {
                 recycle()
             }

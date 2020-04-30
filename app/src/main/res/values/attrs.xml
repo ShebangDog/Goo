@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="SelectableItemCardView">
+    <declare-styleable name="ItemWithImageCardView">
         <attr name="iconSrc" format="reference" />
         <attr name="contentsText" format="string" />
     </declare-styleable>
