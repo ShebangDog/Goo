@@ -74,6 +74,9 @@ class HotpepperApiClientImpl(
                     Longitude(it.lng!!.toDouble())
                 ) else null
 
+                val address = it.address ?: ""
+                val phoneNumber = it.tel ?: ""
+
                 RestaurantData(
                     Id(it.id ?: ""),
                     Name(it.name ?: ""),
@@ -84,6 +87,8 @@ class HotpepperApiClientImpl(
                                 url.isNotBlank() && !excludingImageList.isContainedIn(url) && url.hasExtensionOfImage()
                             }
                     ),
+                    PhoneNumber(phoneNumber),
+                    Address(address),
                     location,
                     Favorite(false)
                 )
