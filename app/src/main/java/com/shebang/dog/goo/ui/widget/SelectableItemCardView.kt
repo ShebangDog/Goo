@@ -4,11 +4,13 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.cardview.widget.CardView
+import com.google.android.material.card.MaterialCardView
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.SelectableItemCardViewBinding
 
-class SelectableItemCardView(context: Context, attr: AttributeSet) : CardView(context, attr) {
+class SelectableItemCardView(context: Context, attr: AttributeSet) :
+    MaterialCardView(context, attr) {
+
     private val binding: SelectableItemCardViewBinding
     private val typedArray = context.theme.obtainStyledAttributes(
         attr,
@@ -22,7 +24,7 @@ class SelectableItemCardView(context: Context, attr: AttributeSet) : CardView(co
 
         typedArray.apply {
             try {
-                setIcon(getDrawable(R.styleable.SelectableItemCardView_iconSrc))
+                setIconSrc(getDrawable(R.styleable.SelectableItemCardView_iconSrc))
                 setContentsText(getString(R.styleable.SelectableItemCardView_contentsText))
             } finally {
                 recycle()
@@ -37,11 +39,11 @@ class SelectableItemCardView(context: Context, attr: AttributeSet) : CardView(co
         requestLayout()
     }
 
-    private fun setIcon(drawable: Drawable?) {
+    fun setIconSrc(drawable: Drawable?) {
         setter(drawable) { binding.iconImageButton.setImageDrawable(it) }
     }
 
-    private fun setContentsText(string: String?) {
+    fun setContentsText(string: String?) {
         setter(string) { binding.contentsTextView.text = it }
     }
 }
