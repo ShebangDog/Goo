@@ -4,8 +4,8 @@ import com.shebang.dog.goo.data.RestaurantDataSource
 import com.shebang.dog.goo.data.remote.api.gurumenavi.GurumenaviApiClient
 import com.shebang.dog.goo.data.remote.api.hotpepper.HotpepperApiClient
 import com.shebang.dog.goo.model.EmptyRestaurantStreet
-import com.shebang.dog.goo.model.Index
-import com.shebang.dog.goo.model.Range
+import com.shebang.dog.goo.model.query.Index
+import com.shebang.dog.goo.model.query.Range
 import com.shebang.dog.goo.model.RestaurantStreet
 import com.shebang.dog.goo.model.location.Location
 import com.shebang.dog.goo.model.restaurant.Id

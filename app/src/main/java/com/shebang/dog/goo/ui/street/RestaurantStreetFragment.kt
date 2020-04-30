@@ -15,7 +15,7 @@ import com.google.android.gms.location.LocationServices
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentRestaurantListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
-import com.shebang.dog.goo.model.Index
+import com.shebang.dog.goo.model.query.Index
 import com.shebang.dog.goo.model.location.Latitude
 import com.shebang.dog.goo.model.location.Location
 import com.shebang.dog.goo.model.location.Longitude
@@ -105,7 +105,10 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                     currentPage += 1
                     currentLocation?.also {
-                        viewModel.walkRestaurantStreet(it, Index(currentPage + 1))
+                        viewModel.walkRestaurantStreet(
+                            it,
+                            Index(currentPage + 1)
+                        )
                     }
                 }
             })
