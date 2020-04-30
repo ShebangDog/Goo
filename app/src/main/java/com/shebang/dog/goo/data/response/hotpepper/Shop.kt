@@ -14,24 +14,35 @@ class Shop {
     @SerializedName("photo")
     @Expose
     var photo: Photo? = null
+
     @SerializedName("large_area")
     @Expose
     var largeArea: LargeArea? = null
+
     @SerializedName("party_capacity")
     @Expose
     var partyCapacity: String? = null
+
     @SerializedName("large_service_area")
     @Expose
     var largeServiceArea: LargeServiceArea? = null
+
+    @SerializedName("tel")
+    @Expose
+    var tel: String? = null
+
     @SerializedName("address")
     @Expose
     var address: String? = null
+
     @SerializedName("mobile_access")
     @Expose
     var mobileAccess: String? = null
+
     @SerializedName("id")
     @Expose
     var id: String? = null
+
     @SerializedName("lng")
     @Expose
     var lng: String? = null

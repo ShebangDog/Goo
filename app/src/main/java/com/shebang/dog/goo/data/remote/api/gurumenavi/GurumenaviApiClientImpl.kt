@@ -58,11 +58,16 @@ class GurumenaviApiClientImpl(
                         Longitude(rawLongitude)
                     ) else null
 
+                val address = it.address ?: ""
+                val phoneNumber = it.tel ?: ""
+
                 RestaurantData(
                     Id(it.id ?: ""),
                     Name(it.name ?: ""),
                     ImageUrl(
                         it.getImageUrlList().filterNotNull().filter { url -> url.isNotBlank() }),
+                    PhoneNumber(phoneNumber),
+                    Address(address),
                     location,
                     Favorite(false)
                 )

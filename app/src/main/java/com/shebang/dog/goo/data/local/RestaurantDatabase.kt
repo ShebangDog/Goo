@@ -14,7 +14,9 @@ import com.shebang.dog.goo.model.restaurant.RestaurantData
     ImageUrlConverter::class,
     LatitudeConverter::class,
     LongitudeConverter::class,
-    FavoriteConverter::class
+    FavoriteConverter::class,
+    AddressConverter::class,
+    PhoneNumberConverter::class
 )
 abstract class RestaurantDatabase : RoomDatabase() {
     abstract fun restaurantDao(): RestaurantDao
