@@ -46,4 +46,8 @@ class ItemWithImageCardView(context: Context, attr: AttributeSet) :
     fun setContentsText(string: String?) {
         setter(string) { binding.contentsTextView.text = it }
     }
+
+    fun setOnIconClickListener(onClickListener: OnClickListener) {
+        setter(onClickListener) { binding.iconImageButton.setOnClickListener(it) }
+    }
 }
