@@ -1,6 +1,6 @@
 package com.shebang.dog.goo.data.remote.api.gurumenavi
 
-import com.shebang.dog.goo.model.Range
+import com.shebang.dog.goo.model.query.Range
 import com.shebang.dog.goo.model.RestaurantStreet
 import com.shebang.dog.goo.model.location.Latitude
 import com.shebang.dog.goo.model.location.Longitude

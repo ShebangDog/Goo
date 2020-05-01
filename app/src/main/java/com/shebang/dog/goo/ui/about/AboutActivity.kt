@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -65,28 +63,10 @@ class AboutActivity : MyDaggerAppCompatActivity(R.layout.activity_about) {
         class AboutViewHolder(private val binding: AboutListItemBinding) :
             RecyclerView.ViewHolder(binding.root) {
 
-            fun setAbout(about: AboutItem) {
-                setTitle(about.title)
-
-                about.summary.also {
-                    if (it == null) binding.summaryTextView.isVisible = false
-                    else setSummary(it)
-                }
-
-                about.onClick?.also { setOnClick(it) }
+            fun bindAbout(aboutItem: AboutItem) {
+                binding.aboutItem = aboutItem
             }
 
-            private fun setTitle(title: Title) {
-                binding.titleTextView.text = title.value
-            }
-
-            private fun setSummary(summary: Summary) {
-                binding.summaryTextView.text = summary.value
-            }
-
-            private fun setOnClick(onClick: (View) -> Unit) {
-                binding.item.setOnClickListener(onClick)
-            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AboutViewHolder {
@@ -101,7 +81,7 @@ class AboutActivity : MyDaggerAppCompatActivity(R.layout.activity_about) {
         }
 
         override fun onBindViewHolder(holder: AboutViewHolder, position: Int) {
-            holder.setAbout(aboutList[position])
+            holder.bindAbout(aboutItem = aboutList[position])
         }
 
         private fun showOssLicensesScreen(context: Context) {

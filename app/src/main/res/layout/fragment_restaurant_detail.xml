@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.shebang.dog.goo.ui.detail.RestaurantDetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="256dp"
+            android:visibility="@{viewModel.restaurantImageUrlList.empty ? View.GONE : View.VISIBLE}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -21,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
+            android:visibility="@{viewModel.restaurantImageUrlList.size() &lt; 2 ? View.GONE : View.VISIBLE}"
             app:dotsCornerRadius="8dp"
             app:dotsSize="14dp"
             app:dotsSpacing="4dp"
@@ -30,15 +41,33 @@
             app:layout_constraintRight_toRightOf="parent"
             app:progressMode="true" />
 
-        <TextView
-            android:id="@+id/restaurant_name_text_view"
-
+        <com.shebang.dog.goo.ui.widget.ItemWithImageCardView
+            android:id="@+id/restaurant_name_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            app:contentsText="@{viewModel.restaurantData.name.value}"
+            app:iconSrc="@drawable/ic_baseline_restaurant_24"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_pager" />
+
+        <com.shebang.dog.goo.ui.widget.ItemWithImageCardView
+            android:id="@+id/phone_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentsText="@{viewModel.restaurantData.phoneNumber.value}"
+            app:iconSrc="@drawable/ic_outline_phone_24"
+            app:layout_constraintTop_toBottomOf="@id/restaurant_name_card_view" />
+
+        <com.shebang.dog.goo.ui.widget.ItemWithImageCardView
+            android:id="@+id/map_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentsText="@{viewModel.restaurantData.address.value}"
+            app:iconSrc="@drawable/ic_baseline_place_24"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phone_card_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

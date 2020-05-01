@@ -3,6 +3,7 @@ package com.shebang.dog.goo.ui.detail
 import androidx.lifecycle.*
 import com.shebang.dog.goo.data.RestaurantRepository
 import com.shebang.dog.goo.model.restaurant.Id
+import com.shebang.dog.goo.model.restaurant.RestaurantData
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -11,12 +12,16 @@ class RestaurantDetailViewModel @Inject constructor(repository: RestaurantReposi
 
     private val restaurantId: MutableLiveData<Id> = MutableLiveData()
     val restaurantData = restaurantId.switchMap {
-        liveData {
+        liveData<RestaurantData?> {
             emit(repository.fetchRestaurant(it))
         }
     }
 
-    val restaurantImageUrlList = restaurantData.map { it?.imageUrl?.stringList ?: emptyList() }
+    val restaurantImageUrlList = restaurantData.switchMap {
+        liveData<List<String>> {
+            emit(it?.imageUrl?.stringList ?: emptyList())
+        }
+    }
 
     fun showDetail(id: Id) = viewModelScope.launch {
         restaurantId.value = id

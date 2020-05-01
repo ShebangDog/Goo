@@ -10,8 +10,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="2dp"
-
             app:cardCornerRadius="10dp"
+
+            app:cardPreventCornerOverlap="false"
             app:cardUseCompatPadding="true"
 
             app:layout_constraintEnd_toEndOf="parent"
@@ -24,17 +25,14 @@
 
                 android:background="?attr/selectableItemBackground"
 
-                android:minHeight="78dp">
+                android:minHeight="99dp">
 
                 <ImageView
                     android:id="@+id/thumbnail_image_view"
 
                     android:layout_width="91dp"
                     android:layout_height="99dp"
-
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:scaleType="fitXY"
 
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

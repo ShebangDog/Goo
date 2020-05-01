@@ -2,7 +2,7 @@ package com.shebang.dog.goo.data.remote.api.gurumenavi
 
 import com.shebang.dog.goo.data.response.gurumenavi.Rest
 import com.shebang.dog.goo.model.EmptyRestaurantStreet
-import com.shebang.dog.goo.model.Range
+import com.shebang.dog.goo.model.query.Range
 import com.shebang.dog.goo.model.RestaurantStreet
 import com.shebang.dog.goo.model.location.Latitude
 import com.shebang.dog.goo.model.location.Location
@@ -58,11 +58,16 @@ class GurumenaviApiClientImpl(
                         Longitude(rawLongitude)
                     ) else null
 
+                val address = it.address ?: ""
+                val phoneNumber = it.tel ?: ""
+
                 RestaurantData(
                     Id(it.id ?: ""),
                     Name(it.name ?: ""),
                     ImageUrl(
                         it.getImageUrlList().filterNotNull().filter { url -> url.isNotBlank() }),
+                    PhoneNumber(phoneNumber),
+                    Address(address),
                     location,
                     Favorite(false)
                 )

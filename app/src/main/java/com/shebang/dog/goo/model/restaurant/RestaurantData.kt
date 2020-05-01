@@ -18,6 +18,12 @@ data class RestaurantData(
     @ColumnInfo(name = "image_url")
     val imageUrl: ImageUrl,
 
+    @ColumnInfo(name = "phone_number")
+    val phoneNumber: PhoneNumber,
+
+    @ColumnInfo(name = "address")
+    val address: Address,
+
     @Embedded
     val location: Location?,
 
@@ -36,6 +42,8 @@ data class RestaurantData(
             id,
             Name(name.value),
             imageUrl + other.imageUrl,
+            phoneNumber,
+            address,
             location,
             other.favorite or favorite
         )

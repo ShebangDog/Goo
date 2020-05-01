@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.model
+package com.shebang.dog.goo.model.query
 
 data class Index(private val value: Int) {
     init {
