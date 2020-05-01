@@ -61,7 +61,8 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
             layoutManager = LinearLayoutManager(view.context)
             adapter = favoriteAdapter.apply {
                 onClickListener = RestaurantCardView.OnClickListener { it, restaurantData ->
-                    sharedViewModel.showDetail(restaurantData.id, null)
+                    sharedViewModel.showDetail(restaurantData.id)
+
                     it.findNavController().navigate(R.id.restaurantDetail)
                 }
             }

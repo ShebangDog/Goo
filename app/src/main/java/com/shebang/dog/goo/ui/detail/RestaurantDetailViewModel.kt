@@ -12,8 +12,6 @@ import javax.inject.Inject
 class RestaurantDetailViewModel @Inject constructor(repository: RestaurantRepository) :
     ViewModel() {
 
-    private val mutableUserLocation: MutableLiveData<Location> = MutableLiveData()
-
     private val restaurantId: MutableLiveData<Id> = MutableLiveData()
     val restaurantData = restaurantId.switchMap {
         liveData<RestaurantData?> {
@@ -27,13 +25,12 @@ class RestaurantDetailViewModel @Inject constructor(repository: RestaurantReposi
         }
     }
 
-    fun showDetail(id: Id, userLocation: Location?) = viewModelScope.launch {
-        mutableUserLocation.value = userLocation
+    fun showDetail(id: Id) = viewModelScope.launch {
         restaurantId.value = id
     }
 
-    fun navigateToRestaurant(uriReceiver: (String) -> Unit) {
-        val userLocation = mutableUserLocation.value ?: return
+    fun navigateToRestaurant(currentLocation: Location?, uriReceiver: (String) -> Unit) {
+        val userLocation = currentLocation ?: return
         val restaurantLocation = restaurantData.value?.location ?: return
 
         val uri = GoogleMapUtil.createUri(userLocation, restaurantLocation)

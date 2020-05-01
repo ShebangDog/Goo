@@ -94,8 +94,8 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
                     }
 
                 onClickListener = RestaurantCardView.OnClickListener { it, restaurantData ->
+                    sharedViewModel.showDetail(restaurantData.id)
 
-                    sharedViewModel.showDetail(restaurantData.id, currentLocation)
                     it.findNavController().navigate(R.id.restaurantDetail)
                 }
 
@@ -122,16 +122,14 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         super.onResume()
 
         context?.also { context ->
-            if (viewModel.isEmptyRestaurantStreet() &&
-                PermissionGranter.checkPermissions(context)
-            ) {
+            if (PermissionGranter.checkPermissions(context)) {
 
                 fusedLocationClient.lastLocation.addOnSuccessListener {
                     val location = convertAndroidLocation(it ?: return@addOnSuccessListener)
                     currentLocation = location
                     LocationSharedPreferenceAccessor.setLocationResult(context, location)
 
-                    viewModel.walkRestaurantStreet(location)
+                    if (viewModel.isEmptyRestaurantStreet()) viewModel.walkRestaurantStreet(location)
                 }
 
             }
