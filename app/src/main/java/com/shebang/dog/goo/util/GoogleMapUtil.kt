@@ -5,13 +5,18 @@ import com.shebang.dog.goo.model.location.Location
 object GoogleMapUtil {
 
     private const val BaseUrl = "http://maps.google.com/maps"
+    const val PackageName = "com.google.android.apps.maps"
 
     fun createUri(userLocation: Location, restaurantLocation: Location): String {
-        val userLocationForQuery =
-            listOf(userLocation.latitude, userLocation.longitude).joinToString(",")
+        val userLocationForQuery = listOf(
+            userLocation.latitude.value,
+            userLocation.longitude.value
+        ).joinToString(",")
 
-        val restaurantLocationQuery =
-            listOf(restaurantLocation.latitude, restaurantLocation.longitude).joinToString(",")
+        val restaurantLocationQuery = listOf(
+            restaurantLocation.latitude.value,
+            restaurantLocation.longitude.value
+        ).joinToString(",")
 
         val queryItemList = QueryItems.values()
         val queryValueList = listOf(

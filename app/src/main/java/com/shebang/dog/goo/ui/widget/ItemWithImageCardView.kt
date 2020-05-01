@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import com.google.android.material.card.MaterialCardView
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.ItemWithImageCardViewBinding
@@ -47,7 +48,7 @@ class ItemWithImageCardView(context: Context, attr: AttributeSet) :
         setter(string) { binding.contentsTextView.text = it }
     }
 
-    fun setOnIconClickListener(onClickListener: OnClickListener) {
+    fun setOnIconClickListener(onClickListener: (View) -> Unit) {
         setter(onClickListener) { binding.iconImageButton.setOnClickListener(it) }
     }
 }
