@@ -11,6 +11,7 @@ import androidx.lifecycle.observe
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentRestaurantDetailBinding
 import com.shebang.dog.goo.di.ViewModelFactory
+import com.shebang.dog.goo.model.restaurant.PhoneNumber
 import com.shebang.dog.goo.ui.tab.MyDaggerFragment
 import com.shebang.dog.goo.util.GoogleMapUtil
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
@@ -50,11 +51,29 @@ class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_d
                     openWithGoogleMap(it)
                 }
             }
+
+            phoneCardView.setOnIconClickListener {
+                restaurantDetailViewModel.callingRestaurant { dialNumber(it) }
+            }
         }
 
         restaurantDetailViewModel.restaurantImageUrlList.observe(viewLifecycleOwner) {
             restaurantThumbnailAdapter.restaurantThumbnailList = it
         }
+    }
+
+    private fun dialNumber(phoneNumber: PhoneNumber) {
+        if (phoneNumber.value.isBlank()) return
+
+        val dialIntent = createDialIntent(Uri.parse("tel:${phoneNumber.value}"))
+
+        if (dialIntent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivity(dialIntent)
+        }
+    }
+
+    private fun createDialIntent(uri: Uri): Intent {
+        return Intent(Intent.ACTION_DIAL).apply { data = uri }
     }
 
     private fun openWithGoogleMap(uri: String) {

@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.shebang.dog.goo.data.RestaurantRepository
 import com.shebang.dog.goo.model.location.Location
 import com.shebang.dog.goo.model.restaurant.Id
+import com.shebang.dog.goo.model.restaurant.PhoneNumber
 import com.shebang.dog.goo.model.restaurant.RestaurantData
 import com.shebang.dog.goo.util.GoogleMapUtil
 import kotlinx.coroutines.launch
@@ -39,5 +40,11 @@ class RestaurantDetailViewModel @Inject constructor(repository: RestaurantReposi
         )
 
         uriReceiver(uri)
+    }
+
+    fun callingRestaurant(callingFunction: (PhoneNumber) -> Unit) {
+        val phoneNumber = restaurantData.value?.phoneNumber ?: return
+
+        callingFunction(phoneNumber)
     }
 }
