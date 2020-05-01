@@ -8,21 +8,14 @@ object GoogleMapUtil {
     const val PackageName = "com.google.android.apps.maps"
 
     fun createUri(userLocation: Location, restaurantLocation: Location): String {
-        val userLocationForQuery = listOf(
-            userLocation.latitude.value,
-            userLocation.longitude.value
-        ).joinToString(",")
-
-        val restaurantLocationQuery = listOf(
-            restaurantLocation.latitude.value,
-            restaurantLocation.longitude.value
-        ).joinToString(",")
+        val userLocationForQuery = locationAsQuery(userLocation)
+        val restaurantLocationQuery = locationAsQuery(restaurantLocation)
 
         return createUri(userLocationForQuery, restaurantLocationQuery)
     }
 
     fun createUri(userLocation: Location, restaurantName: String): String {
-        val locationString = userLocation.let { "${it.latitude.value},${it.longitude.value}" }
+        val locationString = locationAsQuery(userLocation)
 
         return createUri(locationString, restaurantName)
     }
@@ -57,5 +50,9 @@ object GoogleMapUtil {
         Ride("r"),
         Drive("d"),
         Walk("w")
+    }
+
+    private fun locationAsQuery(location: Location): String {
+        return listOf(location.latitude.value, location.longitude.value).joinToString(",")
     }
 }
