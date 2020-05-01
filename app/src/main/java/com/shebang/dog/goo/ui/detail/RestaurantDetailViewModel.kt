@@ -31,9 +31,12 @@ class RestaurantDetailViewModel @Inject constructor(repository: RestaurantReposi
 
     fun navigateToRestaurant(currentLocation: Location?, uriReceiver: (String) -> Unit) {
         val userLocation = currentLocation ?: return
-        val restaurantLocation = restaurantData.value?.location ?: return
+        val restaurantName = restaurantData.value?.name?.value ?: return
 
-        val uri = GoogleMapUtil.createUri(userLocation, restaurantLocation)
+        val uri = GoogleMapUtil.createUri(
+            userLocation,
+            restaurantName
+        )
 
         uriReceiver(uri)
     }

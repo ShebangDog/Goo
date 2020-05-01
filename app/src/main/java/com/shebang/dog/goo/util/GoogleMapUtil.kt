@@ -18,15 +18,24 @@ object GoogleMapUtil {
             restaurantLocation.longitude.value
         ).joinToString(",")
 
+        return createUri(userLocationForQuery, restaurantLocationQuery)
+    }
+
+    fun createUri(userLocation: Location, restaurantName: String): String {
+        val locationString = userLocation.let { "${it.latitude.value},${it.longitude.value}" }
+
+        return createUri(locationString, restaurantName)
+    }
+
+    fun createUri(currentLocationName: String, restaurantName: String): String {
         val queryItemList = QueryItems.values()
         val queryValueList = listOf(
-            userLocationForQuery,
-            restaurantLocationQuery,
+            currentLocationName,
+            restaurantName,
             DirFlags.Walk.value
         )
 
         val question = "?"
-
         val queryList = queryItemList.zip(queryValueList).map { pair ->
             val queryItem = pair.first
             val queryValue = pair.second
@@ -35,9 +44,8 @@ object GoogleMapUtil {
             queryItem.value + equal + queryValue
         }.joinToString("&")
 
-        return BaseUrl + question + queryList
+        return (BaseUrl + question + queryList).also { DebugHelper.log(it) }
     }
-
 
     private enum class QueryItems(val value: String) {
         StartAddress("saddr"),
