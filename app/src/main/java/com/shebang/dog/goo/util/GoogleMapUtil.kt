@@ -37,7 +37,7 @@ object GoogleMapUtil {
             queryItem.value + equal + queryValue
         }.joinToString("&")
 
-        return (BaseUrl + question + queryList).also { DebugHelper.log(it) }
+        return BaseUrl + question + queryList
     }
 
     private enum class QueryItems(val value: String) {
