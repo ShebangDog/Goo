@@ -24,19 +24,19 @@
         android:background="?attr/selectableItemBackground"
 
         android:clickable="true"
-        android:onClick="@{(view) -> aboutItem.onClick.invoke(view)}"
+        android:minHeight="@dimen/about_list_item_min_height"
 
-        android:minHeight="64dp">
+        android:onClick="@{(view) -> aboutItem.onClick.invoke(view)}">
 
         <ImageView
             android:id="@+id/item_image_view"
 
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/about_list_item_side_length"
+            android:layout_height="@dimen/about_list_item_side_length"
 
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginStart="@dimen/about_list_item_middle_margin"
+            android:layout_marginTop="@dimen/about_list_item_small_margin"
+            android:layout_marginBottom="@dimen/about_list_item_small_margin"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,10 +48,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="@dimen/about_list_item_middle_margin"
 
             android:text="@{aboutItem.title.value}"
-            android:textSize="20sp"
+            android:textSize="@dimen/about_list_item_text_size"
 
             app:layout_constraintBottom_toTopOf="@id/summary_text_view"
             app:layout_constraintStart_toEndOf="@+id/item_image_view"
