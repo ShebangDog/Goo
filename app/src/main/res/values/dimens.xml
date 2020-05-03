@@ -5,7 +5,7 @@
     <dimen name="restaurant_detail_dots_indicator_margin_bottom">18dp</dimen>
     <dimen name="dots_size">14dp</dimen>
     <dimen name="about_list_item_min_height">64dp</dimen>
-    <dimen name="about_list_item_side_length">48dp</dimen>
+    <dimen name="icon_side">48dp</dimen>
     <dimen name="about_list_item_middle_margin">6dp</dimen>
     <dimen name="about_list_item_small_margin">4dp</dimen>
     <dimen name="about_list_item_text_size">20sp</dimen>
