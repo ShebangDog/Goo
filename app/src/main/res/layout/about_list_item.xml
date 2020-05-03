@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
 
             android:text="@{aboutItem.summary.value}"
-            android:visibility="@{aboutItem.summary == null ? View.GONE : View.VISIBLE}"
+            android:visibility="@{aboutItem.summary != null}"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/title_text_view"

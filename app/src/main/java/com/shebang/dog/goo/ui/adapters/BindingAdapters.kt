@@ -1,6 +1,7 @@
 package com.shebang.dog.goo.ui.adapters
 
 import android.view.View
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.viewpager2.widget.ViewPager2
 
@@ -17,4 +18,9 @@ fun bindVisibility(
 
     val size = imageUrlList?.size ?: 0
     view.visibility = if (size < 2) View.GONE else View.VISIBLE
+}
+
+@BindingAdapter("android:visibility")
+fun bindVisibility(view: TextView, isVisible: Boolean) {
+    view.visibility = if (isVisible) View.VISIBLE else View.GONE
 }
