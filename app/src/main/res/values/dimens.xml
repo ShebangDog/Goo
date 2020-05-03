@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="restaurant_detail_view_pager_height">256dp</dimen>
+    <dimen name="restaurant_detail_dots_indicator_margin_bottom">18dp</dimen>
+    <dimen name="dots_size">14dp</dimen>
+</resources>
