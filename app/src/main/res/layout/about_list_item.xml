@@ -34,9 +34,9 @@
             android:layout_width="@dimen/icon_side"
             android:layout_height="@dimen/icon_side"
 
-            android:layout_marginStart="@dimen/about_list_item_middle_margin"
-            android:layout_marginTop="@dimen/about_list_item_small_margin"
-            android:layout_marginBottom="@dimen/about_list_item_small_margin"
+            android:layout_marginStart="@dimen/about_list_item_margin_middle"
+            android:layout_marginTop="@dimen/about_list_item_margin_small"
+            android:layout_marginBottom="@dimen/about_list_item_margin_small"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginStart="@dimen/about_list_item_middle_margin"
+            android:layout_marginStart="@dimen/about_list_item_margin_middle"
 
             android:text="@{aboutItem.title.value}"
             android:textSize="@dimen/about_list_item_text_size"
