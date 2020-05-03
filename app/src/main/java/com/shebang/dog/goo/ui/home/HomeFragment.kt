@@ -5,12 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentHomeBinding
-import com.shebang.dog.goo.ui.favorite.FavoriteFragment
-import com.shebang.dog.goo.ui.street.RestaurantStreetFragment
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
@@ -28,29 +25,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val fragmentList = listOf({ RestaurantStreetFragment() }, { FavoriteFragment() })
-        val fragmentListForTab = fragmentList.map { constructor ->
-            constructor().let { FragmentDataOnTab(it.tabTitle, it.tabIconId) }
+        val fragmentDataList = HomeFragmentPagerAdapter.FragmentCreatorList.map {
+            it.create().let { fragment ->
+                FragmentDataOnTab(fragment.tabTitle, fragment.tabIconId)
+            }
         }
 
         binding.apply {
-            viewPager.apply {
-                offscreenPageLimit = fragmentList.size
-                adapter = object : FragmentStateAdapter(this@HomeFragment) {
-
-                    override fun getItemCount(): Int {
-                        return fragmentList.size
-                    }
-
-                    override fun createFragment(position: Int): Fragment {
-                        return fragmentList[position].invoke()
-                    }
-                }
-            }
+            viewPager.adapter = HomeFragmentPagerAdapter(this@HomeFragment)
 
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                tab.setIcon(fragmentListForTab[position].iconId)
-                tab.text = fragmentListForTab[position].title
+                tab.setIcon(fragmentDataList[position].iconId)
+                tab.text = fragmentDataList[position].title
             }.attach()
         }
     }
