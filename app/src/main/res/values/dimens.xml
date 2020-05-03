@@ -11,4 +11,10 @@
     <dimen name="about_list_item_text_size">20sp</dimen>
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_view_min_height">99dp</dimen>
+    <dimen name="restaurant_card_view_width">91dp</dimen>
+    <dimen name="restaurant_card_view_height">99dp</dimen>
+    <dimen name="favorite_icon_side">24dp</dimen>
+    <dimen name="restaurant_card_view_margin_large">16dp</dimen>
+    <dimen name="restaurant_card_view_margin_small">4dp</dimen>
 </resources>
