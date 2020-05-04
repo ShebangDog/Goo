@@ -56,7 +56,8 @@
                 app:iconSrc="@drawable/ic_baseline_restaurant_24"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:textSize="18sp" />
 
             <com.shebang.dog.goo.ui.widget.ItemWithImageCardView
                 android:id="@+id/phone_card_view"

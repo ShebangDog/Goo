@@ -52,10 +52,13 @@ class ItemWithImageCardView(context: Context, attr: AttributeSet) :
 
     fun setTextSize(dimension: Float) {
         setter(dimension) {
+            val hasValue = typedArray.hasValue(R.styleable.ItemWithImageCardView_textSize)
+
             binding.contentsTextView.setTextSize(
-                TypedValue.COMPLEX_UNIT_SP,
+                if (hasValue) TypedValue.COMPLEX_UNIT_PX else TypedValue.COMPLEX_UNIT_SP,
                 it
             )
+
         }
     }
 
