@@ -63,7 +63,7 @@
                     android:layout_marginStart="@dimen/restaurant_card_view_margin_large"
                     android:layout_marginEnd="@dimen/restaurant_card_view_margin_large"
 
-                    android:textColor="#DE000000"
+                    android:textColor="@color/text_black"
                     android:textSize="@dimen/text_size_large"
 
                     app:layout_constraintBottom_toTopOf="@id/distance_text_view"
