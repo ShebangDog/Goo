@@ -29,6 +29,7 @@ class ItemWithImageCardView(context: Context, attr: AttributeSet) :
                 setIconSrc(getDrawable(R.styleable.ItemWithImageCardView_iconSrc))
                 setContentsText(getString(R.styleable.ItemWithImageCardView_contentsText))
                 setTextSize(getDimension(R.styleable.ItemWithImageCardView_textSize, 16.0F))
+                setTextColor(getColor(R.styleable.ItemWithImageCardView_textColor, 0))
             } finally {
                 recycle()
             }
@@ -59,6 +60,16 @@ class ItemWithImageCardView(context: Context, attr: AttributeSet) :
                 it
             )
 
+        }
+    }
+
+    private fun setTextColor(color: Int) {
+        val hasValue = typedArray.hasValue(R.styleable.ItemWithImageCardView_textColor)
+
+        if (hasValue) {
+            setter(color) {
+                binding.contentsTextView.setTextColor(color)
+            }
         }
     }
 
