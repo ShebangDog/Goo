@@ -3,5 +3,6 @@
     <declare-styleable name="ItemWithImageCardView">
         <attr name="iconSrc" format="reference" />
         <attr name="contentsText" format="string" />
+        <attr name="textSize" format="dimension" />
     </declare-styleable>
 </resources>
