@@ -28,7 +28,7 @@ class ItemWithImageCardView(context: Context, attr: AttributeSet) :
             try {
                 setIconSrc(getDrawable(R.styleable.ItemWithImageCardView_iconSrc))
                 setContentsText(getString(R.styleable.ItemWithImageCardView_contentsText))
-                setTextSize(getDimension(R.styleable.ItemWithImageCardView_textSize, 14.0F))
+                setTextSize(getDimension(R.styleable.ItemWithImageCardView_textSize, 16.0F))
             } finally {
                 recycle()
             }
