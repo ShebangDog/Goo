@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.ui.adapters
+package com.shebang.dog.goo.ui.common.adapter
 
 import android.view.View
 import android.widget.TextView
