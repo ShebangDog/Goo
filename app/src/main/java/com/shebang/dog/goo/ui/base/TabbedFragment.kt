@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.ui.tab
+package com.shebang.dog.goo.ui.base
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes

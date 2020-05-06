@@ -16,7 +16,7 @@ import com.shebang.dog.goo.data.model.about.Summary
 import com.shebang.dog.goo.data.model.about.Title
 import com.shebang.dog.goo.databinding.AboutListItemBinding
 import com.shebang.dog.goo.databinding.ActivityAboutBinding
-import com.shebang.dog.goo.ui.tab.MyDaggerAppCompatActivity
+import com.shebang.dog.goo.ui.base.MyDaggerAppCompatActivity
 import javax.inject.Inject
 
 class AboutActivity : MyDaggerAppCompatActivity(R.layout.activity_about) {
