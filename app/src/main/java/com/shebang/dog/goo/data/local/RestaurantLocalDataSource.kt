@@ -1,13 +1,13 @@
 package com.shebang.dog.goo.data.local
 
 import com.shebang.dog.goo.data.RestaurantDataSource
-import com.shebang.dog.goo.model.EmptyRestaurantStreet
-import com.shebang.dog.goo.model.query.Index
-import com.shebang.dog.goo.model.query.Range
-import com.shebang.dog.goo.model.RestaurantStreet
-import com.shebang.dog.goo.model.location.Location
-import com.shebang.dog.goo.model.restaurant.Id
-import com.shebang.dog.goo.model.restaurant.RestaurantData
+import com.shebang.dog.goo.data.model.EmptyRestaurantStreet
+import com.shebang.dog.goo.data.model.RestaurantStreet
+import com.shebang.dog.goo.data.model.location.Location
+import com.shebang.dog.goo.data.model.query.Index
+import com.shebang.dog.goo.data.model.query.Range
+import com.shebang.dog.goo.data.model.restaurant.Id
+import com.shebang.dog.goo.data.model.restaurant.RestaurantData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

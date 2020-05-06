@@ -1,13 +1,13 @@
 package com.shebang.dog.goo.data.remote.api.gurumenavi
 
+import com.shebang.dog.goo.data.model.EmptyRestaurantStreet
+import com.shebang.dog.goo.data.model.RestaurantStreet
+import com.shebang.dog.goo.data.model.location.Latitude
+import com.shebang.dog.goo.data.model.location.Location
+import com.shebang.dog.goo.data.model.location.Longitude
+import com.shebang.dog.goo.data.model.query.Range
+import com.shebang.dog.goo.data.model.restaurant.*
 import com.shebang.dog.goo.data.response.gurumenavi.Rest
-import com.shebang.dog.goo.model.EmptyRestaurantStreet
-import com.shebang.dog.goo.model.query.Range
-import com.shebang.dog.goo.model.RestaurantStreet
-import com.shebang.dog.goo.model.location.Latitude
-import com.shebang.dog.goo.model.location.Location
-import com.shebang.dog.goo.model.location.Longitude
-import com.shebang.dog.goo.model.restaurant.*
 import retrofit2.HttpException
 
 class GurumenaviApiClientImpl(

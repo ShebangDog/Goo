@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        tools:context=".ui.street.RestaurantStreetFragment">
+        tools:context=".ui.main.street.RestaurantStreetFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/restaurant_list_recycler_view"

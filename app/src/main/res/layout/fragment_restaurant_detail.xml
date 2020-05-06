@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.shebang.dog.goo.ui.detail.RestaurantDetailViewModel" />
+            type="com.shebang.dog.goo.ui.main.detail.RestaurantDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +51,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_pager">
 
-            <com.shebang.dog.goo.ui.widget.ItemWithImageCardView
+            <com.shebang.dog.goo.ui.common.widget.ItemWithImageCardView
                 android:id="@+id/restaurant_name_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                 app:textColor="@color/text_black"
                 app:textSize="@dimen/text_size_large" />
 
-            <com.shebang.dog.goo.ui.widget.ItemWithImageCardView
+            <com.shebang.dog.goo.ui.common.widget.ItemWithImageCardView
                 android:id="@+id/phone_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/restaurant_name_card_view" />
 
-            <com.shebang.dog.goo.ui.widget.ItemWithImageCardView
+            <com.shebang.dog.goo.ui.common.widget.ItemWithImageCardView
                 android:id="@+id/map_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

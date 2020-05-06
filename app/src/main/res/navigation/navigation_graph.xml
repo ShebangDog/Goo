@@ -6,25 +6,25 @@
 
     <fragment
         android:id="@+id/restaurantDetail"
-        android:name="com.shebang.dog.goo.ui.detail.RestaurantDetailFragment"
+        android:name="com.shebang.dog.goo.ui.main.detail.RestaurantDetailFragment"
         android:label="Goo">
         <argument
             android:name="id"
             android:defaultValue="@null"
-            app:argType="com.shebang.dog.goo.model.restaurant.Id"
+            app:argType="com.shebang.dog.goo.data.model.restaurant.Id"
             app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/restaurantStreetFragment"
-        android:name="com.shebang.dog.goo.ui.street.RestaurantStreetFragment"
+        android:name="com.shebang.dog.goo.ui.main.street.RestaurantStreetFragment"
         android:label="Goo" />
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.shebang.dog.goo.ui.favorite.FavoriteFragment"
+        android:name="com.shebang.dog.goo.ui.main.favorite.FavoriteFragment"
         android:label="Goo" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.shebang.dog.goo.ui.home.HomeFragment"
+        android:name="com.shebang.dog.goo.ui.main.home.HomeFragment"
         android:label="Goo">
         <action
             android:id="@+id/action_to_restaurantDetail"
@@ -32,6 +32,6 @@
     </fragment>
     <activity
         android:id="@+id/aboutActivity"
-        android:name="com.shebang.dog.goo.ui.about.AboutActivity"
+        android:name="com.shebang.dog.goo.ui.main.about.AboutActivity"
         android:label="Goo" />
 </navigation>
