@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/restaurantStreetFragment"
-        android:name="com.shebang.dog.goo.ui.street.RestaurantStreetFragment"
+        android:name="com.shebang.dog.goo.ui.main.street.RestaurantStreetFragment"
         android:label="Goo" />
     <fragment
         android:id="@+id/favoriteFragment"

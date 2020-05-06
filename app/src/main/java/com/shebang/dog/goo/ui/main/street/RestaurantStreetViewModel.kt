@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.ui.street
+package com.shebang.dog.goo.ui.main.street
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageButton

@@ -1,6 +1,6 @@
 package com.shebang.dog.goo.di.module
 
-import com.shebang.dog.goo.ui.street.RestaurantStreetFragment
+import com.shebang.dog.goo.ui.main.street.RestaurantStreetFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.ui.street
+package com.shebang.dog.goo.ui.main.street
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
