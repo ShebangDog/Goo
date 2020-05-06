@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.shebang.dog.goo.ui.widget.RestaurantCardView
+        <com.shebang.dog.goo.ui.common.widget.RestaurantCardView
             android:id="@+id/card_view"
 
             android:layout_width="match_parent"

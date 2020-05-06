@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.ui.widget
+package com.shebang.dog.goo.ui.common.widget
 
 import android.content.Context
 import android.graphics.drawable.Drawable

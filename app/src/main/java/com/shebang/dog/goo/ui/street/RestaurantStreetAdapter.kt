@@ -9,7 +9,7 @@ import com.shebang.dog.goo.data.model.RestaurantStreet
 import com.shebang.dog.goo.data.model.location.Location
 import com.shebang.dog.goo.data.model.restaurant.RestaurantData
 import com.shebang.dog.goo.databinding.RestaurantListItemBinding
-import com.shebang.dog.goo.ui.widget.RestaurantCardView
+import com.shebang.dog.goo.ui.common.widget.RestaurantCardView
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
 
