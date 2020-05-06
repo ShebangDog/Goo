@@ -8,7 +8,7 @@
 
         <variable
             name="aboutItem"
-            type="com.shebang.dog.goo.model.about.AboutItem" />
+            type="com.shebang.dog.goo.data.model.about.AboutItem" />
 
         <variable
             name="onClickListener"
