@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/restaurantDetail"
-        android:name="com.shebang.dog.goo.ui.detail.RestaurantDetailFragment"
+        android:name="com.shebang.dog.goo.ui.main.detail.RestaurantDetailFragment"
         android:label="Goo">
         <argument
             android:name="id"

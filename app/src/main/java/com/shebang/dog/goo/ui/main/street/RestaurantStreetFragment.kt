@@ -21,7 +21,7 @@ import com.shebang.dog.goo.databinding.FragmentRestaurantListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
 import com.shebang.dog.goo.ui.base.TabbedFragment
 import com.shebang.dog.goo.ui.common.widget.RestaurantCardView
-import com.shebang.dog.goo.ui.detail.RestaurantDetailViewModel
+import com.shebang.dog.goo.ui.main.detail.RestaurantDetailViewModel
 import com.shebang.dog.goo.util.EndlessRecyclerViewScrollListener
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import com.shebang.dog.goo.util.PermissionGranter

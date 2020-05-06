@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.ui.detail
+package com.shebang.dog.goo.ui.main.detail
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
