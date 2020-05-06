@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.ui
+package com.shebang.dog.goo
 
 import android.app.Application
 import com.shebang.dog.goo.di.DaggerApplicationComponent
