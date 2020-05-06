@@ -32,6 +32,6 @@
     </fragment>
     <activity
         android:id="@+id/aboutActivity"
-        android:name="com.shebang.dog.goo.ui.about.AboutActivity"
+        android:name="com.shebang.dog.goo.ui.main.about.AboutActivity"
         android:label="Goo" />
 </navigation>

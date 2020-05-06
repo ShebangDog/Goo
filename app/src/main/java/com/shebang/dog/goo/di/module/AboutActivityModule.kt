@@ -1,6 +1,6 @@
 package com.shebang.dog.goo.di.module
 
-import com.shebang.dog.goo.ui.about.AboutActivity
+import com.shebang.dog.goo.ui.main.about.AboutActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

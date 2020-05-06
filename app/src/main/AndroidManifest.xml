@@ -27,7 +27,7 @@
         </activity>
 
         <activity
-            android:name=".ui.about.AboutActivity"
+            android:name="com.shebang.dog.goo.ui.main.about.AboutActivity"
             android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 

@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.ui.about
+package com.shebang.dog.goo.ui.main.about
 
 import android.content.Context
 import android.content.Intent
