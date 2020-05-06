@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.ui.favorite
+package com.shebang.dog.goo.ui.main.favorite
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

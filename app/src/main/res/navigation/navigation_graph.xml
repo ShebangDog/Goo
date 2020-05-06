@@ -20,7 +20,7 @@
         android:label="Goo" />
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.shebang.dog.goo.ui.favorite.FavoriteFragment"
+        android:name="com.shebang.dog.goo.ui.main.favorite.FavoriteFragment"
         android:label="Goo" />
     <fragment
         android:id="@+id/homeFragment"

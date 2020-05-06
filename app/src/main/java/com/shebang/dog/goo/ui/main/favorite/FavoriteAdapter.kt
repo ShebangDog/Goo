@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.ui.favorite
+package com.shebang.dog.goo.ui.main.favorite
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
