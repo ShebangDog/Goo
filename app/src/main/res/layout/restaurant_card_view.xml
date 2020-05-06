@@ -9,7 +9,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="2dp"
+            android:elevation="@dimen/card_elevation"
             app:cardCornerRadius="10dp"
 
             app:cardPreventCornerOverlap="false"
@@ -25,13 +25,13 @@
 
                 android:background="?attr/selectableItemBackground"
 
-                android:minHeight="99dp">
+                android:minHeight="@dimen/card_view_min_height">
 
                 <ImageView
                     android:id="@+id/thumbnail_image_view"
 
-                    android:layout_width="91dp"
-                    android:layout_height="99dp"
+                    android:layout_width="@dimen/restaurant_card_view_width"
+                    android:layout_height="@dimen/restaurant_card_view_height"
                     android:scaleType="fitXY"
 
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -41,17 +41,17 @@
                 <ImageButton
                     android:id="@+id/favorite_image_button"
 
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/favorite_icon_side"
+                    android:layout_height="@dimen/favorite_icon_side"
 
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginEnd="@dimen/restaurant_card_view_margin_large"
+                    android:layout_marginBottom="@dimen/restaurant_card_view_margin_small"
 
                     android:background="?selectableItemBackgroundBorderless"
 
                     android:src="@drawable/ic_favorite_border_pink_24dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
 
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <TextView
@@ -60,11 +60,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/restaurant_card_view_margin_large"
+                    android:layout_marginEnd="@dimen/restaurant_card_view_margin_large"
 
-                    android:textColor="#DE000000"
-                    android:textSize="18sp"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/text_size_large"
 
                     app:layout_constraintBottom_toTopOf="@id/distance_text_view"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -77,10 +77,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/restaurant_card_view_margin_large"
+                    android:layout_marginEnd="@dimen/restaurant_card_view_margin_large"
 
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_middle"
 
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

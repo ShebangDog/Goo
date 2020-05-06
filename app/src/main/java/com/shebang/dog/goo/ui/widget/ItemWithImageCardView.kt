@@ -3,7 +3,9 @@ package com.shebang.dog.goo.ui.widget
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.View
 import com.google.android.material.card.MaterialCardView
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.ItemWithImageCardViewBinding
@@ -26,6 +28,8 @@ class ItemWithImageCardView(context: Context, attr: AttributeSet) :
             try {
                 setIconSrc(getDrawable(R.styleable.ItemWithImageCardView_iconSrc))
                 setContentsText(getString(R.styleable.ItemWithImageCardView_contentsText))
+                setTextSize(getDimension(R.styleable.ItemWithImageCardView_textSize, 16.0F))
+                setTextColor(getColor(R.styleable.ItemWithImageCardView_textColor, 0))
             } finally {
                 recycle()
             }
@@ -47,7 +51,29 @@ class ItemWithImageCardView(context: Context, attr: AttributeSet) :
         setter(string) { binding.contentsTextView.text = it }
     }
 
-    fun setOnIconClickListener(onClickListener: OnClickListener) {
+    fun setTextSize(dimension: Float) {
+        setter(dimension) {
+            val hasValue = typedArray.hasValue(R.styleable.ItemWithImageCardView_textSize)
+
+            binding.contentsTextView.setTextSize(
+                if (hasValue) TypedValue.COMPLEX_UNIT_PX else TypedValue.COMPLEX_UNIT_SP,
+                it
+            )
+
+        }
+    }
+
+    private fun setTextColor(color: Int) {
+        val hasValue = typedArray.hasValue(R.styleable.ItemWithImageCardView_textColor)
+
+        if (hasValue) {
+            setter(color) {
+                binding.contentsTextView.setTextColor(color)
+            }
+        }
+    }
+
+    fun setOnIconClickListener(onClickListener: (View) -> Unit) {
         setter(onClickListener) { binding.iconImageButton.setOnClickListener(it) }
     }
 }

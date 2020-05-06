@@ -15,10 +15,10 @@ import com.google.android.gms.location.LocationServices
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentRestaurantListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
-import com.shebang.dog.goo.model.query.Index
 import com.shebang.dog.goo.model.location.Latitude
 import com.shebang.dog.goo.model.location.Location
 import com.shebang.dog.goo.model.location.Longitude
+import com.shebang.dog.goo.model.query.Index
 import com.shebang.dog.goo.ui.detail.RestaurantDetailViewModel
 import com.shebang.dog.goo.ui.tab.TabbedFragment
 import com.shebang.dog.goo.ui.widget.RestaurantCardView
@@ -94,8 +94,8 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
                     }
 
                 onClickListener = RestaurantCardView.OnClickListener { it, restaurantData ->
-
                     sharedViewModel.showDetail(restaurantData.id)
+
                     it.findNavController().navigate(R.id.restaurantDetail)
                 }
 
@@ -122,16 +122,14 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
         super.onResume()
 
         context?.also { context ->
-            if (viewModel.isEmptyRestaurantStreet() &&
-                PermissionGranter.checkPermissions(context)
-            ) {
+            if (PermissionGranter.checkPermissions(context)) {
 
                 fusedLocationClient.lastLocation.addOnSuccessListener {
                     val location = convertAndroidLocation(it ?: return@addOnSuccessListener)
                     currentLocation = location
                     LocationSharedPreferenceAccessor.setLocationResult(context, location)
 
-                    viewModel.walkRestaurantStreet(location)
+                    if (viewModel.isEmptyRestaurantStreet()) viewModel.walkRestaurantStreet(location)
                 }
 
             }

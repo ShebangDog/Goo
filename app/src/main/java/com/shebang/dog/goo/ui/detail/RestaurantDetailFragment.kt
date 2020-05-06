@@ -1,5 +1,7 @@
 package com.shebang.dog.goo.ui.detail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +11,10 @@ import androidx.lifecycle.observe
 import com.shebang.dog.goo.R
 import com.shebang.dog.goo.databinding.FragmentRestaurantDetailBinding
 import com.shebang.dog.goo.di.ViewModelFactory
+import com.shebang.dog.goo.model.restaurant.PhoneNumber
 import com.shebang.dog.goo.ui.tab.MyDaggerFragment
+import com.shebang.dog.goo.util.GoogleMapUtil
+import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
 
 class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_detail) {
@@ -39,10 +44,50 @@ class RestaurantDetailFragment : MyDaggerFragment(R.layout.fragment_restaurant_d
 
             viewPager.adapter = restaurantThumbnailAdapter
             dotsIndicator.setViewPager2(viewPager)
+
+            mapCardView.setOnIconClickListener {
+                val userLocation = LocationSharedPreferenceAccessor.getLocationResult(view.context)
+                restaurantDetailViewModel.navigateToRestaurant(userLocation) {
+                    openWithGoogleMap(it)
+                }
+            }
+
+            phoneCardView.setOnIconClickListener {
+                restaurantDetailViewModel.callingRestaurant { dialNumber(it) }
+            }
         }
 
         restaurantDetailViewModel.restaurantImageUrlList.observe(viewLifecycleOwner) {
             restaurantThumbnailAdapter.restaurantThumbnailList = it
         }
+    }
+
+    private fun dialNumber(phoneNumber: PhoneNumber) {
+        if (phoneNumber.value.isBlank()) return
+
+        val dialIntent = createDialIntent(Uri.parse("tel:${phoneNumber.value}"))
+
+        if (dialIntent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivity(dialIntent)
+        }
+    }
+
+    private fun createDialIntent(uri: Uri): Intent {
+        return Intent(Intent.ACTION_DIAL).apply { data = uri }
+    }
+
+    private fun openWithGoogleMap(uri: String) {
+        val mapIntent = createMapIntent(uri)
+
+        if (mapIntent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivity(mapIntent)
+        }
+    }
+
+    private fun createMapIntent(uri: String): Intent {
+        return Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(uri)
+        ).apply { setPackage(GoogleMapUtil.PackageName) }
     }
 }

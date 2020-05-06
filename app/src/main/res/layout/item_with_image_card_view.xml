@@ -22,8 +22,8 @@
 
                 <ImageButton
                     android:id="@+id/icon_image_button"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="@dimen/icon_side"
+                    android:layout_height="@dimen/icon_side"
 
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -35,7 +35,6 @@
                     android:layout_height="match_parent"
                     android:textAlignment="center"
                     android:textColor="#DE000000"
-                    android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/icon_image_button"
                     app:layout_constraintRight_toRightOf="parent"
