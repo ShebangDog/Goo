@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.shebang.dog.goo.R
+import com.shebang.dog.goo.data.model.location.Latitude
+import com.shebang.dog.goo.data.model.location.Location
+import com.shebang.dog.goo.data.model.location.Longitude
+import com.shebang.dog.goo.data.model.query.Index
 import com.shebang.dog.goo.databinding.FragmentRestaurantListBinding
 import com.shebang.dog.goo.di.ViewModelFactory
-import com.shebang.dog.goo.model.location.Latitude
-import com.shebang.dog.goo.model.location.Location
-import com.shebang.dog.goo.model.location.Longitude
-import com.shebang.dog.goo.model.query.Index
 import com.shebang.dog.goo.ui.detail.RestaurantDetailViewModel
 import com.shebang.dog.goo.ui.tab.TabbedFragment
 import com.shebang.dog.goo.ui.widget.RestaurantCardView

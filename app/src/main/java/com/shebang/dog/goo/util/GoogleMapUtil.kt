@@ -1,6 +1,6 @@
 package com.shebang.dog.goo.util
 
-import com.shebang.dog.goo.model.location.Location
+import com.shebang.dog.goo.data.model.location.Location
 
 object GoogleMapUtil {
 

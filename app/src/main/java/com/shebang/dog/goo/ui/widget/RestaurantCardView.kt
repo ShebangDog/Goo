@@ -9,11 +9,11 @@ import android.widget.ImageButton
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
+import com.shebang.dog.goo.data.model.restaurant.Distance
+import com.shebang.dog.goo.data.model.restaurant.ImageUrl
+import com.shebang.dog.goo.data.model.restaurant.Name
+import com.shebang.dog.goo.data.model.restaurant.RestaurantData
 import com.shebang.dog.goo.databinding.RestaurantCardViewBinding
-import com.shebang.dog.goo.model.restaurant.Distance
-import com.shebang.dog.goo.model.restaurant.ImageUrl
-import com.shebang.dog.goo.model.restaurant.Name
-import com.shebang.dog.goo.model.restaurant.RestaurantData
 
 class RestaurantCardView(context: Context, attr: AttributeSet) : MaterialCardView(context, attr) {
     private val binding: RestaurantCardViewBinding

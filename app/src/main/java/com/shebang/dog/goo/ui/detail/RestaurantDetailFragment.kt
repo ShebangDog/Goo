@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import com.shebang.dog.goo.R
+import com.shebang.dog.goo.data.model.restaurant.PhoneNumber
 import com.shebang.dog.goo.databinding.FragmentRestaurantDetailBinding
 import com.shebang.dog.goo.di.ViewModelFactory
-import com.shebang.dog.goo.model.restaurant.PhoneNumber
 import com.shebang.dog.goo.ui.tab.MyDaggerFragment
 import com.shebang.dog.goo.util.GoogleMapUtil
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor

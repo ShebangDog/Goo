@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shebang.dog.goo.R
+import com.shebang.dog.goo.data.model.EmptyRestaurantStreet
+import com.shebang.dog.goo.data.model.RestaurantStreet
+import com.shebang.dog.goo.data.model.location.Location
+import com.shebang.dog.goo.data.model.restaurant.RestaurantData
 import com.shebang.dog.goo.databinding.RestaurantListItemBinding
-import com.shebang.dog.goo.model.EmptyRestaurantStreet
-import com.shebang.dog.goo.model.RestaurantStreet
-import com.shebang.dog.goo.model.location.Location
-import com.shebang.dog.goo.model.restaurant.RestaurantData
 import com.shebang.dog.goo.ui.widget.RestaurantCardView
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
 import javax.inject.Inject
