@@ -24,7 +24,7 @@
         android:label="Goo" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.shebang.dog.goo.ui.home.HomeFragment"
+        android:name="com.shebang.dog.goo.ui.main.home.HomeFragment"
         android:label="Goo">
         <action
             android:id="@+id/action_to_restaurantDetail"

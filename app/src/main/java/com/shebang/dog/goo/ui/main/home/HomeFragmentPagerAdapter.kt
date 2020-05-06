@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.ui.home
+package com.shebang.dog.goo.ui.main.home
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

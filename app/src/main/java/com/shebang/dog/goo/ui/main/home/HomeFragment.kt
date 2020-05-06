@@ -1,4 +1,4 @@
-package com.shebang.dog.goo.ui.home
+package com.shebang.dog.goo.ui.main.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
