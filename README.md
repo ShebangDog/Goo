@@ -13,3 +13,6 @@
 
 <img src="https://user-images.githubusercontent.com/38370581/83038769-4e654200-a078-11ea-9d26-0d7ca5b1c338.png" width="px"/>
 
+# Requirements
+
+Android Studio 4.0.0rc以上
