@@ -11,5 +11,5 @@
 
 このアプリケーションはMVVMで設計されており以下の図のように構成されている
 
-<img src="https://user-images.githubusercontent.com/38370581/83038769-4e654200-a078-11ea-9d26-0d7ca5b1c338.png" width="500px"/>
+<img src="https://user-images.githubusercontent.com/38370581/83038769-4e654200-a078-11ea-9d26-0d7ca5b1c338.png" width="px"/>
 
