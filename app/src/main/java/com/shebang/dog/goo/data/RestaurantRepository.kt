@@ -1,7 +1,5 @@
 package com.shebang.dog.goo.data
 
-import com.shebang.dog.goo.data.model.EmptyRestaurantStreet
-import com.shebang.dog.goo.data.model.RestaurantStreet
 import com.shebang.dog.goo.data.model.location.Location
 import com.shebang.dog.goo.data.model.query.Index
 import com.shebang.dog.goo.data.model.query.Range
@@ -19,10 +17,10 @@ class RestaurantRepository @Inject constructor(
     @RemoteDataSource private val restaurantRemoteDataSource: RestaurantDataSource
 ) : RestaurantDataSource {
 
-    private var cache: RestaurantStreet = EmptyRestaurantStreet
+    private var cache: List<RestaurantData> = emptyList()
     private val dataSourceList = listOf(restaurantLocalDataSource, restaurantRemoteDataSource)
 
-    override fun fetchRestaurantStreet(): Flow<RestaurantStreet> {
+    override fun fetchRestaurantStreet(): Flow<List<RestaurantData>> {
         return restaurantLocalDataSource.fetchRestaurantStreet()
     }
 
@@ -32,33 +30,30 @@ class RestaurantRepository @Inject constructor(
         range: Range,
         index: Index,
         dataCount: Int
-    ): Flow<RestaurantStreet> {
+    ): Flow<List<RestaurantData>> {
 
         fun fetch(
             restaurantDataSourceList: List<RestaurantDataSource>
-        ): Flow<RestaurantStreet> {
+        ): Flow<List<RestaurantData>> {
 
             return when (restaurantDataSourceList.isEmpty()) {
-                true -> flowOf(EmptyRestaurantStreet).flowOn(Dispatchers.IO)
+                true -> flowOf(emptyList<RestaurantData>()).flowOn(Dispatchers.IO)
                 false -> {
                     val dataSource = restaurantDataSourceList.first()
                     val result = dataSource.fetchRestaurantStreet(location, range, index, dataCount)
 
                     result.flatMapLatest {
-                        if (it.restaurantDataList.isEmpty()) fetch(restaurantDataSourceList.drop(1))
+                        if (it.isEmpty()) fetch(restaurantDataSourceList.drop(1))
                         else flowOf(it).flowOn(Dispatchers.IO)
                     }
                 }
             }
         }
 
-        fun Flow<RestaurantStreet>.applyFavorite(): Flow<RestaurantStreet> {
-            return map { restaurantStreet ->
-                RestaurantStreet(restaurantStreet.restaurantDataList.map {
-                    restaurantLocalDataSource.fetchRestaurant(
-                        it.id
-                    ) ?: it
-                })
+        fun Flow<List<RestaurantData>>.applyFavorite(): Flow<List<RestaurantData>> {
+            return map { restaurantList ->
+                restaurantList
+                    .map { restaurantLocalDataSource.fetchRestaurant(it.id) ?: it }
             }
         }
 
@@ -81,7 +76,7 @@ class RestaurantRepository @Inject constructor(
                 } ?: fetch(restaurantDataSourceList.drop(1))
         }
 
-        val restaurantData = cache.restaurantDataList.quickPick { it.id == id }
+        val restaurantData = cache.quickPick { it.id == id }
 
         return restaurantData ?: (fetch(dataSourceList))?.also {
             saveRestaurant(it)
@@ -93,8 +88,8 @@ class RestaurantRepository @Inject constructor(
         dataSourceList.forEach { it.saveRestaurant(restaurantData) }
     }
 
-    override suspend fun saveRestaurants(restaurantStreet: RestaurantStreet) {
-        dataSourceList.forEach { it.saveRestaurants(restaurantStreet) }
+    override suspend fun saveRestaurants(restaurantDataList: List<RestaurantData>) {
+        dataSourceList.forEach { it.saveRestaurants(restaurantDataList) }
     }
 
     override fun deleteRestaurants() {
@@ -105,23 +100,22 @@ class RestaurantRepository @Inject constructor(
         dataSourceList.forEach { it.deleteRestaurantData(id) }
     }
 
-    private fun updateCache(restaurantStreet: RestaurantStreet) {
-        val fusedStreet = restaurantStreet + cache
+    private fun updateCache(restaurantDataList: List<RestaurantData>) {
+        val fusedList = restaurantDataList + cache
 
-        cache = when (fusedStreet.restaurantDataList.isEmpty()) {
+        cache = when (restaurantDataList.isEmpty()) {
             true -> cache
-            false -> RestaurantStreet(fusedStreet.restaurantDataList.distinctBy { it.id })
+            false -> fusedList.distinctBy { it.id }
         }
     }
 
     private fun updateCache(restaurantData: RestaurantData) {
-        val oldData = cache.restaurantDataList.quickPick { it.id == restaurantData.id }
+        val oldData = cache.quickPick { it.id == restaurantData.id }
         val newData = if (oldData == null) restaurantData else oldData + restaurantData
 
-        val fusedStreet =
-            RestaurantStreet((cache.restaurantDataList + newData).distinctBy { it.id })
+        val fusedList = (cache + newData).distinctBy { it.id }
 
-        cache = fusedStreet
+        cache = fusedList
     }
 
     private fun <T> List<T>.quickPick(function: (T) -> Boolean): T? {

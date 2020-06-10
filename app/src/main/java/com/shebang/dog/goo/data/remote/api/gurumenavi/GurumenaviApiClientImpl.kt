@@ -1,7 +1,5 @@
 package com.shebang.dog.goo.data.remote.api.gurumenavi
 
-import com.shebang.dog.goo.data.model.EmptyRestaurantStreet
-import com.shebang.dog.goo.data.model.RestaurantStreet
 import com.shebang.dog.goo.data.model.location.Latitude
 import com.shebang.dog.goo.data.model.location.Location
 import com.shebang.dog.goo.data.model.location.Longitude
@@ -20,7 +18,7 @@ class GurumenaviApiClientImpl(
         range: Range,
         index: Int,
         dataCount: Int
-    ): RestaurantStreet = try {
+    ): List<RestaurantData> = try {
 
         val restaurantDataList = extractRestaurantDataList(
             gurumenaviApi.fetchGurumenavi(
@@ -33,9 +31,9 @@ class GurumenaviApiClientImpl(
             ).rest
         )
 
-        RestaurantStreet(restaurantDataList)
+        restaurantDataList
     } catch (httpException: HttpException) {
-        EmptyRestaurantStreet
+        emptyList()
     }
 
     override suspend fun fetchGurumenavi(id: Id): RestaurantData? = try {

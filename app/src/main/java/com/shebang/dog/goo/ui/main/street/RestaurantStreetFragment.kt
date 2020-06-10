@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,7 +30,7 @@ import javax.inject.Inject
 class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_list) {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel by viewModels<RestaurantStreetViewModel> { viewModelFactory }
+    private val viewModel by activityViewModels<RestaurantStreetViewModel> { viewModelFactory }
     private val sharedViewModel by activityViewModels<RestaurantDetailViewModel> { viewModelFactory }
 
     @Inject
@@ -57,6 +56,7 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
     ): View? {
 
         binding = FragmentRestaurantListBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
     }
@@ -67,8 +67,9 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
 
         val linearLayoutManager = LinearLayoutManager(context)
 
+        binding.viewModel = viewModel
         viewModel.restaurantStreet.observe(viewLifecycleOwner) {
-            restaurantStreetAdapter.restaurantStreet = it
+            restaurantStreetAdapter.restaurantDataList = it
         }
 
         binding.progressBar.show()
@@ -80,18 +81,9 @@ class RestaurantStreetFragment : TabbedFragment(R.layout.fragment_restaurant_lis
             layoutManager = linearLayoutManager
             adapter = restaurantStreetAdapter.apply {
 
-                onClickFavoriteIconListener =
-                    RestaurantCardView.OnClickFavoriteIconListener { restaurantData, imageButton, favorite, border ->
-
-                        imageButton.isSelected = !imageButton.isSelected
-
-                        viewModel.toggleFavorite(
-                            restaurantData,
-                            imageButton,
-                            favorite,
-                            border
-                        )
-                    }
+                onClickFavoriteIconListener = RestaurantCardView.OnClickFavoriteIconListener {
+                    viewModel.toggleFavorite(it)
+                }
 
                 onClickListener = RestaurantCardView.OnClickListener { it, restaurantData ->
                     sharedViewModel.showDetail(restaurantData.id)

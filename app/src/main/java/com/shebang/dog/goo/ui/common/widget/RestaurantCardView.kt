@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
@@ -52,24 +51,23 @@ class RestaurantCardView(context: Context, attr: AttributeSet) : MaterialCardVie
         border: Drawable?,
         onClickFavoriteIconListener: OnClickFavoriteIconListener?
     ) {
-        binding.favoriteImageButton.apply {
-            isSelected = restaurantData.favorite.value
+        fun synchronize(restaurantData: RestaurantData) {
+            binding.favoriteImageButton.apply {
+                isSelected = restaurantData.favorite.value
 
-            setImageDrawable(
-                if (isSelected) favorite
-                else border
-            )
-
-            setOnClickListener {
-                onClickFavoriteIconListener?.onClickFavoriteIcon(
-                    restaurantData,
-                    it as ImageButton,
-                    favorite,
-                    border
+                setImageDrawable(
+                    if (isSelected) favorite
+                    else border
                 )
             }
-
         }
+
+        synchronize(restaurantData)
+        binding.favoriteImageButton.setOnClickListener {
+            onClickFavoriteIconListener?.onClickFavoriteIcon(restaurantData)
+            synchronize(restaurantData)
+        }
+
     }
 
     fun removeFavoriteIcon() {
@@ -81,12 +79,7 @@ class RestaurantCardView(context: Context, attr: AttributeSet) : MaterialCardVie
     }
 
     interface OnClickFavoriteIconListener {
-        fun onClickFavoriteIcon(
-            restaurantData: RestaurantData,
-            imageButton: ImageButton,
-            favorite: Drawable?,
-            border: Drawable?
-        )
+        fun onClickFavoriteIcon(restaurantData: RestaurantData)
     }
 
     interface OnClickListener {
@@ -98,21 +91,11 @@ class RestaurantCardView(context: Context, attr: AttributeSet) : MaterialCardVie
 
     companion object {
         fun OnClickFavoriteIconListener(
-            onClickFavoriteIcon: (
-                restaurantData: RestaurantData,
-                imageButton: ImageButton,
-                favorite: Drawable?,
-                border: Drawable?
-            ) -> Unit
+            onClickFavoriteIcon: (restaurantData: RestaurantData) -> Unit
         ): OnClickFavoriteIconListener {
             return object : OnClickFavoriteIconListener {
-                override fun onClickFavoriteIcon(
-                    restaurantData: RestaurantData,
-                    imageButton: ImageButton,
-                    favorite: Drawable?,
-                    border: Drawable?
-                ) {
-                    onClickFavoriteIcon(restaurantData, imageButton, favorite, border)
+                override fun onClickFavoriteIcon(restaurantData: RestaurantData) {
+                    onClickFavoriteIcon(restaurantData)
                 }
             }
         }

@@ -1,6 +1,5 @@
 package com.shebang.dog.goo.data
 
-import com.shebang.dog.goo.data.model.RestaurantStreet
 import com.shebang.dog.goo.data.model.location.Location
 import com.shebang.dog.goo.data.model.query.Index
 import com.shebang.dog.goo.data.model.query.Range
@@ -14,15 +13,15 @@ interface RestaurantDataSource {
         range: Range,
         index: Index,
         dataCount: Int = 5
-    ): Flow<RestaurantStreet>
+    ): Flow<List<RestaurantData>>
 
-    fun fetchRestaurantStreet(): Flow<RestaurantStreet>
+    fun fetchRestaurantStreet(): Flow<List<RestaurantData>>
 
     suspend fun fetchRestaurant(id: Id): RestaurantData?
 
     suspend fun saveRestaurant(restaurantData: RestaurantData)
 
-    suspend fun saveRestaurants(restaurantStreet: RestaurantStreet)
+    suspend fun saveRestaurants(restaurantDataList: List<RestaurantData>)
 
     fun deleteRestaurants()
 

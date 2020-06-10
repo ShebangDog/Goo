@@ -1,8 +1,6 @@
 package com.shebang.dog.goo.data.remote
 
 import com.shebang.dog.goo.data.RestaurantDataSource
-import com.shebang.dog.goo.data.model.EmptyRestaurantStreet
-import com.shebang.dog.goo.data.model.RestaurantStreet
 import com.shebang.dog.goo.data.model.location.Location
 import com.shebang.dog.goo.data.model.query.Index
 import com.shebang.dog.goo.data.model.query.Range
@@ -26,11 +24,11 @@ class RestaurantRemoteDataSource @Inject constructor(
     )
 
     @ExperimentalCoroutinesApi
-    override fun fetchRestaurantStreet(): Flow<RestaurantStreet> {
+    override fun fetchRestaurantStreet(): Flow<List<RestaurantData>> {
         fun fetch(
             dataSourceList: List<RestaurantDataSource>,
-            restaurantStreet: RestaurantStreet = EmptyRestaurantStreet
-        ): Flow<RestaurantStreet> {
+            restaurantStreet: List<RestaurantData> = emptyList()
+        ): Flow<List<RestaurantData>> {
 
             return when (dataSourceList.isEmpty()) {
                 true -> flowOf(restaurantStreet).flowOn(Dispatchers.IO)
@@ -52,7 +50,7 @@ class RestaurantRemoteDataSource @Inject constructor(
         range: Range,
         index: Index,
         dataCount: Int
-    ): Flow<RestaurantStreet> {
+    ): Flow<List<RestaurantData>> {
         fun List<RestaurantData>.distinctAndFuse(): List<RestaurantData> {
             val set = HashSet<String>()
             val list = ArrayList<RestaurantData>()
@@ -83,9 +81,10 @@ class RestaurantRemoteDataSource @Inject constructor(
             streets.first().fetchRestaurantStreet(location, range, index, dataCount)
         val hotpepperStreet = streets[1].fetchRestaurantStreet(location, range, index, dataCount)
 
-        return combine(gurumenaviStreet, hotpepperStreet) { gurumenavi, hotpepper ->
-            RestaurantStreet((gurumenavi + hotpepper).restaurantDataList.distinctAndFuse())
-        }
+        return combine(
+            gurumenaviStreet,
+            hotpepperStreet
+        ) { gurumenavi, hotpepper -> (gurumenavi + hotpepper).distinctAndFuse() }
     }
 
     override suspend fun fetchRestaurant(id: Id): RestaurantData? {
@@ -98,8 +97,8 @@ class RestaurantRemoteDataSource @Inject constructor(
         streets.forEach { it.saveRestaurant(restaurantData) }
     }
 
-    override suspend fun saveRestaurants(restaurantStreet: RestaurantStreet) {
-        streets.forEach { it.saveRestaurants(restaurantStreet) }
+    override suspend fun saveRestaurants(restaurantDataList: List<RestaurantData>) {
+        streets.forEach { it.saveRestaurants(restaurantDataList) }
     }
 
     override fun deleteRestaurants() {
@@ -114,8 +113,8 @@ class RestaurantRemoteDataSource @Inject constructor(
         RestaurantDataSource {
 
         @ExperimentalCoroutinesApi
-        override fun fetchRestaurantStreet(): Flow<RestaurantStreet> {
-            return flowOf(EmptyRestaurantStreet).flowOn(Dispatchers.IO)
+        override fun fetchRestaurantStreet(): Flow<List<RestaurantData>> {
+            return flowOf(emptyList<RestaurantData>()).flowOn(Dispatchers.IO)
         }
 
         @ExperimentalCoroutinesApi
@@ -124,7 +123,7 @@ class RestaurantRemoteDataSource @Inject constructor(
             range: Range,
             index: Index,
             dataCount: Int
-        ): Flow<RestaurantStreet> {
+        ): Flow<List<RestaurantData>> {
             return flow {
                 emit(
                     hotpepperApiClient.fetchHotpepper(
@@ -146,7 +145,7 @@ class RestaurantRemoteDataSource @Inject constructor(
 
         }
 
-        override suspend fun saveRestaurants(restaurantStreet: RestaurantStreet) {
+        override suspend fun saveRestaurants(restaurantDataList: List<RestaurantData>) {
 
         }
 
@@ -163,8 +162,8 @@ class RestaurantRemoteDataSource @Inject constructor(
         RestaurantDataSource {
 
         @ExperimentalCoroutinesApi
-        override fun fetchRestaurantStreet(): Flow<RestaurantStreet> {
-            return flowOf(EmptyRestaurantStreet).flowOn(Dispatchers.IO)
+        override fun fetchRestaurantStreet(): Flow<List<RestaurantData>> {
+            return flowOf(emptyList<RestaurantData>()).flowOn(Dispatchers.IO)
         }
 
         @ExperimentalCoroutinesApi
@@ -173,7 +172,7 @@ class RestaurantRemoteDataSource @Inject constructor(
             range: Range,
             index: Index,
             dataCount: Int
-        ): Flow<RestaurantStreet> {
+        ): Flow<List<RestaurantData>> {
 
             return flow {
                 emit(
@@ -196,7 +195,7 @@ class RestaurantRemoteDataSource @Inject constructor(
 
         }
 
-        override suspend fun saveRestaurants(restaurantStreet: RestaurantStreet) {
+        override suspend fun saveRestaurants(restaurantDataList: List<RestaurantData>) {
 
         }
 

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,17 +14,17 @@ import com.shebang.dog.goo.di.ViewModelFactory
 import com.shebang.dog.goo.ui.base.TabbedFragment
 import com.shebang.dog.goo.ui.common.widget.RestaurantCardView
 import com.shebang.dog.goo.ui.main.detail.RestaurantDetailViewModel
+import com.shebang.dog.goo.ui.main.street.RestaurantStreetViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel by viewModels<FavoriteViewModel> { viewModelFactory }
+    private val viewModel by activityViewModels<RestaurantStreetViewModel> { viewModelFactory }
     private val sharedViewModel by activityViewModels<RestaurantDetailViewModel> { viewModelFactory }
 
-    @Inject
-    lateinit var favoriteAdapter: FavoriteAdapter
+    private val favoriteAdapter = FavoriteAdapter()
 
     private lateinit var binding: FragmentFavoriteListBinding
 
@@ -41,21 +40,14 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFavoriteListBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
     }
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.restaurantStreet.observe(viewLifecycleOwner) {
-            favoriteAdapter.restaurantStreet = it
-        }
-
-        binding.progressBar.show()
-        viewModel.loadingState.observe(viewLifecycleOwner) {
-            binding.progressBar.apply { if (it) show() else hide() }
-        }
 
         binding.favoriteListRecyclerView.apply {
             layoutManager = LinearLayoutManager(view.context)
@@ -67,12 +59,15 @@ class FavoriteFragment : TabbedFragment(R.layout.fragment_favorite_list) {
                 }
             }
         }
-    }
 
-    @ExperimentalCoroutinesApi
-    override fun onResume() {
-        super.onResume()
+        binding.viewModel = viewModel
+        viewModel.favoriteList.observe(viewLifecycleOwner) {
+            favoriteAdapter.restaurantDataList = it
+        }
 
-        viewModel.walkFavoriteRestaurantStreet()
+        binding.progressBar.show()
+        viewModel.loadingState.observe(viewLifecycleOwner) {
+            binding.progressBar.apply { if (it) show() else hide() }
+        }
     }
 }

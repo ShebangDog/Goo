@@ -3,18 +3,15 @@ package com.shebang.dog.goo.ui.main.favorite
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shebang.dog.goo.data.model.RestaurantStreet
 import com.shebang.dog.goo.data.model.location.Location
 import com.shebang.dog.goo.data.model.restaurant.RestaurantData
 import com.shebang.dog.goo.databinding.FavoriteListItemBinding
 import com.shebang.dog.goo.ui.common.widget.RestaurantCardView
 import com.shebang.dog.goo.util.LocationSharedPreferenceAccessor
-import javax.inject.Inject
 
-class FavoriteAdapter @Inject constructor() :
-    RecyclerView.Adapter<FavoriteAdapter.RestaurantStreetViewHolder>() {
+class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.RestaurantStreetViewHolder>() {
 
-    var restaurantStreet: RestaurantStreet = RestaurantStreet(emptyList())
+    var restaurantDataList: List<RestaurantData> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -62,10 +59,10 @@ class FavoriteAdapter @Inject constructor() :
     }
 
     override fun getItemCount(): Int {
-        return restaurantStreet.restaurantDataList.size
+        return restaurantDataList.size
     }
 
     override fun onBindViewHolder(holder: RestaurantStreetViewHolder, position: Int) {
-        holder.setRestaurantData(restaurantStreet.restaurantDataList[position], onClickListener)
+        holder.setRestaurantData(restaurantDataList[position], onClickListener)
     }
 }

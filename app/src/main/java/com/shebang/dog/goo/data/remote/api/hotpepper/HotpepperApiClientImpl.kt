@@ -1,7 +1,5 @@
 package com.shebang.dog.goo.data.remote.api.hotpepper
 
-import com.shebang.dog.goo.data.model.EmptyRestaurantStreet
-import com.shebang.dog.goo.data.model.RestaurantStreet
 import com.shebang.dog.goo.data.model.location.Latitude
 import com.shebang.dog.goo.data.model.location.Location
 import com.shebang.dog.goo.data.model.location.Longitude
@@ -23,7 +21,7 @@ class HotpepperApiClientImpl(
         index: Int,
         dataCount: Int,
         format: Format
-    ): RestaurantStreet = try {
+    ): List<RestaurantData> = try {
         val hotpepperData = hotpepperApi.fetchHotpepper(
             apiToken,
             latitude.value,
@@ -37,9 +35,9 @@ class HotpepperApiClientImpl(
         val restaurantList: List<RestaurantData> =
             extractRestaurantDataList(hotpepperData.results?.shop)
 
-        RestaurantStreet(restaurantList)
+        restaurantList
     } catch (httpException: HttpException) {
-        EmptyRestaurantStreet
+        emptyList()
     }
 
     override suspend fun fetchHotpepper(id: Id, format: Format): RestaurantData? = try {

@@ -1,6 +1,5 @@
 package com.shebang.dog.goo.data.remote.api.hotpepper
 
-import com.shebang.dog.goo.data.model.RestaurantStreet
 import com.shebang.dog.goo.data.model.location.Latitude
 import com.shebang.dog.goo.data.model.location.Longitude
 import com.shebang.dog.goo.data.model.query.Format
@@ -16,7 +15,7 @@ interface HotpepperApiClient {
         index: Int,
         dataCount: Int = 5,
         format: Format = Format.Json
-    ): RestaurantStreet
+    ): List<RestaurantData>
 
     suspend fun fetchHotpepper(
         id: Id,

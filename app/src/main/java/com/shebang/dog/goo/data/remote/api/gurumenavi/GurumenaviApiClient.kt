@@ -1,6 +1,5 @@
 package com.shebang.dog.goo.data.remote.api.gurumenavi
 
-import com.shebang.dog.goo.data.model.RestaurantStreet
 import com.shebang.dog.goo.data.model.location.Latitude
 import com.shebang.dog.goo.data.model.location.Longitude
 import com.shebang.dog.goo.data.model.query.Range
@@ -14,7 +13,7 @@ interface GurumenaviApiClient {
         range: Range,
         index: Int,
         dataCount: Int = 5
-    ): RestaurantStreet
+    ): List<RestaurantData>
 
     suspend fun fetchGurumenavi(
         id: Id

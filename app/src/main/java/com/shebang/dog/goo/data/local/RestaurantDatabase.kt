@@ -8,7 +8,6 @@ import com.shebang.dog.goo.data.model.restaurant.RestaurantData
 
 @Database(entities = [RestaurantData::class], version = 1)
 @TypeConverters(
-    RestaurantStreetConverter::class,
     IdConverter::class,
     NameConverter::class,
     ImageUrlConverter::class,
